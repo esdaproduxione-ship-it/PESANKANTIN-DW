@@ -1,7 +1,7 @@
 // supabase/client.js - Supabase Client Configuration
 
-const SUPABASE_URL = window.ENV?.SUPABASE_URL || 'https://YOUR_PROJECT.supabase.co';
-const SUPABASE_ANON_KEY = window.ENV?.SUPABASE_ANON_KEY || 'YOUR_ANON_KEY';
+const SUPABASE_URL = window.ENV?.SUPABASE_URL || 'https://cymhozqydmkwbsutifmv.supabase.co';
+const SUPABASE_ANON_KEY = window.ENV?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5bWhvenF5ZG1rd2JzdXRpZm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MTkyMTQsImV4cCI6MjA5Nzk5NTIxNH0.sciYSU4pul67QCysmgBcKiEHKc5xq52uoTejVF_1fV4';
 
 // Initialize Supabase client
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
