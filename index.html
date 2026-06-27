@@ -175,6 +175,9 @@
         <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;position:relative;" onclick="showPage('buyer-cart')">
           🛒<span id="cart-count-badge" class="nav-badge has-items">0</span>
         </button>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;position:relative;" onclick="openModal('modal-notif');renderNotifList()">
+          🔔<span id="notif-dot" class="notif-dot" style="display:none;"></span>
+        </button>
         <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;" onclick="handleLogout()">Keluar</button>
       </div>
     </div>
@@ -191,6 +194,7 @@
       <div style="font-size:1.2rem;font-weight:800;margin-bottom:.2rem;">Diskon 20% untuk semua minuman!</div>
       <div style="font-size:.85rem;opacity:.8;">Berlaku sampai pukul 15.00 WIB</div>
     </div>
+    <div id="favorit-section" style="margin-bottom:1rem;"></div>
     <div style="margin-bottom:1.25rem;">
       <div class="section-title">Kategori</div>
       <div class="scroll-row" id="categories-row"></div>
@@ -659,32 +663,79 @@
     <button class="btn btn-full" style="margin-top:.5rem;background:#25d366;color:#fff;" onclick="kirimNotaWA()">💬 Kirim via WA</button>
   </div>
 </div>
-<!-- Modal Ulasan -->
+<!-- Modal Ulasan — thumb+bintang, 4 dimensi, muncul setelah transaksi selesai -->
 <div id="modal-ulasan" class="modal-overlay">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <h2 style="font-size:1.15rem;font-weight:800;margin:0 0 1rem;">⭐ Beri Ulasan</h2>
+    <div id="ul-order-info" style="background:var(--green-light);border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;font-size:.85rem;"></div>
     <input type="hidden" id="ul-order-id"/>
-    <div class="form-group">
-      <label class="form-label">Rating Pelayanan</label>
-      <div id="star-pelayanan" class="star-input" data-key="pelayanan"></div>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:0 0 1rem;">Bagaimana pengalaman Anda?</h2>
+
+    <!-- Rating: Produk -->
+    <div class="ul-row">
+      <div class="ul-label"><span style="font-size:1.3rem;">🍽️</span><span>Produk / Menu</span></div>
+      <div class="ul-controls">
+        <div class="thumb-group" id="thumb-produk">
+          <button class="thumb-btn" onclick="setThumb('produk',1)" id="tp-up">👍</button>
+          <button class="thumb-btn" onclick="setThumb('produk',-1)" id="tp-down">👎</button>
+        </div>
+        <div class="star-row" id="star-produk"></div>
+      </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Rating Produk</label>
-      <div id="star-produk" class="star-input" data-key="produk"></div>
+    <!-- Rating: Penjual -->
+    <div class="ul-row">
+      <div class="ul-label"><span style="font-size:1.3rem;">🏪</span><span>Penjual</span></div>
+      <div class="ul-controls">
+        <div class="thumb-group" id="thumb-penjual">
+          <button class="thumb-btn" onclick="setThumb('penjual',1)" id="tj-up">👍</button>
+          <button class="thumb-btn" onclick="setThumb('penjual',-1)" id="tj-down">👎</button>
+        </div>
+        <div class="star-row" id="star-penjual"></div>
+      </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Rating Penjual</label>
-      <div id="star-penjual" class="star-input" data-key="penjual"></div>
+    <!-- Rating: Jasa Kirim -->
+    <div class="ul-row" id="ul-kirim-row">
+      <div class="ul-label"><span style="font-size:1.3rem;">🛵</span><span>Jasa Kirim</span></div>
+      <div class="ul-controls">
+        <div class="thumb-group" id="thumb-kirim">
+          <button class="thumb-btn" onclick="setThumb('kirim',1)" id="tk-up">👍</button>
+          <button class="thumb-btn" onclick="setThumb('kirim',-1)" id="tk-down">👎</button>
+        </div>
+        <div class="star-row" id="star-kirim"></div>
+      </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Komentar (opsional)</label>
-      <textarea id="ul-komentar" class="form-input" rows="3" placeholder="Ceritakan pengalaman Anda..."></textarea>
+    <!-- Rating: Layanan Aplikasi -->
+    <div class="ul-row">
+      <div class="ul-label"><span style="font-size:1.3rem;">📱</span><span>Layanan App</span></div>
+      <div class="ul-controls">
+        <div class="thumb-group" id="thumb-layanan">
+          <button class="thumb-btn" onclick="setThumb('layanan',1)" id="tl-up">👍</button>
+          <button class="thumb-btn" onclick="setThumb('layanan',-1)" id="tl-down">👎</button>
+        </div>
+        <div class="star-row" id="star-layanan"></div>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top:.75rem;">
+      <label class="form-label" style="font-size:.9rem;">Komentar (opsional)</label>
+      <textarea id="ul-komentar" class="form-input" rows="2" placeholder="Ceritakan pengalaman Anda..."></textarea>
     </div>
     <div style="display:flex;gap:.75rem;">
-      <button class="btn btn-secondary btn-full" onclick="closeModal('modal-ulasan')">Batal</button>
-      <button class="btn btn-primary btn-full" onclick="simpanUlasan()">Kirim Ulasan</button>
+      <button class="btn btn-secondary btn-full" onclick="closeModal('modal-ulasan')">Lewati</button>
+      <button class="btn btn-primary btn-full" onclick="simpanUlasan()">Kirim ⭐</button>
     </div>
+  </div>
+</div>
+
+<!-- Modal Notifikasi Pembeli -->
+<div id="modal-notif" class="modal-overlay">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <h2 style="font-size:1.1rem;font-weight:800;margin:0;">🔔 Notifikasi</h2>
+      <button class="btn btn-secondary btn-sm" onclick="tandaiSemuaBaca()">Tandai semua baca</button>
+    </div>
+    <div id="notif-list"></div>
   </div>
 </div>
 <!-- Modal Tambah Iuran Admin -->
@@ -717,10 +768,32 @@
 </div>
 
 <style>
-.star-input{display:flex;gap:.4rem;margin:.25rem 0;}
-.star-input span{font-size:1.8rem;cursor:pointer;transition:transform .1s;color:#d1d5db;}
-.star-input span.active{color:var(--yellow);}
-.star-input span:hover{transform:scale(1.2);}
+/* ── Rating UI ── */
+.ul-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid #f3f4f6;gap:.5rem;}
+.ul-label{display:flex;align-items:center;gap:.5rem;font-weight:600;font-size:.9rem;min-width:110px;}
+.ul-controls{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;}
+.thumb-group{display:flex;gap:.4rem;}
+.thumb-btn{font-size:1.4rem;background:none;border:2px solid #e5e7eb;border-radius:8px;padding:.2rem .5rem;cursor:pointer;transition:all .15s;line-height:1;}
+.thumb-btn.active-up{border-color:var(--green-main);background:var(--green-light);}
+.thumb-btn.active-down{border-color:#dc2626;background:#fee2e2;}
+.star-row{display:flex;gap:.15rem;}
+.star-row span{font-size:1.2rem;cursor:pointer;color:#d1d5db;transition:color .1s;}
+.star-row span.on{color:var(--yellow);}
+/* ── Favorit ── */
+.fav-btn{background:none;border:none;font-size:1.4rem;cursor:pointer;padding:.1rem;line-height:1;transition:transform .15s;}
+.fav-btn:active{transform:scale(1.3);}
+/* ── Notifikasi ── */
+.notif-dot{position:absolute;top:-3px;right:-3px;width:10px;height:10px;background:#dc2626;border-radius:50%;border:2px solid var(--green-main);}
+.notif-item{padding:.75rem;border-radius:10px;margin-bottom:.5rem;cursor:pointer;transition:background .15s;}
+.notif-item.unread{background:#f0fdf4;border-left:3px solid var(--green-main);}
+.notif-item.read{background:#f9fafb;border-left:3px solid #e5e7eb;opacity:.7;}
+/* ── Chip status pesanan ── */
+.order-progress{display:flex;gap:0;margin:.6rem 0;overflow-x:auto;}
+.progress-step{flex-shrink:0;font-size:.65rem;font-weight:600;padding:.25rem .5rem;background:#f3f4f6;color:var(--muted);}
+.progress-step.done{background:#dcfce7;color:#15803d;}
+.progress-step.current{background:var(--green-main);color:#fff;}
+.progress-step:first-child{border-radius:6px 0 0 6px;}
+.progress-step:last-child{border-radius:0 6px 6px 0;}
 @media print{
   body *{visibility:hidden;}
   #nota-print,#nota-print *{visibility:visible;}
@@ -752,9 +825,12 @@ const App = {
   cart: [],
   selectedDelivery: 'pickup',
   selectedPayment: 'cash_pickup',
-  ulasanRating: {pelayanan:0, produk:0, penjual:0},
-  jadwalLibur: [],   // [{date, ket}] libur mandiri penjual
-  kritiksaran: [],   // array kritik saran dari pembeli
+  ulasanRating: {produk:0, penjual:0, kirim:0, layanan:0},
+  ulasanThumb:  {produk:0, penjual:0, kirim:0, layanan:0},
+  favorit: [],        // array product id yang difavoritkan pembeli
+  notifikasi: [],     // array notif pesanan pembeli
+  jadwalLibur: [],    // [{date, ket}] libur mandiri penjual
+  kritiksaran: [],    // array kritik saran dari pembeli
 
   demoData: {
     categories: [
@@ -1000,7 +1076,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ══ BUYER HOME ══
-function loadBuyerHome() { renderCategories(); renderStores(); renderPopular(); }
+function loadBuyerHome() { loadFavoritLocal(); renderFavoritSection(); renderCategories(); renderStores(); renderPopular(); }
 
 function renderCategories() {
   document.getElementById('categories-row').innerHTML = App.demoData.categories.map(c=>`
@@ -1047,7 +1123,10 @@ function renderPopular() {
   const all = App.demoData.stores.flatMap(s=>s.products.map(p=>({...p,storeName:s.name,storeId:s.id}))).sort((a,b)=>b.total_sold-a.total_sold);
   document.getElementById('popular-grid').innerHTML = all.slice(0,6).map(p=>`
     <div class="card" style="overflow:hidden;cursor:pointer;" onclick="openProductDetail('${p.storeId}','${p.id}')">
-      <div style="height:100px;background:linear-gradient(135deg,#dcfce7,#86efac);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🍽️</div>
+      <div style="height:100px;background:linear-gradient(135deg,#dcfce7,#86efac);display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;">
+        🍽️
+        <button class="fav-btn" style="position:absolute;top:4px;right:4px;" onclick="event.stopPropagation();toggleFavorit('${p.id}',this)">${isFavorit(p.id)?'❤️':'🤍'}</button>
+      </div>
       <div style="padding:.65rem;">
         <div style="font-weight:700;font-size:.9rem;margin-bottom:.2rem;">${p.name}</div>
         <div style="font-size:.75rem;color:var(--muted);margin-bottom:.4rem;">${p.storeName}</div>
@@ -1113,7 +1192,10 @@ function openProductDetail(storeId, productId) {
   const store=App.demoData.stores.find(s=>s.id===storeId); const product=store?.products.find(p=>p.id===productId); if(!product) return;
   currentModalQty=1;
   document.getElementById('product-modal-content').innerHTML = `
-    <div style="background:linear-gradient(135deg,#dcfce7,#86efac);margin:-1.25rem -1.25rem 1.25rem;height:160px;display:flex;align-items:center;justify-content:center;font-size:5rem;">🍽️</div>
+    <div style="background:linear-gradient(135deg,#dcfce7,#86efac);margin:-1.25rem -1.25rem 1.25rem;height:160px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;">
+      🍽️
+      <button class="fav-btn" style="position:absolute;top:.75rem;right:.75rem;font-size:2rem;" id="modal-fav-btn" onclick="toggleFavorit('${productId}',this)">${isFavorit(productId)?'❤️':'🤍'}</button>
+    </div>
     <h2 style="margin:0 0 .25rem;font-size:1.3rem;font-weight:800;">${product.name}</h2>
     <div style="color:var(--muted);font-size:.85rem;margin-bottom:.5rem;">dari ${store.name}</div>
     <div style="display:flex;gap:1rem;font-size:.82rem;color:var(--muted);margin-bottom:1rem;">
@@ -1299,59 +1381,99 @@ function kirimNotaWA() {
 }
 
 // ══ BUYER ORDERS ══
+const PROGRESS_STEPS = ['pending','confirmed','processing','ready','delivering','completed'];
+const PROGRESS_LABEL = {pending:'Menunggu',confirmed:'Dikonfirmasi',processing:'Diproses',ready:'Siap',delivering:'Diantar',completed:'Selesai'};
+
 function loadBuyerOrders() {
   const orders = App.demoData.orders;
   const list   = document.getElementById('orders-list');
   if (!orders.length) { list.innerHTML='<div class="empty-state"><div class="icon">📋</div><h3>Belum ada pesanan</h3></div>'; return; }
-  list.innerHTML = orders.map(o=>`
+  list.innerHTML = orders.map(o=>{
+    const steps  = o.delivery_method==='pickup'
+      ? ['pending','confirmed','processing','ready','completed']
+      : PROGRESS_STEPS;
+    const curIdx = steps.indexOf(o.status);
+    const progress = steps.map((s,i)=>`<div class="progress-step ${i<curIdx?'done':i===curIdx?'current':''}">${PROGRESS_LABEL[s]||s}</div>`).join('');
+    return `
     <div class="card order-${o.status}" style="padding:1rem;margin-bottom:.75rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;">
-        <div><div style="font-weight:700;font-size:.9rem;">${o.order_number}</div><div style="font-size:.78rem;color:var(--muted);">${o.stores?.name} · ${timeAgo(o.created_at)}</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+        <div><div style="font-weight:700;font-size:.9rem;">${o.order_number}</div><div style="font-size:.75rem;color:var(--muted);">${o.stores?.name} · ${timeAgo(o.created_at)}</div></div>
         <span class="badge badge-${o.status}">${STATUS_LABEL[o.status]||o.status}</span>
       </div>
-      <div style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem;">${(o.order_items||[]).map(i=>`${i.product_name}×${i.quantity}`).join(', ')}</div>
-      ${o.ongkir>0?`<div style="font-size:.8rem;color:var(--orange);">+ Biaya antar ${fmtRp(o.ongkir)}</div>`:''}
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.4rem;gap:.5rem;flex-wrap:wrap;">
+      <!-- Progress bar -->
+      <div class="order-progress">${progress}</div>
+      <div style="font-size:.83rem;color:var(--muted);margin:.4rem 0;">${(o.order_items||[]).map(i=>`${i.product_name}×${i.quantity}`).join(', ')}</div>
+      ${o.ongkir>0?`<div style="font-size:.78rem;color:var(--orange);">🛵 Biaya antar ${fmtRp(o.ongkir)}</div>`:''}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;gap:.4rem;flex-wrap:wrap;">
         <span style="font-weight:800;color:var(--green-main);">${fmtRp(o.total)}</span>
-        <div style="display:flex;gap:.4rem;">
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
           <button class="btn btn-secondary btn-sm" onclick="openNota('${o.id}')">🖨️ Nota</button>
-          ${o.status==='completed'&&!o.ulasan?`<button class="btn btn-primary btn-sm" onclick="openUlasanModal('${o.id}')">⭐ Nilai</button>`:''}
-          ${o.ulasan?`<span style="font-size:.8rem;color:var(--muted);">✅ Sudah dinilai</span>`:''}
+          ${o.status==='completed'&&!o.ulasan
+            ? `<button class="btn btn-primary btn-sm" style="animation:pulse .8s 2;" onclick="openUlasanModal('${o.id}')">⭐ Beri Nilai</button>`
+            : ''}
+          ${o.ulasan ? `<span style="font-size:.78rem;color:var(--green-main);font-weight:600;">✅ Sudah dinilai</span>` : ''}
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
+// pulse animasi untuk tombol nilai
+const pulseStyle=document.createElement('style');
+pulseStyle.textContent='@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}';
+document.head.appendChild(pulseStyle);
 
-// ══ ULASAN ══
-function initStarInput(key) {
-  const el = document.getElementById(`star-${key}`); if(!el) return;
-  el.innerHTML = [1,2,3,4,5].map(n=>`<span onclick="setRating('${key}',${n})" data-val="${n}">★</span>`).join('');
-}
-
-function setRating(key, val) {
-  App.ulasanRating[key]=val;
+// ══ ULASAN — thumb 👍👎 + bintang, 4 dimensi ══
+function initStarRow(key) {
   const el=document.getElementById(`star-${key}`); if(!el) return;
-  el.querySelectorAll('span').forEach(s=>s.classList.toggle('active', parseInt(s.dataset.val)<=val));
+  el.innerHTML=[1,2,3,4,5].map(n=>`<span onclick="setStarUl('${key}',${n})" data-v="${n}">★</span>`).join('');
+}
+function setStarUl(key,val) {
+  App.ulasanRating[key]=val;
+  document.getElementById(`star-${key}`)?.querySelectorAll('span').forEach(s=>s.classList.toggle('on',+s.dataset.v<=val));
+}
+function setThumb(key,val) {
+  App.ulasanThumb[key]=val;
+  const up   = document.getElementById(`t${key[0]}-up`);
+  const down = document.getElementById(`t${key[0]}-down`);
+  if (!up||!down) return;
+  up.className  ='thumb-btn'+(val===1?' active-up':'');
+  down.className='thumb-btn'+(val===-1?' active-down':'');
+  // Auto set bintang sesuai jempol
+  setStarUl(key, val===1?5:2);
 }
 
 function openUlasanModal(orderId) {
+  const order=App.demoData.orders.find(o=>o.id===orderId); if(!order) return;
   document.getElementById('ul-order-id').value=orderId;
-  App.ulasanRating={pelayanan:0,produk:0,penjual:0};
-  ['pelayanan','produk','penjual'].forEach(k=>initStarInput(k));
+  document.getElementById('ul-order-info').innerHTML=`<b>${order.order_number}</b> · ${order.stores?.name} · ${fmtDate(order.created_at)}`;
+  App.ulasanRating={produk:0,penjual:0,kirim:0,layanan:0};
+  App.ulasanThumb={produk:0,penjual:0,kirim:0,layanan:0};
+  ['produk','penjual','kirim','layanan'].forEach(k=>initStarRow(k));
+  // Sembunyikan jasa kirim jika ambil sendiri
+  const kirimRow=document.getElementById('ul-kirim-row');
+  if(kirimRow) kirimRow.style.display=order.delivery_method==='pickup'?'none':'flex';
   document.getElementById('ul-komentar').value='';
+  // Reset thumb buttons
+  ['produk','penjual','kirim','layanan'].forEach(k=>{
+    const u=document.getElementById(`t${k[0]}-up`), d=document.getElementById(`t${k[0]}-down`);
+    if(u) u.className='thumb-btn'; if(d) d.className='thumb-btn';
+  });
   openModal('modal-ulasan');
 }
 
 function simpanUlasan() {
   const orderId=document.getElementById('ul-order-id').value;
-  const {pelayanan,produk,penjual}=App.ulasanRating;
-  if (!pelayanan||!produk||!penjual) { toast('Isi semua rating bintang dulu','error'); return; }
+  const {produk,penjual,kirim,layanan}=App.ulasanRating;
   const order=App.demoData.orders.find(o=>o.id===orderId); if(!order) return;
+  if(!produk&&!penjual) { toast('Beri minimal 1 penilaian','error'); return; }
   const ulasan={
     id:'ul'+Date.now(), order_number:order.order_number,
     buyer_name:App.currentUser?.name||'Anonim',
     store_name:order.stores?.name||'-',
-    pelayanan, produk, penjual,
+    produk, penjual,
+    kirim: order.delivery_method==='delivery'?kirim:null,
+    layanan,
+    thumb:{produk:App.ulasanThumb.produk,penjual:App.ulasanThumb.penjual,kirim:App.ulasanThumb.kirim,layanan:App.ulasanThumb.layanan},
     komentar:document.getElementById('ul-komentar').value,
     created_at:new Date().toISOString()
   };
@@ -1359,11 +1481,11 @@ function simpanUlasan() {
   order.ulasan=ulasan;
   // Update rating store
   const store=App.demoData.stores.find(s=>s.name===order.stores?.name);
-  if (store) {
-    const allRating=App.demoData.ulasan.filter(u=>u.store_name===store.name);
-    store.rating=parseFloat((allRating.reduce((s,u)=>s+(u.pelayanan+u.produk+u.penjual)/3,0)/allRating.length).toFixed(1));
+  if(store){
+    const all=App.demoData.ulasan.filter(u=>u.store_name===store.name&&u.produk>0);
+    if(all.length) store.rating=parseFloat((all.reduce((s,u)=>s+(u.produk+u.penjual)/2,0)/all.length).toFixed(1));
   }
-  toast('Ulasan berhasil dikirim ⭐','success');
+  toast('Ulasan berhasil dikirim 🙏','success');
   closeModal('modal-ulasan'); loadBuyerOrders();
 }
 
@@ -1685,25 +1807,25 @@ function loadAdminUsers() {
     </div>`).join('');
 }
 
-function loadAdminUlasan() {
+function loadAdminUlasan(){
   const list=document.getElementById('admin-ulasan-list');
   const ulasan=[...App.demoData.ulasan].reverse();
   if(!ulasan.length){list.innerHTML='<div class="empty-state"><div class="icon">⭐</div><h3>Belum ada ulasan</h3></div>';return;}
+  const stars=(n,max=5)=>n?('★'.repeat(n)+'☆'.repeat(max-n)):'—';
+  const thumb=(t)=>t===1?'👍':t===-1?'👎':'—';
   list.innerHTML=ulasan.map(u=>`
     <div class="card" style="padding:1rem;margin-bottom:.75rem;">
       <div style="display:flex;justify-content:space-between;margin-bottom:.5rem;">
         <div><div style="font-weight:700;">${u.buyer_name}</div><div style="font-size:.78rem;color:var(--muted);">${u.store_name} · ${timeAgo(u.created_at)}</div></div>
+        <div style="font-size:.75rem;color:var(--muted);">${u.order_number}</div>
       </div>
-      <div style="display:flex;gap:1rem;font-size:.8rem;margin-bottom:.4rem;">
-        <span>👷 Pelayanan: ${'★'.repeat(u.pelayanan)}${'☆'.repeat(5-u.pelayanan)}</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem;font-size:.8rem;margin-bottom:.4rem;">
+        <div>🍽️ Produk: <b>${stars(u.produk)}</b> ${thumb(u.thumb?.produk)}</div>
+        <div>🏪 Penjual: <b>${stars(u.penjual)}</b> ${thumb(u.thumb?.penjual)}</div>
+        ${u.kirim!=null?`<div>🛵 Kirim: <b>${stars(u.kirim)}</b> ${thumb(u.thumb?.kirim)}</div>`:''}
+        <div>📱 Layanan: <b>${stars(u.layanan)}</b> ${thumb(u.thumb?.layanan)}</div>
       </div>
-      <div style="display:flex;gap:1rem;font-size:.8rem;margin-bottom:.4rem;">
-        <span>🍽️ Produk: ${'★'.repeat(u.produk)}${'☆'.repeat(5-u.produk)}</span>
-      </div>
-      <div style="display:flex;gap:1rem;font-size:.8rem;margin-bottom:.4rem;">
-        <span>🏪 Penjual: ${'★'.repeat(u.penjual)}${'☆'.repeat(5-u.penjual)}</span>
-      </div>
-      ${u.komentar?`<div style="font-size:.85rem;font-style:italic;color:var(--text);padding:.5rem;background:#f9fafb;border-radius:6px;">"${u.komentar}"</div>`:''}
+      ${u.komentar?`<div style="font-size:.85rem;font-style:italic;padding:.5rem;background:#f9fafb;border-radius:6px;">"${u.komentar}"</div>`:''}
     </div>`).join('');
 }
 
@@ -1784,10 +1906,160 @@ function saveTambahIuran(){
   toast('Tagihan ditambahkan','success'); closeModal('modal-iuran'); loadAdminIuran();
 }
 
+// ══ FAVORIT ══
+function toggleFavorit(productId, btn) {
+  const idx=App.favorit.indexOf(productId);
+  if(idx===-1){ App.favorit.push(productId); btn.textContent='❤️'; toast('Ditambah ke favorit ❤️','success'); }
+  else { App.favorit.splice(idx,1); btn.textContent='🤍'; toast('Dihapus dari favorit','info'); }
+  saveFavoritLocal();
+}
+function saveFavoritLocal() {
+  try{ localStorage.setItem('kdw_favorit', JSON.stringify(App.favorit)); }catch(e){}
+}
+function loadFavoritLocal() {
+  try{ const f=localStorage.getItem('kdw_favorit'); if(f) App.favorit=JSON.parse(f); }catch(e){}
+}
+function isFavorit(pid){ return App.favorit.includes(pid); }
+
+// Tambah section favorit di buyer home
+function renderFavoritSection() {
+  const favEl=document.getElementById('favorit-section');
+  if(!favEl) return;
+  if(!App.favorit.length){ favEl.innerHTML=''; return; }
+  const items=App.demoData.stores.flatMap(s=>s.products.filter(p=>App.favorit.includes(p.id)).map(p=>({...p,storeName:s.name,storeId:s.id})));
+  if(!items.length){ favEl.innerHTML=''; return; }
+  favEl.innerHTML=`<div class="section-title">❤️ Menu Favorit Saya</div>
+    <div style="display:flex;gap:.6rem;overflow-x:auto;padding-bottom:.5rem;">
+      ${items.map(p=>`
+        <div style="flex-shrink:0;width:120px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;" onclick="openProductDetail('${p.storeId}','${p.id}')">
+          <div style="height:70px;background:linear-gradient(135deg,#dcfce7,#86efac);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;">
+            🍽️
+            <button class="fav-btn" style="position:absolute;top:4px;right:4px;" onclick="event.stopPropagation();toggleFavorit('${p.id}',this)">${isFavorit(p.id)?'❤️':'🤍'}</button>
+          </div>
+          <div style="padding:.5rem;">
+            <div style="font-size:.75rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</div>
+            <div style="font-size:.7rem;color:var(--green-main);font-weight:800;">${fmtRp(p.price)}</div>
+            <button class="btn btn-primary btn-sm" style="width:100%;margin-top:.3rem;font-size:.7rem;padding:.3rem;" onclick="event.stopPropagation();quickAddToCart('${p.storeId}','${p.id}')">+ Pesan</button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ══ NOTIFIKASI PEMBELI ══
+function pushNotif(icon, title, body, orderId='') {
+  App.notifikasi.unshift({id:'n'+Date.now(), icon, title, body, orderId, read:false, time:new Date().toISOString()});
+  updateNotifDot();
+  // Browser notification (jika diizinkan)
+  if(Notification.permission==='granted'){
+    new Notification(`${icon} ${title}`, {body, icon:'/icons/icon-192.png'});
+  }
+}
+function updateNotifDot() {
+  const dot=document.getElementById('notif-dot'); if(!dot) return;
+  const unread=App.notifikasi.filter(n=>!n.read).length;
+  dot.style.display=unread>0?'block':'none';
+}
+function renderNotifList() {
+  const list=document.getElementById('notif-list'); if(!list) return;
+  if(!App.notifikasi.length){ list.innerHTML='<div class="empty-state"><div class="icon">🔔</div><h3>Belum ada notifikasi</h3></div>'; return; }
+  list.innerHTML=App.notifikasi.map(n=>`
+    <div class="notif-item ${n.read?'read':'unread'}" onclick="klikNotif('${n.id}','${n.orderId}')">
+      <div style="display:flex;gap:.6rem;align-items:flex-start;">
+        <span style="font-size:1.5rem;">${n.icon}</span>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:.88rem;">${n.title}</div>
+          <div style="font-size:.8rem;color:var(--muted);">${n.body}</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem;">${timeAgo(n.time)}</div>
+        </div>
+        ${!n.read?'<div style="width:8px;height:8px;background:var(--green-main);border-radius:50%;margin-top:.3rem;"></div>':''}
+      </div>
+    </div>`).join('');
+}
+function klikNotif(notifId, orderId) {
+  const n=App.notifikasi.find(x=>x.id===notifId); if(n) n.read=true;
+  updateNotifDot(); renderNotifList();
+  if(orderId){ closeModal('modal-notif'); showPage('buyer-orders'); }
+}
+function tandaiSemuaBaca() {
+  App.notifikasi.forEach(n=>n.read=true);
+  updateNotifDot(); renderNotifList();
+}
+
+// ══ NOTIFIKASI WA PENJUAL (realtime simulasi) ══
+function kirimNotifWAPenjual(order, store) {
+  const items=(order.order_items||[]).map(i=>`• ${i.product_name} x${i.quantity}`).join('%0A');
+  const del=order.delivery_method==='delivery'?'🛵 Diantar':'🏃 Ambil Sendiri';
+  const pay=PAY_LABEL[order.payment_method]||order.payment_method;
+  const msg=[
+    `🔔 *PESANAN BARU MASUK!*`,
+    `━━━━━━━━━━━━━━━━━━`,
+    `No: *${order.order_number}*`,
+    `Pembeli: ${App.currentUser?.name||'Pembeli'}`,
+    `HP: ${App.currentUser?.phone||'-'}`,
+    ``,
+    `*Pesanan:*`,
+    items,
+    ``,
+    `💳 Bayar: ${pay}`,
+    `${del}`,
+    order.ongkir>0?`🛵 Biaya antar: ${fmtRp(order.ongkir)}`:'',
+    `💰 *Total: ${fmtRp(order.total)}*`,
+    order.buyer_notes?`📝 Catatan: ${order.buyer_notes}`:'',
+    `━━━━━━━━━━━━━━━━━━`,
+    `Balas pesan ini untuk konfirmasi pesanan.`,
+    `_Kantin DW Online 🍽️_`
+  ].filter(Boolean).join('%0A');
+  if(store?.whatsapp){
+    const wa=store.whatsapp.replace(/^0/,'62');
+    window.open(`https://wa.me/${wa}?text=${msg}`,'_blank');
+  }
+}
+
+// Override handleCheckout agar kirim notif WA & push notif pembeli
+const _origCheckout = handleCheckout;
+async function handleCheckout() {
+  if (!App.cart.length) { toast('Keranjang kosong','error'); return; }
+  const subtotal=App.cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const ongkir=App.selectedDelivery==='delivery'?ONGKIR:0;
+  const notes=document.getElementById('order-notes').value;
+  const store=App.demoData.stores.find(s=>s.id===App.cart[0].storeId);
+  const newOrder = {
+    id:'o'+Date.now(),
+    order_number:'ORD-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+Math.floor(Math.random()*9000+1000),
+    status:'pending', total:subtotal+ongkir, ongkir, subtotal,
+    stores:{name:App.cart[0].storeName}, store_wa:App.cart[0].storeWa,
+    order_items:App.cart.map(c=>({product_name:c.name,quantity:c.qty,product_price:c.price})),
+    payment_method:App.selectedPayment, delivery_method:App.selectedDelivery, buyer_notes:notes,
+    created_at:new Date().toISOString(), ulasan:null
+  };
+  App.demoData.orders.unshift(newOrder);
+  App.cart=[]; updateCartBadge();
+  toast('Pesanan berhasil dikirim! 🎉','success');
+  // Push notif ke pembeli
+  pushNotif('📦','Pesanan Diterima',`${newOrder.order_number} sedang menunggu konfirmasi penjual`,newOrder.id);
+  // Simulasi update status (demo) — di produksi: realtime via Supabase
+  setTimeout(()=>{
+    newOrder.status='confirmed';
+    pushNotif('✅','Pesanan Dikonfirmasi',`Pesanan ${newOrder.order_number} telah dikonfirmasi penjual`,newOrder.id);
+  },5000);
+  setTimeout(()=>{
+    newOrder.status='processing';
+    pushNotif('⚙️','Sedang Diproses',`Pesanan ${newOrder.order_number} sedang disiapkan`,newOrder.id);
+  },15000);
+  // Kirim WA ke penjual
+  kirimNotifWAPenjual(newOrder, store);
+  setTimeout(()=>showPage('buyer-orders'),800);
+}
+
 // ══ INIT ══
 document.addEventListener('DOMContentLoaded',()=>{
   ['buyer-orders','buyer-cart','buyer-profile'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
   renderJadwalLibur();
+  loadFavoritLocal();
+  // Minta izin notifikasi browser
+  if('Notification' in window && Notification.permission==='default'){
+    Notification.requestPermission();
+  }
 });
 
 // ══ PWA ══
