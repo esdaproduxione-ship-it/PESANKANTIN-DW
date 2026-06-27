@@ -98,19 +98,17 @@
 <div class="app-container">
 <div id="toast-container" class="toast-container"></div>
 
-<!-- ══ SCREEN AUTH — tanpa role selector & tanpa demo buttons ══ -->
+<!-- ══ SCREEN AUTH ══ -->
 <div id="screen-auth" class="page active">
   <div class="topbar" style="padding:2.5rem 1.5rem 1.5rem;text-align:center;border-radius:0 0 28px 28px;">
-    <div style="font-size:3rem;margin-bottom:.5rem;">🍽️</div>
+    <!-- Logo diklik 5x → buka form daftar (rahasia) -->
+    <div style="font-size:3rem;margin-bottom:.5rem;cursor:default;user-select:none;" id="logo-tap" onclick="handleLogoTap()">🍽️</div>
     <h1 style="font-size:1.8rem;font-weight:900;margin:0 0 .3rem;letter-spacing:-.5px;">Kantin DW Online</h1>
     <p style="margin:0;opacity:.85;font-size:.95rem;">Pesan makanan dari warung langganan Anda</p>
   </div>
   <div style="padding:1.5rem;">
-    <div style="display:flex;gap:0;margin-bottom:1.25rem;background:#e5e7eb;border-radius:10px;padding:3px;">
-      <button class="btn btn-primary" style="flex:1;border-radius:8px;" id="tab-login" onclick="switchAuthTab('login')">Masuk</button>
-      <button class="btn" style="flex:1;border-radius:8px;background:transparent;color:var(--muted);" id="tab-register" onclick="switchAuthTab('register')">Daftar</button>
-    </div>
-    <!-- Login Form -->
+
+    <!-- ── FORM LOGIN (selalu tampil pertama) ── -->
     <div id="form-login">
       <div class="form-group">
         <label class="form-label">📧 Email</label>
@@ -118,17 +116,30 @@
       </div>
       <div class="form-group">
         <label class="form-label">🔒 Kata Sandi</label>
-        <input type="password" id="login-password" class="form-input" placeholder="Masukkan kata sandi" autocomplete="current-password"/>
+        <div style="position:relative;">
+          <input type="password" id="login-password" class="form-input" placeholder="Masukkan kata sandi" autocomplete="current-password" style="padding-right:2.8rem;"/>
+          <span onclick="togglePwd('login-password',this)" style="position:absolute;right:.85rem;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1.1rem;">👁️</span>
+        </div>
       </div>
-      <button class="btn btn-primary btn-full btn-lg" onclick="handleLogin()" style="margin-top:.5rem;">Masuk Sekarang</button>
-      <p style="text-align:center;font-size:.82rem;color:var(--muted);margin:.75rem 0 0;">
-        Belum punya akun? <span style="color:var(--green-main);font-weight:700;cursor:pointer;" onclick="switchAuthTab('register')">Daftar di sini</span>
+      <button class="btn btn-primary btn-full btn-lg" onclick="handleLogin()" id="btn-login" style="margin-top:.5rem;">
+        Masuk
+      </button>
+      <!-- Petunjuk kecil, tidak mencolok -->
+      <p style="text-align:center;font-size:.75rem;color:#d1d5db;margin:1.5rem 0 0;user-select:none;">
+        v1.0 · Kantin DW Online
       </p>
     </div>
-    <!-- Register Form — role dipilih SAAT DAFTAR -->
+
+    <!-- ── FORM DAFTAR (tersembunyi, muncul lewat logo tap 5×) ── -->
     <div id="form-register" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+        <h2 style="font-size:1.1rem;font-weight:800;margin:0;">📋 Pendaftaran Akun</h2>
+        <button class="btn btn-secondary btn-sm" onclick="tutupFormDaftar()">✕ Tutup</button>
+      </div>
+
+      <!-- Pilih Role -->
       <div class="form-group">
-        <label class="form-label" style="text-align:center;display:block;margin-bottom:.75rem;">Daftar sebagai</label>
+        <label class="form-label" style="font-size:.9rem;">Daftar sebagai</label>
         <div style="display:flex;gap:.75rem;">
           <div class="role-btn selected" onclick="selectRegisterRole('buyer')" id="rrole-buyer">
             <div class="icon">🛒</div><div class="label">Pembeli</div>
@@ -137,28 +148,38 @@
             <div class="icon">🏪</div><div class="label">Penjual</div>
           </div>
         </div>
-        <p style="font-size:.75rem;color:var(--muted);text-align:center;margin:.5rem 0 0;">Akun Admin dikelola langsung oleh pengelola Kantin DW</p>
       </div>
+
       <div class="form-group">
         <label class="form-label">👤 Nama Lengkap</label>
-        <input type="text" id="reg-name" class="form-input" placeholder="Nama Anda"/>
+        <input type="text" id="reg-name" class="form-input" placeholder="Nama lengkap" autocomplete="off"/>
       </div>
       <div class="form-group">
         <label class="form-label">📱 Nomor HP / WhatsApp</label>
-        <input type="tel" id="reg-phone" class="form-input" placeholder="08xxxxxxxxxx"/>
+        <input type="tel" id="reg-phone" class="form-input" placeholder="08xxxxxxxxxx" autocomplete="off"/>
       </div>
       <div class="form-group">
         <label class="form-label">📧 Email</label>
-        <input type="email" id="reg-email" class="form-input" placeholder="nama@email.com"/>
+        <input type="email" id="reg-email" class="form-input" placeholder="nama@email.com" autocomplete="off"/>
       </div>
       <div class="form-group">
         <label class="form-label">🔒 Kata Sandi</label>
-        <input type="password" id="reg-password" class="form-input" placeholder="Minimal 8 karakter"/>
+        <div style="position:relative;">
+          <input type="password" id="reg-password" class="form-input" placeholder="Minimal 8 karakter" autocomplete="new-password" style="padding-right:2.8rem;"/>
+          <span onclick="togglePwd('reg-password',this)" style="position:absolute;right:.85rem;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1.1rem;">👁️</span>
+        </div>
+        <div id="pwd-strength" style="height:4px;border-radius:2px;margin-top:.4rem;background:#e5e7eb;overflow:hidden;"><div id="pwd-bar" style="height:100%;width:0;transition:width .3s;border-radius:2px;"></div></div>
+        <div id="pwd-hint" style="font-size:.72rem;color:var(--muted);margin-top:.2rem;"></div>
       </div>
-      <button class="btn btn-primary btn-full btn-lg" onclick="handleRegister()" style="margin-top:.5rem;">Daftar Sekarang</button>
-      <p style="text-align:center;font-size:.82rem;color:var(--muted);margin:.75rem 0 0;">
-        Sudah punya akun? <span style="color:var(--green-main);font-weight:700;cursor:pointer;" onclick="switchAuthTab('login')">Masuk</span>
-      </p>
+
+      <!-- Info setelah daftar -->
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.75rem;margin-bottom:1rem;font-size:.8rem;color:#166534;">
+        ✅ Setelah klik <b>Simpan</b>, form akan kosong otomatis siap untuk pendaftar berikutnya
+      </div>
+
+      <button class="btn btn-primary btn-full btn-lg" onclick="handleRegister()" id="btn-daftar">
+        💾 Simpan &amp; Selesai
+      </button>
     </div>
   </div>
 </div>
@@ -282,22 +303,6 @@
       <div style="color:var(--muted);font-size:.9rem;" id="profile-email">-</div>
       <div style="color:var(--muted);font-size:.9rem;" id="profile-phone">-</div>
       <div style="margin-top:.5rem;"><span class="badge badge-confirmed">Pembeli</span></div>
-    </div>
-    <!-- Kritik & Saran -->
-    <div class="card" style="padding:1.25rem;margin-bottom:1rem;">
-      <div style="font-weight:700;margin-bottom:.75rem;">💬 Kritik &amp; Saran</div>
-      <div class="form-group">
-        <select id="ks-kategori" class="form-input">
-          <option value="pelayanan">Pelayanan</option>
-          <option value="produk">Kualitas Produk</option>
-          <option value="aplikasi">Aplikasi</option>
-          <option value="lainnya">Lainnya</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <textarea id="ks-pesan" class="form-input" rows="3" placeholder="Tulis kritik atau saran Anda..."></textarea>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="kirimKritikSaran()">Kirim</button>
     </div>
     <div class="card" style="overflow:hidden;">
       <div onclick="handleLogout()" style="padding:1rem 1.25rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;color:#dc2626;font-weight:600;">
@@ -802,8 +807,18 @@
 </style>
 
 <script>
-// ══ KONFIGURASI ══
+// ══════════════════════════════════════════════════════════════
+//  KONFIGURASI — ganti SUPABASE_URL & SUPABASE_ANON_KEY
+//  dengan nilai dari dashboard Supabase project Anda
+// ══════════════════════════════════════════════════════════════
+const SUPABASE_URL      = 'https://GANTI_PROJECT_ID.supabase.co';
+const SUPABASE_ANON_KEY = 'GANTI_ANON_KEY';
+
+// Email admin yang ditetapkan — sesuaikan dengan email admin sebenarnya
+const ADMIN_EMAIL = 'admin@kantindw.id';
+
 const ONGKIR = 1000;
+
 const LIBUR_NASIONAL_2025 = [
   '2025-01-01','2025-01-27','2025-01-28','2025-01-29',
   '2025-03-29','2025-03-31','2025-04-18','2025-05-01',
@@ -818,68 +833,52 @@ const LIBUR_NASIONAL_2026 = [
 ];
 const LIBUR_NASIONAL = [...LIBUR_NASIONAL_2025, ...LIBUR_NASIONAL_2026];
 
-// ══ APP STATE ══
-const App = {
-  currentUser: null,
-  registerRole: 'buyer',
-  cart: [],
-  selectedDelivery: 'pickup',
-  selectedPayment: 'cash_pickup',
-  ulasanRating: {produk:0, penjual:0, kirim:0, layanan:0},
-  ulasanThumb:  {produk:0, penjual:0, kirim:0, layanan:0},
-  favorit: [],        // array product id yang difavoritkan pembeli
-  notifikasi: [],     // array notif pesanan pembeli
-  jadwalLibur: [],    // [{date, ket}] libur mandiri penjual
-  kritiksaran: [],    // array kritik saran dari pembeli
-
-  demoData: {
-    categories: [
-      {id:'1',name:'Makanan Berat',icon:'🍚'},
-      {id:'2',name:'Mie & Bakso',icon:'🍜'},
-      {id:'3',name:'Gorengan',icon:'🍟'},
-      {id:'4',name:'Minuman',icon:'🥤'},
-      {id:'5',name:'Dessert',icon:'🍰'},
-    ],
-    stores: [
-      {id:'s1',name:'Warung Bu Sari',description:'Masakan rumahan lezat & higienis',is_open:true,rating:4.8,total_orders:234,whatsapp:'081234567890',qris_url:null,address:'Blok A No.1',jam_buka:'07:00',jam_tutup:'15:00',products:[
-        {id:'p1',name:'Nasi Goreng Spesial',price:15000,status:'active',total_sold:89,rating:4.9,category:'Makanan Berat',stock:-1},
-        {id:'p2',name:'Mie Goreng Telur',price:12000,status:'active',total_sold:67,rating:4.7,category:'Mie & Bakso',stock:-1},
-        {id:'p3',name:'Es Teh Manis',price:5000,status:'active',total_sold:120,rating:4.8,category:'Minuman',stock:-1},
-        {id:'p4',name:'Nasi Putih + Lauk',price:10000,status:'active',total_sold:45,rating:4.6,category:'Makanan Berat',stock:-1},
-      ]},
-      {id:'s2',name:'Warung Pak Joko',description:'Bakso & mie ayam terenak se-kantin',is_open:true,rating:4.6,total_orders:189,whatsapp:'082345678901',qris_url:null,address:'Blok B No.2',jam_buka:'07:30',jam_tutup:'14:30',products:[
-        {id:'p5',name:'Bakso Komplit',price:18000,status:'active',total_sold:102,rating:4.9,category:'Mie & Bakso',stock:-1},
-        {id:'p6',name:'Mie Ayam Pangsit',price:16000,status:'active',total_sold:78,rating:4.7,category:'Mie & Bakso',stock:-1},
-        {id:'p7',name:'Es Jeruk Segar',price:6000,status:'active',total_sold:55,rating:4.5,category:'Minuman',stock:-1},
-      ]},
-      {id:'s3',name:'Snack Corner Ibu Dewi',description:'Aneka gorengan & jajanan segar',is_open:false,rating:4.5,total_orders:98,whatsapp:'083456789012',qris_url:null,address:'Blok C No.1',jam_buka:'08:00',jam_tutup:'14:00',products:[
-        {id:'p8',name:'Gorengan 5pcs',price:8000,status:'active',total_sold:144,rating:4.8,category:'Gorengan',stock:-1},
-        {id:'p9',name:'Pisang Goreng Keju',price:12000,status:'active',total_sold:67,rating:4.6,category:'Dessert',stock:-1},
-      ]},
-    ],
-    orders: [
-      {id:'o1',order_number:'ORD-20240625-0001',status:'completed',total:32000,stores:{name:'Warung Bu Sari'},store_wa:'081234567890',order_items:[{product_name:'Nasi Goreng Spesial',quantity:2,product_price:15000},{product_name:'Es Teh Manis',quantity:1,product_price:5000}],payment_method:'qris',delivery_method:'pickup',ongkir:0,created_at:new Date(Date.now()-86400000).toISOString(),ulasan:null},
-      {id:'o2',order_number:'ORD-20240625-0002',status:'processing',total:18000,stores:{name:'Warung Pak Joko'},store_wa:'082345678901',order_items:[{product_name:'Bakso Komplit',quantity:1,product_price:18000}],payment_method:'cod',delivery_method:'delivery',ongkir:1000,created_at:new Date(Date.now()-3600000).toISOString(),ulasan:null},
-      {id:'o3',order_number:'ORD-20240625-0003',status:'pending',total:24000,stores:{name:'Warung Bu Sari'},store_wa:'081234567890',order_items:[{product_name:'Mie Goreng Telur',quantity:2,product_price:12000}],payment_method:'cash_pickup',delivery_method:'pickup',ongkir:0,created_at:new Date(Date.now()-900000).toISOString(),ulasan:null},
-    ],
-    sellerOrders: [
-      {id:'so1',order_number:'ORD-20240625-0010',status:'pending',total:27000,payment_method:'qris',delivery_method:'pickup',ongkir:0,store_id:'s1',profiles:{full_name:'Budi Santoso',phone:'081298765432'},order_items:[{product_name:'Nasi Goreng Spesial',quantity:1},{product_name:'Es Teh Manis',quantity:2}],buyer_notes:'Pedas sedikit',created_at:new Date(Date.now()-300000).toISOString()},
-      {id:'so2',order_number:'ORD-20240625-0011',status:'confirmed',total:15000,payment_method:'cash_pickup',delivery_method:'pickup',ongkir:0,store_id:'s1',profiles:{full_name:'Siti Rahma',phone:'082187654321'},order_items:[{product_name:'Nasi Putih + Lauk',quantity:1}],buyer_notes:null,created_at:new Date(Date.now()-600000).toISOString()},
-      {id:'so3',order_number:'ORD-20240625-0009',status:'completed',total:25000,payment_method:'qris',delivery_method:'delivery',ongkir:1000,store_id:'s1',profiles:{full_name:'Rudi Hermanto',phone:'083276543210'},order_items:[{product_name:'Mie Goreng Telur',quantity:2}],buyer_notes:null,created_at:new Date(Date.now()-7200000).toISOString()},
-    ],
-    iuran: [
-      {id:'i1',store_id:'s1',store_name:'Warung Bu Sari',jenis:'sewa',periode:'2024-06',jumlah:150000,status:'lunas',bayar_at:'2024-06-05'},
-      {id:'i2',store_id:'s1',store_name:'Warung Bu Sari',jenis:'komisi',periode:'2024-06',jumlah:24000,status:'belum',bayar_at:null},
-      {id:'i3',store_id:'s2',store_name:'Warung Pak Joko',jenis:'sewa',periode:'2024-06',jumlah:150000,status:'belum',bayar_at:null},
-      {id:'i4',store_id:'s3',store_name:'Snack Corner',jenis:'sewa',periode:'2024-06',jumlah:100000,status:'lunas',bayar_at:'2024-06-03'},
-    ],
-    ulasan: [
-      {id:'ul1',order_number:'ORD-20240625-0001',buyer_name:'Budi Santoso',store_name:'Warung Bu Sari',pelayanan:5,produk:5,penjual:4,komentar:'Makanan enak, cepat selesai!',created_at:new Date(Date.now()-86000000).toISOString()},
-    ],
-    kritiksaran: [
-      {id:'ks1',kategori:'pelayanan',pesan:'Semoga lebih cepat ya bu',buyer_name:'Siti Rahma',created_at:new Date(Date.now()-200000).toISOString()},
-    ],
+// ── Inisialisasi Supabase (aktif jika URL sudah diisi) ──────
+let SB = null;
+try {
+  if (!SUPABASE_URL.includes('GANTI') && window.supabase) {
+    SB = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('✅ Supabase terhubung');
+  } else {
+    console.warn('⚠️ Supabase belum dikonfigurasi — mode lokal aktif');
   }
+} catch(e) { console.error('Supabase error:', e); }
+
+// ── Deteksi mode ────────────────────────────────────────────
+const USE_SUPABASE = !!SB;
+
+// ══ APP STATE ══════════════════════════════════════════════
+const App = {
+  currentUser:     null,
+  registerRole:    'buyer',
+  cart:            [],
+  selectedDelivery:'pickup',
+  selectedPayment: 'cash_pickup',
+  ulasanRating:    {produk:0, penjual:0, kirim:0, layanan:0},
+  ulasanThumb:     {produk:0, penjual:0, kirim:0, layanan:0},
+  favorit:         [],   // product id favorit pembeli (localStorage)
+  notifikasi:      [],   // notif pesanan pembeli
+  jadwalLibur:     [],   // [{date, ket}] libur mandiri penjual
+
+  // Data lokal — hanya dipakai jika Supabase belum terhubung
+  // Saat produksi: KOSONG, semua dari Supabase
+  localData: {
+    categories: [
+      {id:'cat1',name:'Makanan Berat',icon:'🍚'},
+      {id:'cat2',name:'Mie & Bakso',icon:'🍜'},
+      {id:'cat3',name:'Gorengan',icon:'🍟'},
+      {id:'cat4',name:'Minuman',icon:'🥤'},
+      {id:'cat5',name:'Dessert',icon:'🍰'},
+    ],
+    stores:       [],   // kosong — penjual daftar sendiri
+    orders:       [],   // kosong — transaksi nyata dari pembeli
+    sellerOrders: [],   // kosong
+    iuran:        [],   // kosong — admin isi setelah penjual aktif
+    ulasan:       [],   // kosong
+  },
+
+  // Getter agar kode lama tetap jalan (demoData → localData)
+  get demoData() { return this.localData; }
 };
 
 // ══ UTILS ══
@@ -959,60 +958,193 @@ function hapusJadwalLibur(date) {
   toast('Jadwal libur dihapus','info');
 }
 
-// ══ AUTH ══
-function selectRegisterRole(role) {
-  App.registerRole = role;
-  ['buyer','seller'].forEach(r => document.getElementById(`rrole-${r}`).classList.toggle('selected', r===role));
-}
+// ══ AUTH ══════════════════════════════════════════════════════
 
-function switchAuthTab(tab) {
-  document.getElementById('form-login').style.display    = tab==='login'    ? 'block':'none';
-  document.getElementById('form-register').style.display = tab==='register' ? 'block':'none';
-  const tl = document.getElementById('tab-login'), tr = document.getElementById('tab-register');
-  if (tab==='login') {
-    tl.className='btn btn-primary'; tl.style='flex:1;border-radius:8px;';
-    tr.className='btn'; tr.style='flex:1;border-radius:8px;background:transparent;color:var(--muted);';
-  } else {
-    tr.className='btn btn-primary'; tr.style='flex:1;border-radius:8px;';
-    tl.className='btn'; tl.style='flex:1;border-radius:8px;background:transparent;color:var(--muted);';
+// ── Logo tap 5× → buka form daftar (rahasia) ──
+let _logoTapCount = 0, _logoTapTimer = null;
+function handleLogoTap() {
+  _logoTapCount++;
+  clearTimeout(_logoTapTimer);
+  _logoTapTimer = setTimeout(() => { _logoTapCount = 0; }, 2000);
+  if (_logoTapCount >= 5) {
+    _logoTapCount = 0;
+    bukaFormDaftar();
   }
 }
 
-function handleLogin() {
-  const email    = document.getElementById('login-email').value.trim();
+function bukaFormDaftar() {
+  resetFormDaftar();
+  document.getElementById('form-login').style.display    = 'none';
+  document.getElementById('form-register').style.display = 'block';
+}
+
+function tutupFormDaftar() {
+  resetFormDaftar();
+  document.getElementById('form-register').style.display = 'none';
+  document.getElementById('form-login').style.display    = 'block';
+  // Bersihkan juga field login
+  document.getElementById('login-email').value    = '';
+  document.getElementById('login-password').value = '';
+}
+
+function resetFormDaftar() {
+  ['reg-name','reg-phone','reg-email','reg-password'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  document.getElementById('pwd-bar').style.width       = '0';
+  document.getElementById('pwd-bar').style.background  = '#e5e7eb';
+  document.getElementById('pwd-hint').textContent       = '';
+  selectRegisterRole('buyer');
+}
+
+function selectRegisterRole(role) {
+  App.registerRole = role;
+  ['buyer','seller'].forEach(r => {
+    document.getElementById(`rrole-${r}`)?.classList.toggle('selected', r === role);
+  });
+}
+
+// ── Toggle tampil/sembunyikan password ──
+function togglePwd(inputId, iconEl) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  if (inp.type === 'password') { inp.type = 'text'; iconEl.textContent = '🙈'; }
+  else                         { inp.type = 'password'; iconEl.textContent = '👁️'; }
+}
+
+// ── Kekuatan password (real-time) ──
+document.addEventListener('DOMContentLoaded', () => {
+  const pwdEl = document.getElementById('reg-password');
+  if (pwdEl) pwdEl.addEventListener('input', () => checkPwdStrength(pwdEl.value));
+});
+function checkPwdStrength(pwd) {
+  const bar  = document.getElementById('pwd-bar');
+  const hint = document.getElementById('pwd-hint');
+  if (!bar || !hint) return;
+  let score = 0;
+  if (pwd.length >= 8)  score++;
+  if (/[A-Z]/.test(pwd)) score++;
+  if (/[0-9]/.test(pwd)) score++;
+  if (/[^A-Za-z0-9]/.test(pwd)) score++;
+  const map = [
+    {w:'0',  c:'#e5e7eb', t:''},
+    {w:'25%', c:'#ef4444', t:'Lemah'},
+    {w:'50%', c:'#f97316', t:'Cukup'},
+    {w:'75%', c:'#eab308', t:'Kuat'},
+    {w:'100%',c:'#16a34a', t:'Sangat Kuat'},
+  ];
+  const s = map[score] || map[0];
+  bar.style.width = s.w; bar.style.background = s.c; hint.textContent = s.t;
+}
+
+// ── LOGIN ──────────────────────────────────────────────────────
+async function handleLogin() {
+  const email    = document.getElementById('login-email').value.trim().toLowerCase();
   const password = document.getElementById('login-password').value;
-  if (!email||!password) { toast('Email dan kata sandi harus diisi','error'); return; }
-  let role='buyer', name='Budi Pembeli', phone='081234567890';
-  if (email.includes('admin'))  { role='admin';  name='Admin DW'; }
-  else if (email.includes('penjual')||email.includes('seller')||email.includes('warung')) { role='seller'; name='Warung Bu Sari'; }
-  App.currentUser = {id:'u-'+Date.now(), name, email, phone, role};
-  loginSuccess(role);
+  if (!email || !password) { toast('Email dan kata sandi harus diisi', 'error'); return; }
+
+  setBtnLoading('btn-login', true, 'Masuk...');
+
+  if (USE_SUPABASE) {
+    // ── Supabase Auth ──
+    const { data, error } = await SB.auth.signInWithPassword({ email, password });
+    if (error) {
+      setBtnLoading('btn-login', false, 'Masuk');
+      toast(petaErrorAuth(error.message), 'error'); return;
+    }
+    // Ambil profil dari tabel profiles
+    const { data: prof } = await SB.from('profiles').select('*').eq('id', data.user.id).single();
+    const role = prof?.role || 'buyer';
+    App.currentUser = {
+      id:    data.user.id,
+      name:  prof?.full_name || email.split('@')[0],
+      email: data.user.email,
+      phone: prof?.phone || '',
+      role,
+      store_id: prof?.store_id || null,
+    };
+    setBtnLoading('btn-login', false, 'Masuk');
+    loginSuccess(role);
+
+  } else {
+    // ── Mode lokal (Supabase belum dikonfigurasi) ──
+    await delay(600);
+    let role = 'buyer', name = email.split('@')[0], phone = '';
+    if (email === ADMIN_EMAIL || email.includes('admin')) { role = 'admin'; name = 'Admin DW'; }
+    else if (email.includes('penjual') || email.includes('seller') || email.includes('warung')) {
+      role = 'seller'; name = 'Penjual';
+    }
+    App.currentUser = { id: 'u-' + Date.now(), name, email, phone, role };
+    setBtnLoading('btn-login', false, 'Masuk');
+    loginSuccess(role);
+  }
 }
 
-function handleRegister() {
-  const name=document.getElementById('reg-name').value.trim();
-  const phone=document.getElementById('reg-phone').value.trim();
-  const email=document.getElementById('reg-email').value.trim();
-  const password=document.getElementById('reg-password').value;
-  const role=App.registerRole;
-  if (!name||!email||!password) { toast('Semua kolom harus diisi','error'); return; }
-  if (password.length<8) { toast('Kata sandi minimal 8 karakter','error'); return; }
-  if (phone&&!/^08\d{8,12}$/.test(phone)) { toast('Format nomor HP tidak valid','error'); return; }
-  App.currentUser = {id:'u-'+Date.now(), name, email, phone, role};
-  toast(`Akun ${role==='seller'?'Penjual':'Pembeli'} berhasil dibuat! 🎉`,'success');
-  setTimeout(()=>loginSuccess(role), 800);
+// ── DAFTAR ────────────────────────────────────────────────────
+async function handleRegister() {
+  const name     = document.getElementById('reg-name').value.trim();
+  const phone    = document.getElementById('reg-phone').value.trim();
+  const email    = document.getElementById('reg-email').value.trim().toLowerCase();
+  const password = document.getElementById('reg-password').value;
+  const role     = App.registerRole;
+
+  // Validasi
+  if (!name || !email || !password) { toast('Nama, email, dan kata sandi wajib diisi', 'error'); return; }
+  if (password.length < 8)          { toast('Kata sandi minimal 8 karakter', 'error'); return; }
+  if (phone && !/^08\d{8,12}$/.test(phone)) { toast('Format nomor HP tidak valid (contoh: 08123456789)', 'error'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast('Format email tidak valid', 'error'); return; }
+
+  setBtnLoading('btn-daftar', true, 'Menyimpan...');
+
+  if (USE_SUPABASE) {
+    // ── Supabase SignUp ──
+    const { data, error } = await SB.auth.signUp({
+      email, password,
+      options: { data: { full_name: name, phone, role } }
+    });
+    if (error) {
+      setBtnLoading('btn-daftar', false, '💾 Simpan & Selesai');
+      toast(petaErrorAuth(error.message), 'error'); return;
+    }
+    // Upsert ke tabel profiles
+    await SB.from('profiles').upsert({
+      id:        data.user.id,
+      full_name: name,
+      phone,
+      role,
+      email,
+      created_at: new Date().toISOString(),
+    });
+
+    setBtnLoading('btn-daftar', false, '💾 Simpan & Selesai');
+    toast(`✅ Akun ${role==='seller'?'Penjual':'Pembeli'} "${name}" berhasil didaftarkan!`, 'success');
+
+  } else {
+    // ── Mode lokal ──
+    await delay(800);
+    setBtnLoading('btn-daftar', false, '💾 Simpan & Selesai');
+    toast(`✅ Akun "${name}" (${role==='seller'?'Penjual':'Pembeli'}) berhasil disimpan!`, 'success');
+  }
+
+  // Reset form → siap untuk pendaftar berikutnya, TIDAK masuk ke aplikasi
+  await delay(1500);
+  resetFormDaftar();
+  toast('Form telah direset — siap untuk pendaftar berikutnya', 'info');
 }
 
+// ── LOGIN SUCCESS ─────────────────────────────────────────────
 function loginSuccess(role) {
+  // Pastikan form daftar tersembunyi & form login terlihat untuk berikutnya
+  tutupFormDaftar();
   document.getElementById('screen-auth').classList.remove('active');
-  if (role==='buyer') {
+  if (role === 'buyer') {
     document.getElementById('screen-buyer').classList.add('active');
-    document.getElementById('buyer-name').textContent = App.currentUser.name;
+    document.getElementById('buyer-name').textContent    = App.currentUser.name;
     document.getElementById('profile-name').textContent  = App.currentUser.name;
     document.getElementById('profile-email').textContent = App.currentUser.email;
-    document.getElementById('profile-phone').textContent = App.currentUser.phone;
+    document.getElementById('profile-phone').textContent = App.currentUser.phone || '-';
     loadBuyerHome();
-  } else if (role==='seller') {
+  } else if (role === 'seller') {
     document.getElementById('screen-seller').classList.add('active');
     document.getElementById('seller-store-name').textContent = App.currentUser.name;
     loadSellerDashboard();
@@ -1022,11 +1154,40 @@ function loginSuccess(role) {
   }
 }
 
-function handleLogout() {
-  App.currentUser=null; App.cart=[];
-  ['screen-buyer','screen-seller','screen-admin'].forEach(s=>document.getElementById(s).classList.remove('active'));
+async function handleLogout() {
+  if (USE_SUPABASE) await SB.auth.signOut();
+  App.currentUser = null; App.cart = []; App.notifikasi = [];
+  ['screen-buyer','screen-seller','screen-admin'].forEach(s =>
+    document.getElementById(s).classList.remove('active')
+  );
   document.getElementById('screen-auth').classList.add('active');
-  toast('Berhasil keluar','info');
+  toast('Berhasil keluar', 'info');
+}
+
+// ── Helpers ────────────────────────────────────────────────────
+function setBtnLoading(id, loading, label) {
+  const btn = document.getElementById(id); if (!btn) return;
+  btn.disabled = loading;
+  btn.textContent = loading ? `⏳ ${label}` : label;
+}
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+function petaErrorAuth(msg) {
+  const map = {
+    'Invalid login credentials'         : 'Email atau kata sandi salah',
+    'Email not confirmed'               : 'Email belum diverifikasi, cek inbox Anda',
+    'User already registered'           : 'Email ini sudah terdaftar',
+    'Password should be at least 6'     : 'Kata sandi minimal 8 karakter',
+    'Database error creating new user'  : 'Gagal daftar — lihat panduan perbaikan Supabase di bawah',
+    'signup is disabled'                : 'Pendaftaran nonaktif di Supabase dashboard',
+  };
+  for (const [k,v] of Object.entries(map)) { if (msg.includes(k)) return v; }
+  return msg;
+}
+
+// ── switchAuthTab (legacy, aman dihapus tapi dijaga agar tidak error) ──
+function switchAuthTab(tab) {
+  if (tab === 'register') bukaFormDaftar();
+  else tutupFormDaftar();
 }
 
 // ══ NAVIGATION ══
