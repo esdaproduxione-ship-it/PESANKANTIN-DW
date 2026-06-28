@@ -100,449 +100,538 @@
 
 <!-- ══ SCREEN AUTH ══ -->
 <!-- ══ SCREEN AUTH ══ -->
+<!-- ══ SCREEN AUTH ══ -->
 <div id="screen-auth" class="page active">
 
-  <!-- HERO -->
-  <div class="auth-hero">
-    <div class="food-float" style="top:7%;left:5%;animation-delay:0s;font-size:1.8rem;">🍚</div>
-    <div class="food-float" style="top:13%;right:7%;animation-delay:.7s;font-size:1.5rem;">🥤</div>
-    <div class="food-float" style="top:40%;left:2%;animation-delay:1.3s;font-size:1.4rem;">🍜</div>
-    <div class="food-float" style="top:54%;right:4%;animation-delay:.4s;font-size:1.6rem;">🍟</div>
-    <div class="food-float" style="bottom:20%;left:9%;animation-delay:1s;font-size:1.3rem;">🧃</div>
-    <div class="food-float" style="bottom:8%;right:11%;animation-delay:1.6s;font-size:1.5rem;">🍰</div>
+  <!-- ── HERO ── -->
+  <div class="ah-hero">
+    <div class="ah-food" style="top:6%;left:4%;font-size:2rem;animation-delay:0s;">🍚</div>
+    <div class="ah-food" style="top:14%;right:6%;font-size:1.6rem;animation-delay:.8s;">🥤</div>
+    <div class="ah-food" style="top:42%;left:1%;font-size:1.5rem;animation-delay:1.4s;">🍜</div>
+    <div class="ah-food" style="top:58%;right:3%;font-size:1.7rem;animation-delay:.3s;">🍟</div>
+    <div class="ah-food" style="bottom:18%;left:8%;font-size:1.4rem;animation-delay:1s;">🧃</div>
+    <div class="ah-food" style="bottom:7%;right:10%;font-size:1.6rem;animation-delay:1.7s;">🍰</div>
+    <div class="ah-food" style="top:30%;left:46%;font-size:1.2rem;animation-delay:.5s;opacity:.3;">☕</div>
 
-    <!-- Logo: ketuk 7× → panel admin -->
-    <div class="auth-logo" id="logo-tap" onclick="handleLogoTap()">
-      <span style="font-size:2.4rem;line-height:1;">🍽️</span>
-    </div>
-    <h1 class="auth-title">Kantin DW<br/><span style="color:#86efac;">Online</span></h1>
-    <p class="auth-sub">Pesan makanan dari warung langganan<br/>Dharma Wanita — cepat &amp; mudah</p>
-    <div class="auth-stats">
-      <div class="auth-stat"><div class="auth-stat-num">🏪</div><div class="auth-stat-lbl">Multi Warung</div></div>
-      <div class="auth-stat-div"></div>
-      <div class="auth-stat"><div class="auth-stat-num">📱</div><div class="auth-stat-lbl">QRIS &amp; COD</div></div>
-      <div class="auth-stat-div"></div>
-      <div class="auth-stat"><div class="auth-stat-num">🛵</div><div class="auth-stat-lbl">Jasa Antar</div></div>
+    <div class="ah-logo" id="logo-tap" onclick="handleLogoTap()">🍽️</div>
+    <div class="ah-brand">Kantin DW <span style="color:#86efac;">Online</span></div>
+    <div class="ah-tagline">Pesan makanan & minuman warung<br/>Dharma Wanita — cepat, mudah, aman</div>
+
+    <div class="ah-chips">
+      <span class="ah-chip">🏪 Multi Warung</span>
+      <span class="ah-chip">📱 QRIS & COD</span>
+      <span class="ah-chip">🛵 Jasa Antar</span>
     </div>
   </div>
 
-  <!-- CARD FORM -->
-  <div class="auth-card">
+  <!-- ── CARD ── -->
+  <div class="ah-card">
 
-    <!-- ── Tab Masuk / Daftar (terbuka untuk semua) ── -->
-    <div class="auth-tabs" id="auth-tabs-bar">
-      <button class="auth-tab active" id="tab-btn-login"    onclick="switchTab('login')">Masuk</button>
-      <button class="auth-tab"        id="tab-btn-register" onclick="switchTab('register')">Daftar</button>
+    <!-- Tab bar -->
+    <div class="ah-tabs" id="ah-tabs-bar">
+      <button class="ah-tab active" id="ahtab-masuk"  onclick="ahSwitchTab('masuk')">Masuk</button>
+      <button class="ah-tab"        id="ahtab-daftar" onclick="ahSwitchTab('daftar')">Daftar</button>
     </div>
 
-    <!-- ════ PANEL: MASUK ════ -->
-    <div id="panel-login">
-      <p style="font-size:.85rem;color:var(--muted);margin:0 0 1rem;">Sudah punya akun? Masuk sekarang.</p>
-
-      <div class="auth-field">
-        <label class="auth-lbl">Email</label>
-        <div class="auth-inp-wrap">
-          <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-          <input type="email" id="login-email" class="auth-inp" placeholder="nama@email.com"
-            autocomplete="email" inputmode="email"
-            onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()"/>
-        </div>
+    <!-- ══════════ PANEL MASUK ══════════ -->
+    <div id="ah-panel-masuk">
+      <!-- Social/Quick login -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem;">
+        <button class="ah-social-btn" onclick="quickLoginWA()">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L.054 23.445a.75.75 0 00.922.922l5.594-1.478A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.712 9.712 0 01-4.95-1.354l-.355-.211-3.677.971.984-3.594-.231-.369A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+          Masuk via WA
+        </button>
+        <button class="ah-social-btn" onclick="ahSwitchMethod('email')">
+          <svg viewBox="0 0 20 20" fill="#6b7280" width="18" height="18"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+          Masuk via Email
+        </button>
       </div>
 
-      <div class="auth-field">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.38rem;">
-          <label class="auth-lbl" style="margin:0;">Kata Sandi</label>
-          <span onclick="bukaLupaPassword()" style="font-size:.75rem;color:#16a34a;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:2px;">Lupa?</span>
-        </div>
-        <div class="auth-inp-wrap">
-          <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-          <input type="password" id="login-password" class="auth-inp" placeholder="Kata sandi Anda"
-            autocomplete="current-password" style="padding-right:3rem;"
-            onkeydown="if(event.key==='Enter')handleLogin()"/>
-          <button class="auth-eye" onclick="togglePwd('login-password',this)" tabindex="-1">
-            <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
-          </button>
-        </div>
+      <div class="ah-divider"><span>atau masuk dengan</span></div>
+
+      <!-- Method switcher login -->
+      <div class="ah-method-tabs" id="login-method-tabs">
+        <button class="ah-method-tab active" id="lmt-wa"    onclick="ahSwitchMethod('wa')">📱 WhatsApp</button>
+        <button class="ah-method-tab"        id="lmt-email" onclick="ahSwitchMethod('email')">📧 Email</button>
       </div>
 
-      <button class="auth-btn-main" onclick="handleLogin()" id="btn-login" style="margin-top:.3rem;">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fill-rule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-        Masuk Sekarang
-      </button>
-
-      <div style="display:flex;align-items:center;gap:.75rem;margin:1rem 0;">
-        <div style="flex:1;height:1px;background:#e5e7eb;"></div>
-        <span style="font-size:.73rem;color:#9ca3af;white-space:nowrap;">belum punya akun?</span>
-        <div style="flex:1;height:1px;background:#e5e7eb;"></div>
+      <!-- Login via WA (OTP) -->
+      <div id="login-wa-panel">
+        <div class="ah-field">
+          <label class="ah-lbl">Nomor WhatsApp</label>
+          <div class="ah-inp-wrap">
+            <div class="ah-prefix">+62</div>
+            <input type="tel" id="login-wa" class="ah-inp ah-inp-prefix" placeholder="8xxxxxxxxxx"
+              inputmode="numeric" autocomplete="tel"
+              oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+              onkeydown="if(event.key==='Enter')kirimOTPLogin()"/>
+          </div>
+          <div id="login-wa-hint" class="ah-hint"></div>
+        </div>
+        <div id="login-otp-panel" style="display:none;">
+          <div class="ah-otp-info">
+            <span style="font-size:1.1rem;">💬</span>
+            <span id="login-otp-info-txt">Kode OTP dikirim ke WA Anda</span>
+          </div>
+          <div class="ah-field">
+            <label class="ah-lbl">Kode OTP (6 digit)</label>
+            <div class="ah-otp-boxes" id="otp-boxes-login">
+              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
+              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
+              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
+              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
+              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
+              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
+            </div>
+          </div>
+          <button class="ah-btn-main" onclick="verifikasiOTPLogin()" id="btn-verif-login">✅ Verifikasi &amp; Masuk</button>
+          <p style="text-align:center;font-size:.78rem;color:var(--muted);margin:.6rem 0 0;">
+            Tidak dapat kode? <span id="resend-timer-login" style="color:#16a34a;font-weight:600;cursor:pointer;" onclick="kirimOTPLogin()">Kirim ulang</span>
+          </p>
+        </div>
+        <button class="ah-btn-main" onclick="kirimOTPLogin()" id="btn-otp-login" style="margin-top:.3rem;">
+          📲 Kirim Kode OTP
+        </button>
       </div>
 
-      <button class="auth-btn-daftar" onclick="switchTab('register')">
-        ✨ Daftar Gratis Sekarang
-      </button>
+      <!-- Login via Email -->
+      <div id="login-email-panel" style="display:none;">
+        <div class="ah-field">
+          <label class="ah-lbl">Email</label>
+          <div class="ah-inp-wrap">
+            <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+            <input type="email" id="login-email" class="ah-inp" placeholder="nama@email.com"
+              autocomplete="email" inputmode="email"
+              onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()"/>
+          </div>
+        </div>
+        <div class="ah-field">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;">
+            <label class="ah-lbl" style="margin:0;">Kata Sandi</label>
+            <span onclick="bukaLupaPassword()" style="font-size:.75rem;color:#16a34a;font-weight:600;cursor:pointer;">Lupa?</span>
+          </div>
+          <div class="ah-inp-wrap">
+            <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+            <input type="password" id="login-password" class="ah-inp" placeholder="Kata sandi"
+              autocomplete="current-password" style="padding-right:3rem;"
+              onkeydown="if(event.key==='Enter')handleLogin()"/>
+            <button class="ah-eye" onclick="togglePwd('login-password',this)" tabindex="-1">👁️</button>
+          </div>
+        </div>
+        <button class="ah-btn-main" onclick="handleLogin()" id="btn-login">Masuk Sekarang</button>
+      </div>
 
-      <p style="text-align:center;margin:.9rem 0 0;font-size:.7rem;color:#e5e7eb;user-select:none;">
-        v1.0 · Kantin DW Online © 2025
-      </p>
-    </div><!-- /panel-login -->
+      <div class="ah-divider" style="margin:.9rem 0;"><span>belum punya akun?</span></div>
+      <button class="ah-btn-outline" onclick="ahSwitchTab('daftar')">✨ Daftar Gratis — Pembeli / Penjual</button>
+      <p style="text-align:center;margin:.9rem 0 0;font-size:.68rem;color:#d1d5db;user-select:none;">v1.0 · Kantin DW Online © 2025</p>
+    </div><!-- /panel masuk -->
 
-    <!-- ════ PANEL: DAFTAR (terbuka untuk semua) ════ -->
-    <div id="panel-register" style="display:none;">
+
+    <!-- ══════════ PANEL DAFTAR ══════════ -->
+    <div id="ah-panel-daftar" style="display:none;">
 
       <!-- Step bar -->
-      <div style="display:flex;gap:.35rem;margin-bottom:.9rem;" id="step-indicator">
-        <div class="step-bar active" id="step-dot-1"></div>
-        <div class="step-bar" id="step-dot-2"></div>
-        <div class="step-bar" id="step-dot-3"></div>
+      <div class="ah-stepbar">
+        <div class="ah-step-item active" id="dstep-1">
+          <div class="ah-step-circle" id="dsc-1">1</div>
+          <div class="ah-step-lbl">Peran</div>
+        </div>
+        <div class="ah-step-line" id="dsl-1"></div>
+        <div class="ah-step-item" id="dstep-2">
+          <div class="ah-step-circle" id="dsc-2">2</div>
+          <div class="ah-step-lbl">Identitas</div>
+        </div>
+        <div class="ah-step-line" id="dsl-2"></div>
+        <div class="ah-step-item" id="dstep-3">
+          <div class="ah-step-circle" id="dsc-3">3</div>
+          <div class="ah-step-lbl">Akun</div>
+        </div>
       </div>
 
       <!-- STEP 1: Pilih Peran -->
       <div id="reg-step-1">
-        <div style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.15rem;">Saya ingin...</div>
-        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.85rem;">Pilih peran Anda di Kantin DW</div>
-
+        <p style="font-size:.82rem;color:var(--muted);margin:.1rem 0 .9rem;">Pilih peran Anda di Kantin DW</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem;">
-          <div class="role-card-new selected-role" id="rc-buyer" onclick="selectRegisterRole('buyer')">
-            <div style="font-size:2.2rem;margin-bottom:.45rem;">🛒</div>
-            <div class="role-card-title">Pembeli</div>
-            <div class="role-card-sub">Pesan makanan &amp; minuman dari warung</div>
+          <div class="ah-role selected-role" id="rc-buyer" onclick="selectRegisterRole('buyer')">
+            <div class="ah-role-icon">🛒</div>
+            <div class="ah-role-title">Pembeli</div>
+            <div class="ah-role-sub">Pesan makanan &amp; minuman dari warung</div>
+            <div class="ah-role-check" id="rcheck-buyer">✓</div>
           </div>
-          <div class="role-card-new" id="rc-seller" onclick="selectRegisterRole('seller')">
-            <div style="font-size:2.2rem;margin-bottom:.45rem;">🏪</div>
-            <div class="role-card-title">Penjual</div>
-            <div class="role-card-sub">Buka warung &amp; terima pesanan online</div>
+          <div class="ah-role" id="rc-seller" onclick="selectRegisterRole('seller')">
+            <div class="ah-role-icon">🏪</div>
+            <div class="ah-role-title">Penjual</div>
+            <div class="ah-role-sub">Buka lapak &amp; terima pesanan online</div>
+            <div class="ah-role-check" id="rcheck-seller" style="display:none;">✓</div>
           </div>
         </div>
-
-        <button class="auth-btn-main" onclick="regNextStep(2)">
-          Lanjut
-          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-        </button>
+        <!-- Info keamanan penjual -->
+        <div id="seller-security-info" style="display:none;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:.75rem;margin-bottom:.85rem;font-size:.78rem;color:#92400e;line-height:1.5;">
+          🔐 <strong>Akun Penjual</strong> dilindungi verifikasi 2 langkah (nomor WA + email). Data transaksi dan keuangan hanya bisa diakses setelah login.
+        </div>
+        <button class="ah-btn-main" onclick="regNextStep(2)">Lanjut →</button>
         <p style="text-align:center;font-size:.78rem;color:var(--muted);margin:.75rem 0 0;">
-          Sudah punya akun?
-          <span onclick="switchTab('login')" style="color:#16a34a;font-weight:700;cursor:pointer;">Masuk di sini</span>
+          Sudah punya akun? <span onclick="ahSwitchTab('masuk')" style="color:#16a34a;font-weight:700;cursor:pointer;">Masuk</span>
         </p>
       </div>
 
-      <!-- STEP 2: Data Diri -->
+      <!-- STEP 2: Identitas -->
       <div id="reg-step-2" style="display:none;">
-        <div style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.15rem;">Data Diri</div>
-        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.85rem;">Langkah 2 dari 3</div>
-
-        <div class="auth-field">
-          <label class="auth-lbl">Nama Lengkap <span style="color:#ef4444;">*</span></label>
-          <div class="auth-inp-wrap">
-            <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
-            <input type="text" id="reg-name" class="auth-inp" placeholder="Nama lengkap sesuai KTP"
-              autocomplete="name"
+        <p style="font-size:.82rem;color:var(--muted);margin:.1rem 0 .85rem;">Langkah 2 dari 3 · Data diri</p>
+        <div class="ah-field">
+          <label class="ah-lbl">Nama Lengkap <span style="color:#ef4444;">*</span></label>
+          <div class="ah-inp-wrap">
+            <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+            <input type="text" id="reg-name" class="ah-inp" placeholder="Nama sesuai KTP" autocomplete="name"
               onkeydown="if(event.key==='Enter')document.getElementById('reg-phone').focus()"/>
           </div>
         </div>
-
-        <div class="auth-field">
-          <label class="auth-lbl">Nomor HP / WhatsApp <span style="color:#ef4444;">*</span></label>
-          <div class="auth-inp-wrap">
-            <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-            <input type="tel" id="reg-phone" class="auth-inp" placeholder="08xxxxxxxxxx"
-              autocomplete="tel" inputmode="numeric"
-              oninput="validatePhoneInput(this)"
+        <div class="ah-field">
+          <label class="ah-lbl">Nomor WhatsApp <span style="color:#ef4444;">*</span></label>
+          <div class="ah-inp-wrap">
+            <div class="ah-prefix">+62</div>
+            <input type="tel" id="reg-phone" class="ah-inp ah-inp-prefix" placeholder="8xxxxxxxxxx"
+              inputmode="numeric" autocomplete="tel"
+              oninput="this.value=this.value.replace(/[^0-9]/g,'');validateRegPhone(this)"
               onkeydown="if(event.key==='Enter')regNextStep(3)"/>
           </div>
-          <div id="phone-hint" class="field-hint"></div>
+          <div id="phone-hint" class="ah-hint"></div>
         </div>
-
         <div style="display:flex;gap:.6rem;">
-          <button class="auth-btn-sec" onclick="regNextStep(1)" style="flex:1;">← Kembali</button>
-          <button class="auth-btn-main" onclick="regNextStep(3)" style="flex:2;">
-            Lanjut
-            <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-          </button>
+          <button class="ah-btn-sec" onclick="regNextStep(1)" style="flex:1;">← Kembali</button>
+          <button class="ah-btn-main" onclick="regNextStep(3)" style="flex:2;">Lanjut →</button>
         </div>
       </div>
 
-      <!-- STEP 3: Email & Password -->
+      <!-- STEP 3: Akun (metode: WA OTP atau Email) -->
       <div id="reg-step-3" style="display:none;">
-        <div style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.15rem;">Email &amp; Kata Sandi</div>
-        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.85rem;">Langkah 3 dari 3 · Untuk login ke aplikasi</div>
+        <p style="font-size:.82rem;color:var(--muted);margin:.1rem 0 .85rem;">Langkah 3 dari 3 · Pilih metode akun</p>
 
-        <div class="auth-field">
-          <label class="auth-lbl">Email <span style="color:#ef4444;">*</span></label>
-          <div class="auth-inp-wrap">
-            <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-            <input type="email" id="reg-email" class="auth-inp" placeholder="nama@email.com"
-              autocomplete="email" inputmode="email"
-              oninput="validateEmailInput(this)"
-              onkeydown="if(event.key==='Enter')document.getElementById('reg-password').focus()"/>
-          </div>
-          <div id="email-hint" class="field-hint"></div>
+        <!-- Toggle metode -->
+        <div class="ah-method-tabs" style="margin-bottom:.9rem;" id="reg-method-tabs">
+          <button class="ah-method-tab active" id="rmt-wa"    onclick="ahSwitchRegMethod('wa')">📱 via WhatsApp</button>
+          <button class="ah-method-tab"        id="rmt-email" onclick="ahSwitchRegMethod('email')">📧 via Email</button>
         </div>
 
-        <div class="auth-field">
-          <label class="auth-lbl">Kata Sandi <span style="color:#ef4444;">*</span></label>
-          <div class="auth-inp-wrap">
-            <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-            <input type="password" id="reg-password" class="auth-inp" placeholder="Min. 8 karakter"
-              autocomplete="new-password" style="padding-right:3rem;"
-              oninput="checkPwdStrength(this.value)"/>
-            <button class="auth-eye" onclick="togglePwd('reg-password',this)" tabindex="-1">
-              <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
-            </button>
+        <!-- Metode WA -->
+        <div id="reg-wa-panel">
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.75rem;margin-bottom:.85rem;font-size:.8rem;color:#166534;line-height:1.5;">
+            📲 Kode OTP akan dikirim ke <strong id="reg-wa-preview">nomor WA Anda</strong>. Tidak perlu membuat kata sandi!
           </div>
-          <div class="pwd-bar-wrap"><div id="pwd-bar" class="pwd-bar-fill"></div></div>
-          <div id="pwd-hint" class="field-hint"></div>
+          <div id="reg-otp-panel-wa" style="display:none;">
+            <div class="ah-otp-info">
+              <span style="font-size:1.1rem;">💬</span>
+              <span id="reg-otp-info-txt">Masukkan kode OTP dari WhatsApp</span>
+            </div>
+            <div class="ah-field">
+              <label class="ah-lbl">Kode OTP (6 digit)</label>
+              <div class="ah-otp-boxes" id="otp-boxes-reg">
+                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
+                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
+                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
+                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
+                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
+                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
+              </div>
+            </div>
+            <button class="ah-btn-main" onclick="verifikasiOTPReg()" id="btn-verif-reg">🎉 Verifikasi &amp; Buat Akun</button>
+            <p style="text-align:center;font-size:.78rem;color:var(--muted);margin:.6rem 0 0;">
+              Tidak dapat kode? <span style="color:#16a34a;font-weight:600;cursor:pointer;" onclick="kirimOTPReg()">Kirim ulang</span>
+            </p>
+          </div>
+          <button class="ah-btn-main" onclick="kirimOTPReg()" id="btn-otp-reg">📲 Kirim Kode OTP ke WA</button>
         </div>
 
-        <div class="auth-field">
-          <label class="auth-lbl">Ulangi Kata Sandi <span style="color:#ef4444;">*</span></label>
-          <div class="auth-inp-wrap">
-            <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-            <input type="password" id="reg-password2" class="auth-inp" placeholder="Tulis ulang kata sandi"
-              autocomplete="new-password" style="padding-right:3rem;"
-              oninput="checkPwdMatch()"
-              onkeydown="if(event.key==='Enter')handleRegister()"/>
-            <button class="auth-eye" onclick="togglePwd('reg-password2',this)" tabindex="-1">
-              <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
-            </button>
+        <!-- Metode Email -->
+        <div id="reg-email-panel" style="display:none;">
+          <div class="ah-field">
+            <label class="ah-lbl">Email <span style="color:#ef4444;">*</span></label>
+            <div class="ah-inp-wrap">
+              <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+              <input type="email" id="reg-email" class="ah-inp" placeholder="nama@email.com"
+                autocomplete="email" inputmode="email"
+                oninput="validateRegEmail(this)"
+                onkeydown="if(event.key==='Enter')document.getElementById('reg-password').focus()"/>
+            </div>
+            <div id="email-hint" class="ah-hint"></div>
           </div>
-          <div id="pwd2-hint" class="field-hint"></div>
+          <div class="ah-field">
+            <label class="ah-lbl">Kata Sandi <span style="color:#ef4444;">*</span></label>
+            <div class="ah-inp-wrap">
+              <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+              <input type="password" id="reg-password" class="ah-inp" placeholder="Min. 8 karakter"
+                autocomplete="new-password" style="padding-right:3rem;"
+                oninput="checkPwdStrength(this.value)"/>
+              <button class="ah-eye" onclick="togglePwd('reg-password',this)" tabindex="-1">👁️</button>
+            </div>
+            <div class="ah-pwdbar"><div id="pwd-bar" class="ah-pwdfill"></div></div>
+            <div id="pwd-hint" class="ah-hint"></div>
+          </div>
+          <div class="ah-field">
+            <label class="ah-lbl">Ulangi Kata Sandi <span style="color:#ef4444;">*</span></label>
+            <div class="ah-inp-wrap">
+              <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+              <input type="password" id="reg-password2" class="ah-inp" placeholder="Ulangi kata sandi"
+                autocomplete="new-password" style="padding-right:3rem;"
+                oninput="checkPwdMatch()"
+                onkeydown="if(event.key==='Enter')handleRegister()"/>
+              <button class="ah-eye" onclick="togglePwd('reg-password2',this)" tabindex="-1">👁️</button>
+            </div>
+            <div id="pwd2-hint" class="ah-hint"></div>
+          </div>
+          <!-- Syarat -->
+          <label style="display:flex;align-items:flex-start;gap:.5rem;font-size:.76rem;color:var(--muted);cursor:pointer;margin-bottom:.85rem;line-height:1.5;">
+            <input type="checkbox" id="reg-setuju" style="margin-top:2px;accent-color:#16a34a;width:15px;height:15px;flex-shrink:0;"/>
+            <span>Saya menyatakan data benar dan menyetujui syarat penggunaan Kantin DW Online</span>
+          </label>
+          <button class="ah-btn-main" onclick="handleRegister()" id="btn-daftar">🎉 Buat Akun Sekarang</button>
         </div>
 
-        <!-- Persetujuan -->
-        <label style="display:flex;align-items:flex-start;gap:.5rem;font-size:.78rem;color:var(--muted);cursor:pointer;margin-bottom:.9rem;line-height:1.5;">
-          <input type="checkbox" id="reg-setuju" style="margin-top:2px;accent-color:#16a34a;width:15px;height:15px;flex-shrink:0;"/>
-          <span>Saya menyatakan data yang diisi adalah benar dan menyetujui penggunaan data untuk keperluan Kantin DW Online</span>
-        </label>
-
-        <div style="display:flex;gap:.6rem;">
-          <button class="auth-btn-sec" onclick="regNextStep(2)" style="flex:1;">← Kembali</button>
-          <button class="auth-btn-main" onclick="handleRegister()" id="btn-daftar" style="flex:2;">
-            🎉 Buat Akun
-          </button>
+        <div style="margin-top:.65rem;">
+          <button class="ah-btn-sec" onclick="regNextStep(2)" style="width:100%;">← Kembali</button>
         </div>
       </div>
 
       <!-- STEP 4: Sukses -->
-      <div id="reg-step-4" style="display:none;text-align:center;padding:1.25rem 0 .5rem;">
-        <div style="width:86px;height:86px;background:linear-gradient(135deg,#16a34a,#4ade80);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.4rem;margin:0 auto 1rem;box-shadow:0 8px 28px rgba(22,163,74,.3);">🎉</div>
-        <div style="font-size:1.15rem;font-weight:900;color:var(--text);margin-bottom:.45rem;" id="reg-success-title">Selamat, Akun Siap!</div>
-        <div style="font-size:.85rem;color:var(--muted);line-height:1.7;margin-bottom:1.4rem;" id="reg-success-body">Akun berhasil dibuat. Silakan masuk.</div>
-        <button class="auth-btn-main" onclick="langsung_login_setelah_daftar()" style="margin-bottom:.6rem;">
-          🚀 Masuk Sekarang
-        </button>
-        <button class="auth-btn-sec" style="width:100%;" onclick="selesaiDaftar()">
-          + Daftar Akun Lain
-        </button>
+      <div id="reg-step-4" style="display:none;text-align:center;padding:1.5rem 0 .5rem;">
+        <div class="ah-success-icon">🎉</div>
+        <div style="font-size:1.15rem;font-weight:900;color:var(--text);margin-bottom:.4rem;" id="reg-success-title">Akun Siap!</div>
+        <div style="font-size:.84rem;color:var(--muted);line-height:1.7;margin-bottom:1.4rem;" id="reg-success-body">Akun berhasil dibuat. Silakan masuk.</div>
+        <button class="ah-btn-main" onclick="langsung_login_setelah_daftar()" style="margin-bottom:.6rem;">🚀 Masuk Sekarang</button>
+        <button class="ah-btn-sec" style="width:100%;" onclick="selesaiDaftar()">+ Daftar Akun Lain</button>
       </div>
 
-    </div><!-- /panel-register -->
+    </div><!-- /panel daftar -->
 
-    <!-- ════ PANEL: ADMIN (tersembunyi — logo tap 7×) ════ -->
-    <div id="panel-admin-login" style="display:none;">
+
+    <!-- ════ PANEL ADMIN (logo tap 7×) ════ -->
+    <div id="ah-panel-admin" style="display:none;">
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;">
-        <button onclick="switchTab('login')" class="auth-back-btn">
-          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/></svg>
-        </button>
+        <button onclick="ahSwitchTab('masuk')" class="ah-back-btn">←</button>
         <div>
           <div style="font-size:.95rem;font-weight:800;color:var(--text);">🔐 Panel Administrator</div>
-          <div style="font-size:.72rem;color:var(--muted);">Akses terbatas · Khusus pengelola</div>
+          <div style="font-size:.72rem;color:var(--muted);">Akses terbatas · Hanya pengelola</div>
         </div>
       </div>
-
-      <div class="auth-field">
-        <label class="auth-lbl">Email Admin</label>
-        <div class="auth-inp-wrap">
-          <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-          <input type="email" id="admin-email" class="auth-inp" placeholder="admin@kantindw.id"
-            autocomplete="email"
+      <div class="ah-field">
+        <label class="ah-lbl">Email Admin</label>
+        <div class="ah-inp-wrap">
+          <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+          <input type="email" id="admin-email" class="ah-inp" placeholder="admin@kantindw.id" autocomplete="email"
             onkeydown="if(event.key==='Enter')document.getElementById('admin-password').focus()"/>
         </div>
       </div>
-
-      <div class="auth-field">
-        <label class="auth-lbl">Kata Sandi</label>
-        <div class="auth-inp-wrap">
-          <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-          <input type="password" id="admin-password" class="auth-inp" placeholder="Kata sandi admin"
+      <div class="ah-field">
+        <label class="ah-lbl">Kata Sandi</label>
+        <div class="ah-inp-wrap">
+          <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+          <input type="password" id="admin-password" class="ah-inp" placeholder="Kata sandi admin"
             style="padding-right:3rem;"
             onkeydown="if(event.key==='Enter')handleAdminLogin()"/>
-          <button class="auth-eye" onclick="togglePwd('admin-password',this)" tabindex="-1">
-            <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
-          </button>
+          <button class="ah-eye" onclick="togglePwd('admin-password',this)" tabindex="-1">👁️</button>
         </div>
       </div>
-
-      <button class="auth-btn-main" onclick="handleAdminLogin()" id="btn-admin-login"
+      <button class="ah-btn-main" onclick="handleAdminLogin()" id="btn-admin-login"
         style="background:linear-gradient(135deg,#1e3a5f,#1e40af);box-shadow:0 4px 18px rgba(30,64,175,.3);">
         🔐 Masuk sebagai Admin
       </button>
-    </div><!-- /panel-admin-login -->
+    </div><!-- /panel admin -->
 
-  </div><!-- /auth-card -->
+  </div><!-- /ah-card -->
 </div>
 
 <style>
-/* ══ AUTH ══ */
+/* ══ AUTH STYLES ══ */
 #screen-auth { min-height:100dvh; display:flex; flex-direction:column; background:#fff; }
 
-.auth-hero {
+.ah-hero {
   background:linear-gradient(145deg,#052e16 0%,#14532d 40%,#166534 70%,#15803d 100%);
-  padding:2.5rem 1.5rem 2.25rem;
+  padding:2.25rem 1.5rem 2rem;
   display:flex; flex-direction:column; align-items:center; text-align:center;
   position:relative; overflow:hidden; flex-shrink:0;
 }
-.auth-hero::before {
+.ah-hero::before {
   content:''; position:absolute; inset:0;
   background:radial-gradient(ellipse at 20% 50%,rgba(255,255,255,.06) 0%,transparent 60%),
              radial-gradient(ellipse at 80% 20%,rgba(255,255,255,.04) 0%,transparent 50%);
 }
-.food-float {
-  position:absolute; animation:floatFood 4s ease-in-out infinite;
-  pointer-events:none; opacity:.5; filter:drop-shadow(0 2px 6px rgba(0,0,0,.25)); z-index:1;
+.ah-food {
+  position:absolute; animation:floatAH 4s ease-in-out infinite;
+  pointer-events:none; opacity:.45; filter:drop-shadow(0 2px 6px rgba(0,0,0,.3)); z-index:1;
 }
-@keyframes floatFood {
-  0%,100% { transform:translateY(0) rotate(-4deg) scale(1); }
-  50%      { transform:translateY(-12px) rotate(4deg) scale(1.05); }
+@keyframes floatAH {
+  0%,100% { transform:translateY(0) rotate(-4deg); }
+  50%      { transform:translateY(-12px) rotate(4deg); }
 }
-.auth-logo {
-  width:80px; height:80px;
+.ah-logo {
+  width:76px; height:76px; font-size:2.2rem;
   background:rgba(255,255,255,.13); backdrop-filter:blur(12px);
-  border:1.5px solid rgba(255,255,255,.25); border-radius:22px;
+  border:1.5px solid rgba(255,255,255,.25); border-radius:20px;
   display:flex; align-items:center; justify-content:center;
-  margin-bottom:1rem; cursor:default; user-select:none;
-  box-shadow:0 8px 32px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.2);
-  position:relative; z-index:2; transition:transform .15s;
+  margin-bottom:.9rem; cursor:default; user-select:none;
+  box-shadow:0 8px 32px rgba(0,0,0,.2); position:relative; z-index:2;
+  transition:transform .15s;
 }
-.auth-logo:active { transform:scale(.95); }
-.auth-title {
-  font-size:1.9rem; font-weight:900; color:#fff;
-  margin:0 0 .4rem; line-height:1.15; letter-spacing:-.5px;
-  text-shadow:0 2px 12px rgba(0,0,0,.2); position:relative; z-index:2;
+.ah-logo:active { transform:scale(.93); }
+.ah-brand {
+  font-size:1.85rem; font-weight:900; color:#fff;
+  letter-spacing:-.5px; line-height:1.15;
+  text-shadow:0 2px 12px rgba(0,0,0,.2); position:relative; z-index:2; margin-bottom:.4rem;
 }
-.auth-sub {
-  font-size:.87rem; color:rgba(255,255,255,.75);
-  margin:0; line-height:1.6; position:relative; z-index:2;
+.ah-tagline {
+  font-size:.86rem; color:rgba(255,255,255,.75);
+  line-height:1.6; position:relative; z-index:2;
 }
-.auth-stats {
-  display:flex; align-items:center; margin-top:1.2rem;
-  background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.16);
-  border-radius:14px; padding:.62rem 1rem; position:relative; z-index:2;
+.ah-chips { display:flex; gap:.45rem; margin-top:1.1rem; flex-wrap:wrap; justify-content:center; position:relative; z-index:2; }
+.ah-chip  {
+  background:rgba(255,255,255,.1); color:rgba(255,255,255,.9);
+  border:1px solid rgba(255,255,255,.18); border-radius:99px;
+  padding:.25rem .75rem; font-size:.68rem; font-weight:600;
 }
-.auth-stat { text-align:center; flex:1; }
-.auth-stat-num { font-size:1.25rem; }
-.auth-stat-lbl { font-size:.63rem; color:rgba(255,255,255,.7); font-weight:600; margin-top:.1rem; }
-.auth-stat-div { width:1px; height:28px; background:rgba(255,255,255,.2); margin:0 .2rem; }
 
-.auth-card {
+.ah-card {
   background:#fff; border-radius:22px 22px 0 0;
-  padding:1.4rem 1.4rem 3rem; flex:1;
+  padding:1.35rem 1.35rem 3rem; flex:1;
   box-shadow:0 -6px 30px rgba(0,0,0,.08); overflow-y:auto;
 }
 
 /* Tabs */
-.auth-tabs {
-  display:flex; background:#f3f4f6; border-radius:12px;
-  padding:3px; margin-bottom:1.1rem; gap:3px;
+.ah-tabs { display:flex; background:#f3f4f6; border-radius:12px; padding:3px; margin-bottom:1rem; gap:3px; }
+.ah-tab  { flex:1; padding:.56rem; border:none; border-radius:10px; font-weight:700; font-size:.9rem; cursor:pointer; transition:all .2s; background:transparent; color:#6b7280; }
+.ah-tab.active { background:#fff; color:#16a34a; box-shadow:0 1px 6px rgba(0,0,0,.1); }
+
+/* Social buttons */
+.ah-social-btn {
+  display:flex; align-items:center; justify-content:center; gap:.4rem;
+  padding:.68rem .5rem; border:1.5px solid #e5e7eb; border-radius:11px;
+  background:#fff; font-size:.82rem; font-weight:600; color:#374151; cursor:pointer;
+  transition:all .15s;
 }
-.auth-tab {
-  flex:1; padding:.58rem; border:none; border-radius:10px;
-  font-weight:700; font-size:.9rem; cursor:pointer;
-  transition:all .2s; background:transparent; color:#6b7280;
+.ah-social-btn:hover { background:#f9fafb; border-color:#d1d5db; }
+.ah-social-btn:active { transform:scale(.97); }
+
+/* Method tabs */
+.ah-method-tabs { display:flex; gap:.4rem; }
+.ah-method-tab  {
+  flex:1; padding:.48rem .5rem; border:1.5px solid #e5e7eb; border-radius:9px;
+  background:#fff; font-size:.8rem; font-weight:600; color:#6b7280; cursor:pointer;
+  transition:all .15s; text-align:center;
 }
-.auth-tab.active {
-  background:#fff; color:#16a34a;
-  box-shadow:0 1px 6px rgba(0,0,0,.1);
-}
+.ah-method-tab.active { border-color:#16a34a; background:#f0fdf4; color:#16a34a; }
+
+/* Divider */
+.ah-divider { display:flex; align-items:center; gap:.6rem; margin:.8rem 0; }
+.ah-divider::before,.ah-divider::after { content:''; flex:1; height:1px; background:#e5e7eb; }
+.ah-divider span { font-size:.72rem; color:#9ca3af; white-space:nowrap; }
 
 /* Fields */
-.auth-field { margin-bottom:.82rem; }
-.auth-lbl {
-  display:block; font-size:.75rem; font-weight:700;
-  color:#374151; text-transform:uppercase; letter-spacing:.06em; margin-bottom:.36rem;
-}
-.auth-inp-wrap { position:relative; display:flex; align-items:center; }
-.auth-ico {
-  position:absolute; left:.88rem; width:17px; height:17px;
-  color:#9ca3af; pointer-events:none; flex-shrink:0;
-}
-.auth-inp {
-  width:100%; padding:.78rem .9rem .78rem 2.55rem;
-  border-radius:12px; border:1.5px solid #e5e7eb;
-  background:#f9fafb; font-size:.96rem; color:#111827;
+.ah-field { margin-bottom:.8rem; }
+.ah-lbl   { display:block; font-size:.73rem; font-weight:700; color:#374151; text-transform:uppercase; letter-spacing:.06em; margin-bottom:.34rem; }
+.ah-inp-wrap { position:relative; display:flex; align-items:center; }
+.ah-ico  { position:absolute; left:.85rem; width:16px; height:16px; color:#9ca3af; pointer-events:none; flex-shrink:0; }
+.ah-prefix { background:#f3f4f6; border:1.5px solid #e5e7eb; border-right:none; border-radius:11px 0 0 11px; padding:.77rem .7rem; font-size:.88rem; font-weight:600; color:#374151; flex-shrink:0; }
+.ah-inp  {
+  width:100%; padding:.77rem .9rem .77rem 2.5rem;
+  border-radius:11px; border:1.5px solid #e5e7eb;
+  background:#f9fafb; font-size:.95rem; color:#111827;
   outline:none; transition:all .2s; -webkit-appearance:none;
 }
-.auth-inp:focus { border-color:#16a34a; background:#fff; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
-.auth-inp::placeholder { color:#9ca3af; }
-.auth-eye {
-  position:absolute; right:.75rem; background:none; border:none;
-  color:#9ca3af; cursor:pointer; padding:.25rem;
-  display:flex; align-items:center; transition:color .15s;
-}
-.auth-eye:hover { color:#16a34a; }
+.ah-inp-prefix { border-radius:0 11px 11px 0 !important; padding-left:.85rem !important; }
+.ah-inp:focus  { border-color:#16a34a; background:#fff; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
+.ah-inp::placeholder { color:#9ca3af; }
+.ah-eye { position:absolute; right:.7rem; background:none; border:none; color:#9ca3af; cursor:pointer; padding:.25rem; font-size:1rem; transition:color .15s; }
+.ah-eye:hover { color:#16a34a; }
+.ah-hint { font-size:.71rem; margin-top:.26rem; min-height:.85rem; }
 
-/* Main CTA button */
-.auth-btn-main {
+/* OTP boxes */
+.ah-otp-info { display:flex; align-items:center; gap:.5rem; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:9px; padding:.6rem .8rem; margin-bottom:.75rem; font-size:.8rem; color:#166534; }
+.ah-otp-boxes { display:flex; gap:.4rem; margin:.4rem 0 .85rem; }
+.ah-otp-box   {
+  flex:1; text-align:center; font-size:1.3rem; font-weight:800; color:#111827;
+  padding:.55rem .2rem; border-radius:10px; border:2px solid #e5e7eb;
+  background:#f9fafb; outline:none; transition:all .2s; max-width:46px;
+}
+.ah-otp-box:focus { border-color:#16a34a; background:#fff; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
+
+/* Buttons */
+.ah-btn-main {
   width:100%; display:flex; align-items:center; justify-content:center; gap:.45rem;
-  padding:.86rem 1.2rem;
+  padding:.84rem 1.2rem;
   background:linear-gradient(135deg,#16a34a,#15803d);
-  color:#fff; font-weight:700; font-size:.97rem;
+  color:#fff; font-weight:700; font-size:.96rem;
   border:none; border-radius:13px; cursor:pointer;
-  box-shadow:0 4px 18px rgba(22,163,74,.28);
-  transition:all .18s; letter-spacing:.01em;
+  box-shadow:0 4px 18px rgba(22,163,74,.28); transition:all .18s;
 }
-.auth-btn-main:hover  { filter:brightness(1.07); transform:translateY(-1px); }
-.auth-btn-main:active { transform:scale(.98); }
-.auth-btn-main:disabled { opacity:.6; cursor:not-allowed; transform:none; }
-
-/* Daftar outline button */
-.auth-btn-daftar {
-  width:100%; display:flex; align-items:center; justify-content:center;
-  padding:.82rem 1.2rem;
-  background:#fff; color:#16a34a; font-weight:700; font-size:.97rem;
-  border:2px solid #16a34a; border-radius:13px; cursor:pointer;
-  transition:all .18s;
+.ah-btn-main:hover   { filter:brightness(1.07); transform:translateY(-1px); }
+.ah-btn-main:active  { transform:scale(.98); }
+.ah-btn-main:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+.ah-btn-outline {
+  width:100%; padding:.82rem; background:#fff; color:#16a34a;
+  border:2px solid #16a34a; border-radius:13px; font-weight:700; font-size:.95rem; cursor:pointer; transition:all .18s;
 }
-.auth-btn-daftar:hover { background:#f0fdf4; }
-
-/* Secondary button */
-.auth-btn-sec {
+.ah-btn-outline:hover { background:#f0fdf4; }
+.ah-btn-sec   {
   display:flex; align-items:center; justify-content:center;
-  padding:.78rem 1rem; background:#f3f4f6; color:#374151;
-  font-weight:600; font-size:.92rem;
-  border:1.5px solid #e5e7eb; border-radius:13px; cursor:pointer; transition:all .15s;
+  padding:.76rem 1rem; background:#f3f4f6; color:#374151;
+  font-weight:600; font-size:.9rem; border:1.5px solid #e5e7eb; border-radius:12px; cursor:pointer; transition:all .15s;
 }
-.auth-btn-sec:hover { background:#e5e7eb; }
-.auth-back-btn {
-  width:34px; height:34px; border-radius:9px; background:#f3f4f6;
-  border:1.5px solid #e5e7eb; display:flex; align-items:center; justify-content:center;
-  cursor:pointer; color:#374151; flex-shrink:0; transition:background .15s;
+.ah-btn-sec:hover { background:#e5e7eb; }
+.ah-back-btn  {
+  width:34px; height:34px; border-radius:9px; background:#f3f4f6; border:1.5px solid #e5e7eb;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; color:#374151; font-size:1rem; flex-shrink:0;
 }
-.auth-back-btn:hover { background:#e5e7eb; }
 
 /* Step bar */
-.step-bar { flex:1; height:4px; border-radius:2px; background:#e5e7eb; transition:background .3s; }
-.step-bar.active { background:#16a34a; }
+.ah-stepbar { display:flex; align-items:center; margin-bottom:1rem; }
+.ah-step-item { display:flex; flex-direction:column; align-items:center; gap:.25rem; }
+.ah-step-circle {
+  width:28px; height:28px; border-radius:50%;
+  background:#e5e7eb; color:#9ca3af; font-weight:800; font-size:.8rem;
+  display:flex; align-items:center; justify-content:center; transition:all .3s;
+}
+.ah-step-item.active   .ah-step-circle { background:#16a34a; color:#fff; }
+.ah-step-item.done     .ah-step-circle { background:#dcfce7; color:#16a34a; }
+.ah-step-lbl { font-size:.63rem; font-weight:600; color:#9ca3af; transition:color .3s; }
+.ah-step-item.active .ah-step-lbl { color:#16a34a; }
+.ah-step-line { flex:1; height:2px; background:#e5e7eb; margin:0 .3rem; padding-bottom:1.2rem; transition:background .3s; }
+.ah-step-line.done { background:#16a34a; }
 
 /* Role cards */
-.role-card-new {
+.ah-role {
   border:2px solid #e5e7eb; border-radius:14px; padding:1rem .7rem;
-  text-align:center; cursor:pointer; transition:all .18s; background:#f9fafb; user-select:none;
+  text-align:center; cursor:pointer; transition:all .18s; background:#f9fafb;
+  user-select:none; position:relative;
 }
-.role-card-new:active { transform:scale(.97); }
-.role-card-new.selected-role { border-color:#16a34a; background:#f0fdf4; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
-.role-card-title { font-weight:800; font-size:.93rem; color:#111827; margin-bottom:.2rem; }
-.role-card-sub   { font-size:.68rem; color:#6b7280; line-height:1.4; }
+.ah-role:active { transform:scale(.97); }
+.ah-role.selected-role { border-color:#16a34a; background:#f0fdf4; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
+.ah-role-icon  { font-size:2.1rem; margin-bottom:.4rem; }
+.ah-role-title { font-weight:800; font-size:.92rem; color:#111827; margin-bottom:.18rem; }
+.ah-role-sub   { font-size:.67rem; color:#6b7280; line-height:1.4; }
+.ah-role-check {
+  position:absolute; top:6px; right:8px;
+  background:#16a34a; color:#fff; border-radius:50%;
+  width:18px; height:18px; font-size:.7rem; font-weight:900;
+  display:flex; align-items:center; justify-content:center;
+}
 
-/* Password */
-.pwd-bar-wrap { height:5px; border-radius:3px; background:#e5e7eb; overflow:hidden; margin-top:.4rem; }
-.pwd-bar-fill { height:100%; width:0; border-radius:3px; transition:width .35s,background .35s; }
+/* Password bar */
+.ah-pwdbar  { height:5px; border-radius:3px; background:#e5e7eb; overflow:hidden; margin-top:.4rem; }
+.ah-pwdfill { height:100%; width:0; border-radius:3px; transition:width .35s,background .35s; }
 
-.field-hint { font-size:.72rem; margin-top:.28rem; min-height:.9rem; }
+/* Success */
+.ah-success-icon {
+  width:84px; height:84px;
+  background:linear-gradient(135deg,#16a34a,#4ade80);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:2.3rem; margin:0 auto 1rem; box-shadow:0 8px 28px rgba(22,163,74,.3);
+}
 
-/* Desktop layout */
+/* Desktop */
 @media (min-width:768px) {
   #screen-auth { flex-direction:row; }
-  .auth-hero { width:42%; min-height:100dvh; justify-content:center; padding:3rem 2rem; border-radius:0; }
-  .auth-card {
-    flex:1; border-radius:0; padding:2.25rem 2.5rem 3rem;
+  .ah-hero { width:40%; min-height:100dvh; justify-content:center; padding:3rem 2rem; border-radius:0; }
+  .ah-card {
+    flex:1; border-radius:0; padding:2rem 2.5rem 3rem;
     display:flex; flex-direction:column; justify-content:center;
     box-shadow:none; border-left:1px solid #f3f4f6; max-width:460px; overflow-y:auto;
   }
@@ -2833,6 +2922,585 @@ async function handleCheckout() {
   setTimeout(()=>showPage('buyer-orders'),800);
 }
 
+// ══ AUTH — NAVIGASI ════════════════════════════════════════════
+let _regMethod = 'wa'; // 'wa' | 'email'
+let _loginMethod = 'wa';
+let _otpSent = false;
+let _demoOTP = '123456'; // hanya untuk mode lokal tanpa Supabase
+
+// Tab Masuk / Daftar
+function ahSwitchTab(tab) {
+  const panels = {
+    masuk:  'ah-panel-masuk',
+    daftar: 'ah-panel-daftar',
+    admin:  'ah-panel-admin',
+  };
+  Object.entries(panels).forEach(([k,id]) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = k === tab ? 'block' : 'none';
+  });
+  const tabBar = document.getElementById('ah-tabs-bar');
+  if (tabBar) tabBar.style.display = tab === 'admin' ? 'none' : 'flex';
+  document.getElementById('ahtab-masuk')?.classList.toggle('active',  tab === 'masuk');
+  document.getElementById('ahtab-daftar')?.classList.toggle('active', tab === 'daftar');
+  if (tab === 'daftar') { resetFormDaftar(); regNextStep(1); }
+}
+
+// Legacy compat
+function switchTab(t)      { ahSwitchTab(t === 'login' ? 'masuk' : t === 'register' ? 'daftar' : t); }
+function switchAuthTab(t)  { ahSwitchTab(t === 'register' ? 'daftar' : 'masuk'); }
+function bukaFormDaftar()  { ahSwitchTab('daftar'); }
+function tutupFormDaftar() { ahSwitchTab('masuk'); resetFormDaftar(); }
+
+// Metode login: WA / Email
+function ahSwitchMethod(m) {
+  _loginMethod = m;
+  document.getElementById('login-wa-panel')?.style.setProperty('display',    m==='wa'    ? 'block' : 'none');
+  document.getElementById('login-email-panel')?.style.setProperty('display', m==='email' ? 'block' : 'none');
+  document.getElementById('lmt-wa')?.classList.toggle('active',    m==='wa');
+  document.getElementById('lmt-email')?.classList.toggle('active', m==='email');
+}
+
+// Metode registrasi: WA / Email
+function ahSwitchRegMethod(m) {
+  _regMethod = m;
+  document.getElementById('reg-wa-panel')?.style.setProperty('display',    m==='wa'    ? 'block' : 'none');
+  document.getElementById('reg-email-panel')?.style.setProperty('display', m==='email' ? 'block' : 'none');
+  document.getElementById('rmt-wa')?.classList.toggle('active',    m==='wa');
+  document.getElementById('rmt-email')?.classList.toggle('active', m==='email');
+}
+
+// Logo tap 7× → panel admin
+let _logoTapCount = 0, _logoTapTimer = null;
+function handleLogoTap() {
+  _logoTapCount++;
+  clearTimeout(_logoTapTimer);
+  _logoTapTimer = setTimeout(() => { _logoTapCount = 0; }, 2500);
+  if (_logoTapCount >= 7) {
+    _logoTapCount = 0;
+    ahSwitchTab('admin');
+    toast('🔐 Panel Administrator', 'info');
+  }
+}
+
+// ══ STEP REGISTER ══════════════════════════════════════════════
+let _regCurrentStep = 1;
+
+function regNextStep(step) {
+  if (step > _regCurrentStep) {
+    if (_regCurrentStep === 2 && !validasiStep2()) return;
+    if (_regCurrentStep === 3 && _regMethod === 'email' && !validasiStep3()) return;
+  }
+  _regCurrentStep = step;
+  [1,2,3,4].forEach(s => {
+    const el = document.getElementById(`reg-step-${s}`);
+    if (el) el.style.display = s === step ? 'block' : 'none';
+  });
+  // Update stepbar
+  [1,2,3].forEach(s => {
+    const circle = document.getElementById(`dsc-${s}`);
+    const item   = document.getElementById(`dstep-${s}`);
+    const line   = document.getElementById(`dsl-${s}`);
+    if (!circle || !item) return;
+    item.classList.toggle('active', s === step);
+    item.classList.toggle('done',   s < step);
+    if (circle) circle.textContent = s < step ? '✓' : String(s);
+    if (line)   line.classList.toggle('done', s < step);
+  });
+  // Preview nomor WA di step 3
+  if (step === 3) {
+    const phone = document.getElementById('reg-phone')?.value || '';
+    const preview = phone ? `+62${phone}` : 'nomor WA Anda';
+    const el = document.getElementById('reg-wa-preview');
+    if (el) el.textContent = preview;
+  }
+}
+
+function selectRegisterRole(role) {
+  App.registerRole = role;
+  ['buyer','seller'].forEach(r => {
+    const card  = document.getElementById(`rc-${r}`);
+    const check = document.getElementById(`rcheck-${r}`);
+    if (card)  card.classList.toggle('selected-role', r === role);
+    if (check) check.style.display = r === role ? 'flex' : 'none';
+  });
+  // Tampil info keamanan khusus penjual
+  const info = document.getElementById('seller-security-info');
+  if (info) info.style.display = role === 'seller' ? 'block' : 'none';
+}
+
+function resetFormDaftar() {
+  ['reg-name','reg-phone','reg-email','reg-password','reg-password2'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  const bar = document.getElementById('pwd-bar');
+  if (bar) { bar.style.width = '0'; bar.style.background = '#e5e7eb'; }
+  ['pwd-hint','pwd2-hint','phone-hint','email-hint'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.textContent = '';
+  });
+  document.getElementById('reg-setuju') && (document.getElementById('reg-setuju').checked = false);
+  // Reset OTP panels
+  ['reg-otp-panel-wa'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.style.display = 'none';
+  });
+  const btnOtp = document.getElementById('btn-otp-reg');
+  if (btnOtp) btnOtp.style.display = 'flex';
+  clearOTPBoxes('otp-boxes-reg');
+  clearOTPBoxes('otp-boxes-login');
+  _otpSent = false;
+  selectRegisterRole('buyer');
+  ahSwitchRegMethod('wa');
+}
+
+function selesaiDaftar() { resetFormDaftar(); ahSwitchTab('daftar'); }
+
+function langsung_login_setelah_daftar() {
+  const email = document.getElementById('reg-email')?.value || '';
+  ahSwitchTab('masuk');
+  ahSwitchMethod('email');
+  if (email) {
+    const el = document.getElementById('login-email');
+    if (el) { el.value = email; document.getElementById('login-password')?.focus(); }
+  }
+}
+
+// ══ VALIDASI ═══════════════════════════════════════════════════
+function validasiStep2() {
+  const name  = document.getElementById('reg-name')?.value.trim() || '';
+  const phone = document.getElementById('reg-phone')?.value.trim() || '';
+  if (!name)  { toast('Nama lengkap harus diisi', 'error'); document.getElementById('reg-name')?.focus(); return false; }
+  if (!phone || !/^8\d{8,12}$/.test(phone)) {
+    toast('Nomor WA tidak valid (contoh: 8123456789)', 'error');
+    document.getElementById('reg-phone')?.focus(); return false;
+  }
+  return true;
+}
+
+function validasiStep3() {
+  const email = document.getElementById('reg-email')?.value.trim() || '';
+  const pwd   = document.getElementById('reg-password')?.value || '';
+  const pwd2  = document.getElementById('reg-password2')?.value || '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    toast('Format email tidak valid', 'error'); return false;
+  }
+  if (pwd.length < 8) { toast('Kata sandi minimal 8 karakter', 'error'); return false; }
+  if (pwd !== pwd2)   { toast('Kata sandi tidak cocok', 'error'); return false; }
+  if (!document.getElementById('reg-setuju')?.checked) {
+    toast('Centang persetujuan terlebih dahulu', 'error'); return false;
+  }
+  return true;
+}
+
+function validateRegPhone(inp) {
+  const hint = document.getElementById('phone-hint'); if(!hint) return;
+  const v = inp.value.trim();
+  if (!v) { hint.textContent=''; return; }
+  const ok = /^8\d{8,12}$/.test(v);
+  hint.textContent = ok ? '✅ Nomor valid' : '⚠️ Mulai dari 8... (tanpa 0 dan +62)';
+  hint.style.color  = ok ? '#16a34a' : '#f97316';
+}
+
+function validateRegEmail(inp) {
+  const hint = document.getElementById('email-hint'); if(!hint) return;
+  const v = inp.value.trim();
+  if (!v) { hint.textContent=''; return; }
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  hint.textContent = ok ? '✅ Email valid' : '⚠️ Format tidak valid';
+  hint.style.color  = ok ? '#16a34a' : '#f97316';
+}
+
+// ── Legacy wrappers ──────────────────────────────────────────
+function validatePhoneInput(inp) { validateRegPhone(inp); }
+function validateEmailInput(inp) { validateRegEmail(inp); }
+
+// ══ OTP BOXES ══════════════════════════════════════════════════
+function otpNext(inp, groupId) {
+  inp.value = inp.value.replace(/[^0-9]/g, '');
+  if (inp.value.length === 1) {
+    const boxes = document.getElementById(groupId)?.querySelectorAll('.ah-otp-box');
+    if (!boxes) return;
+    const arr = Array.from(boxes);
+    const idx = arr.indexOf(inp);
+    if (idx < arr.length - 1) arr[idx + 1].focus();
+    // Auto-verify jika semua terisi
+    const code = arr.map(b => b.value).join('');
+    if (code.length === 6) {
+      if (groupId === 'otp-boxes-login') verifikasiOTPLogin();
+      else verifikasiOTPReg();
+    }
+  }
+}
+
+function otpBack(e, inp) {
+  if (e.key === 'Backspace' && !inp.value) {
+    const boxes = inp.closest('.ah-otp-boxes')?.querySelectorAll('.ah-otp-box');
+    if (!boxes) return;
+    const arr = Array.from(boxes);
+    const idx = arr.indexOf(inp);
+    if (idx > 0) arr[idx - 1].focus();
+  }
+}
+
+function getOTPCode(groupId) {
+  const boxes = document.getElementById(groupId)?.querySelectorAll('.ah-otp-box');
+  return boxes ? Array.from(boxes).map(b => b.value).join('') : '';
+}
+
+function clearOTPBoxes(groupId) {
+  document.getElementById(groupId)?.querySelectorAll('.ah-otp-box').forEach(b => { b.value = ''; });
+}
+
+// ══ OTP LOGIN via WA ════════════════════════════════════════════
+async function kirimOTPLogin() {
+  const raw   = document.getElementById('login-wa')?.value.trim() || '';
+  const phone = raw.startsWith('0') ? raw.slice(1) : raw;
+  if (!/^8\d{8,12}$/.test(phone)) {
+    toast('Nomor WA tidak valid', 'error'); return;
+  }
+  setBtnLoading('btn-otp-login', true, 'Mengirim...');
+
+  // Di produksi: kirim via Fonnte/WA API
+  // Untuk sekarang: simulasi OTP (ganti dengan API call nyata)
+  _demoOTP = Math.floor(100000 + Math.random() * 900000).toString();
+  await delay(800);
+
+  if (!USE_SUPABASE) {
+    // Mode lokal — tampilkan OTP di console saja
+    console.log(`[DEV] OTP Login: ${_demoOTP}`);
+    toast(`[DEV] OTP: ${_demoOTP} (lihat console)`, 'info');
+  } else {
+    // Kirim via WA (integrasi Fonnte — gratis tier)
+    await kirimWAOTP(`62${phone}`, _demoOTP, 'login');
+  }
+
+  setBtnLoading('btn-otp-login', false, '📲 Kirim Ulang OTP');
+  document.getElementById('login-otp-panel').style.display = 'block';
+  document.getElementById('btn-otp-login').style.display   = 'none';
+  const info = document.getElementById('login-otp-info-txt');
+  if (info) info.textContent = `Kode OTP dikirim ke +62${phone}`;
+  clearOTPBoxes('otp-boxes-login');
+  document.querySelector('#otp-boxes-login .ah-otp-box')?.focus();
+  mulaiCountdown('resend-timer-login', 60);
+}
+
+async function verifikasiOTPLogin() {
+  const code  = getOTPCode('otp-boxes-login');
+  const raw   = document.getElementById('login-wa')?.value.trim() || '';
+  const phone = raw.startsWith('0') ? raw.slice(1) : raw;
+  const wa62  = `62${phone}`;
+
+  if (code.length < 6) { toast('Masukkan 6 digit OTP', 'error'); return; }
+  setBtnLoading('btn-verif-login', true, 'Memverifikasi...');
+
+  if (code !== _demoOTP && !USE_SUPABASE) {
+    setBtnLoading('btn-verif-login', false, '✅ Verifikasi & Masuk');
+    toast('Kode OTP salah', 'error'); return;
+  }
+
+  await delay(600);
+  // Di produksi: cari user berdasarkan nomor WA di tabel profiles
+  // Jika belum terdaftar → arahkan ke daftar
+  App.currentUser = { id:'u-'+Date.now(), name:'Pengguna', phone:wa62, email:'', role:'buyer' };
+  setBtnLoading('btn-verif-login', false, '✅ Verifikasi & Masuk');
+  loginSuccess('buyer');
+}
+
+// ══ OTP REGISTRASI via WA ═══════════════════════════════════════
+async function kirimOTPReg() {
+  if (!validasiStep2()) return;
+  const phone = document.getElementById('reg-phone')?.value.trim() || '';
+  const wa62  = `62${phone}`;
+
+  setBtnLoading('btn-otp-reg', true, 'Mengirim...');
+  _demoOTP = Math.floor(100000 + Math.random() * 900000).toString();
+  await delay(800);
+
+  if (!USE_SUPABASE) {
+    console.log(`[DEV] OTP Registrasi: ${_demoOTP}`);
+    toast(`[DEV] OTP: ${_demoOTP} (lihat console)`, 'info');
+  } else {
+    await kirimWAOTP(wa62, _demoOTP, 'daftar');
+  }
+
+  setBtnLoading('btn-otp-reg', false, '📲 Kirim Ulang OTP');
+  document.getElementById('reg-otp-panel-wa').style.display = 'block';
+  document.getElementById('btn-otp-reg').style.display      = 'none';
+  const info = document.getElementById('reg-otp-info-txt');
+  if (info) info.textContent = `Kode OTP dikirim ke +62${phone}`;
+  clearOTPBoxes('otp-boxes-reg');
+  document.querySelector('#otp-boxes-reg .ah-otp-box')?.focus();
+}
+
+async function verifikasiOTPReg() {
+  const code  = getOTPCode('otp-boxes-reg');
+  const name  = document.getElementById('reg-name')?.value.trim() || '';
+  const phone = document.getElementById('reg-phone')?.value.trim() || '';
+  const role  = App.registerRole;
+  const wa62  = `62${phone}`;
+
+  if (code.length < 6) { toast('Masukkan 6 digit OTP', 'error'); return; }
+  if (code !== _demoOTP && !USE_SUPABASE) {
+    toast('Kode OTP salah', 'error'); return;
+  }
+
+  setBtnLoading('btn-verif-reg', true, 'Membuat akun...');
+
+  if (USE_SUPABASE) {
+    // Supabase: gunakan signUp dengan phone (jika phone auth aktif)
+    // atau buat user dengan dummy email berbasis nomor WA
+    const dummyEmail = `wa${phone}@kantindw.id`;
+    const dummyPwd   = `KDW${phone}${Date.now()}`;
+    const { data, error } = await SB.auth.signUp({
+      email: dummyEmail, password: dummyPwd,
+      options: { data: { full_name: name, phone: wa62, role } }
+    });
+    if (error && !error.message.includes('already registered')) {
+      setBtnLoading('btn-verif-reg', false, '🎉 Verifikasi & Buat Akun');
+      toast(petaErrorAuth(error.message), 'error'); return;
+    }
+    if (data?.user) {
+      await SB.from('profiles').upsert({
+        id: data.user.id, full_name: name, phone: wa62, role,
+        email: dummyEmail, created_at: new Date().toISOString(),
+      });
+    }
+  } else {
+    await delay(900);
+  }
+
+  setBtnLoading('btn-verif-reg', false, '🎉 Verifikasi & Buat Akun');
+  tampilSuksesDaftar(name, role);
+}
+
+// ══ REGISTRASI via EMAIL ════════════════════════════════════════
+async function handleRegister() {
+  if (!validasiStep3()) return;
+
+  const name  = document.getElementById('reg-name')?.value.trim()  || '';
+  const phone = document.getElementById('reg-phone')?.value.trim() || '';
+  const email = document.getElementById('reg-email')?.value.trim().toLowerCase() || '';
+  const pwd   = document.getElementById('reg-password')?.value || '';
+  const role  = App.registerRole;
+  const wa62  = phone ? `62${phone}` : '';
+
+  setBtnLoading('btn-daftar', true, 'Membuat akun...');
+
+  if (USE_SUPABASE) {
+    const { data, error } = await SB.auth.signUp({
+      email, password: pwd,
+      options: { data: { full_name: name, phone: wa62, role } }
+    });
+    if (error) {
+      setBtnLoading('btn-daftar', false, '🎉 Buat Akun Sekarang');
+      toast(petaErrorAuth(error.message), 'error'); return;
+    }
+    if (data?.user) {
+      await SB.from('profiles').upsert({
+        id: data.user.id, full_name: name, phone: wa62, role, email,
+        created_at: new Date().toISOString(),
+      });
+    }
+  } else {
+    await delay(900);
+  }
+
+  setBtnLoading('btn-daftar', false, '🎉 Buat Akun Sekarang');
+  tampilSuksesDaftar(name, role);
+}
+
+function tampilSuksesDaftar(name, role) {
+  const label = role === 'seller' ? 'Penjual 🏪' : 'Pembeli 🛒';
+  const el1   = document.getElementById('reg-success-title');
+  const el2   = document.getElementById('reg-success-body');
+  if (el1) el1.textContent = `Selamat, ${name}! 🎉`;
+  if (el2) el2.textContent = `Akun ${label} berhasil dibuat. Silakan masuk untuk mulai ${role === 'seller' ? 'menerima pesanan' : 'memesan makanan'}.`;
+  regNextStep(4);
+}
+
+// ══ LOGIN via EMAIL ═════════════════════════════════════════════
+async function handleLogin() {
+  const email = (document.getElementById('login-email')?.value || '').trim().toLowerCase();
+  const pwd   = document.getElementById('login-password')?.value || '';
+  if (!email || !pwd) { toast('Email dan kata sandi harus diisi', 'error'); return; }
+
+  setBtnLoading('btn-login', true, 'Memverifikasi...');
+
+  if (USE_SUPABASE) {
+    const { data, error } = await SB.auth.signInWithPassword({ email, password: pwd });
+    if (error) {
+      setBtnLoading('btn-login', false, 'Masuk Sekarang');
+      toast(petaErrorAuth(error.message), 'error'); return;
+    }
+    const { data: prof } = await SB.from('profiles').select('*').eq('id', data.user.id).single();
+    const role = prof?.role || 'buyer';
+    App.currentUser = {
+      id: data.user.id, name: prof?.full_name || email.split('@')[0],
+      email: data.user.email, phone: prof?.phone || '', role, store_id: prof?.store_id || null,
+    };
+    setBtnLoading('btn-login', false, 'Masuk Sekarang');
+    loginSuccess(role);
+  } else {
+    await delay(700);
+    let role = 'buyer', name = email.split('@')[0];
+    if (email.includes('admin'))  { role = 'admin';  name = 'Admin DW'; }
+    else if (email.includes('penjual') || email.includes('seller') || email.includes('warung')) { role = 'seller'; name = 'Penjual'; }
+    App.currentUser = { id: 'u-'+Date.now(), name, email, phone: '', role };
+    setBtnLoading('btn-login', false, 'Masuk Sekarang');
+    loginSuccess(role);
+  }
+}
+
+// ══ ADMIN LOGIN ══════════════════════════════════════════════════
+async function handleAdminLogin() {
+  const email = (document.getElementById('admin-email')?.value || '').trim().toLowerCase();
+  const pwd   = document.getElementById('admin-password')?.value || '';
+  if (!email || !pwd) { toast('Email dan kata sandi harus diisi', 'error'); return; }
+
+  setBtnLoading('btn-admin-login', true, 'Memverifikasi...');
+
+  if (USE_SUPABASE) {
+    const { data, error } = await SB.auth.signInWithPassword({ email, password: pwd });
+    if (error) {
+      setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+      toast(petaErrorAuth(error.message), 'error'); return;
+    }
+    const { data: prof } = await SB.from('profiles').select('*').eq('id', data.user.id).single();
+    if (prof?.role !== 'admin') {
+      await SB.auth.signOut();
+      setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+      toast('❌ Akun ini bukan admin', 'error'); return;
+    }
+    App.currentUser = { id: data.user.id, name: prof.full_name || 'Admin', email, phone: prof.phone || '', role: 'admin' };
+  } else {
+    await delay(700);
+    if (!email.includes('admin')) {
+      setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+      toast('❌ Akun ini bukan admin', 'error'); return;
+    }
+    App.currentUser = { id: 'admin-1', name: 'Admin DW', email, phone: '', role: 'admin' };
+  }
+
+  setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+  loginSuccess('admin');
+}
+
+// ══ KIRIM WA OTP (Fonnte — Gratis tier 100 pesan/bulan) ════════
+async function kirimWAOTP(to, otp, jenis) {
+  const msg = jenis === 'login'
+    ? `Kode masuk *Kantin DW Online* Anda: *${otp}*\nBerlaku 5 menit. Jangan bagikan ke siapapun.`
+    : `Selamat datang di *Kantin DW Online*!\nKode verifikasi pendaftaran Anda: *${otp}*\nBerlaku 5 menit.`;
+  try {
+    // Ganti FONNTE_TOKEN dengan token dari https://fonnte.com (gratis daftar)
+    const FONNTE_TOKEN = 'GANTI_FONNTE_TOKEN';
+    if (FONNTE_TOKEN === 'GANTI_FONNTE_TOKEN') {
+      console.log(`[WA OTP ke ${to}]: ${otp}`);
+      return; // skip jika belum dikonfigurasi
+    }
+    await fetch('https://api.fonnte.com/send', {
+      method: 'POST',
+      headers: { 'Authorization': FONNTE_TOKEN },
+      body: new URLSearchParams({ target: to, message: msg, countryCode: '62' })
+    });
+  } catch(e) { console.warn('Fonnte error:', e); }
+}
+
+// ══ COUNTDOWN RESEND ════════════════════════════════════════════
+function mulaiCountdown(elId, detik) {
+  const el = document.getElementById(elId); if(!el) return;
+  let sisa = detik;
+  el.style.pointerEvents = 'none'; el.style.color = '#9ca3af';
+  const interval = setInterval(() => {
+    sisa--;
+    el.textContent = `Kirim ulang (${sisa}s)`;
+    if (sisa <= 0) {
+      clearInterval(interval);
+      el.textContent = 'Kirim ulang';
+      el.style.pointerEvents = 'auto'; el.style.color = '#16a34a';
+    }
+  }, 1000);
+  el.textContent = `Kirim ulang (${sisa}s)`;
+}
+
+// ══ LOGIN SUCCESS ════════════════════════════════════════════════
+function loginSuccess(role) {
+  hideSplash();
+  ahSwitchTab('masuk'); // reset panel auth
+  document.getElementById('login-email') && (document.getElementById('login-email').value = '');
+  document.getElementById('login-password') && (document.getElementById('login-password').value = '');
+  document.getElementById('screen-auth').classList.remove('active');
+  if (role === 'buyer') {
+    document.getElementById('screen-buyer').classList.add('active');
+    document.getElementById('buyer-name').textContent    = App.currentUser.name;
+    document.getElementById('profile-name').textContent  = App.currentUser.name;
+    document.getElementById('profile-email').textContent = App.currentUser.email || App.currentUser.phone || '-';
+    document.getElementById('profile-phone').textContent = App.currentUser.phone || '-';
+    loadBuyerHome();
+  } else if (role === 'seller') {
+    document.getElementById('screen-seller').classList.add('active');
+    document.getElementById('seller-store-name').textContent = App.currentUser.name;
+    loadSellerDashboard();
+  } else {
+    document.getElementById('screen-admin').classList.add('active');
+    loadAdminDashboard();
+  }
+}
+
+async function handleLogout() {
+  if (USE_SUPABASE) await SB.auth.signOut();
+  App.currentUser = null; App.cart = []; App.notifikasi = [];
+  ['screen-buyer','screen-seller','screen-admin'].forEach(s =>
+    document.getElementById(s)?.classList.remove('active'));
+  document.getElementById('screen-auth').classList.add('active');
+  toast('Berhasil keluar', 'info');
+}
+
+// ══ PASSWORD ═════════════════════════════════════════════════════
+function togglePwd(id, btn) {
+  const inp = document.getElementById(id); if(!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
+}
+
+function checkPwdStrength(pwd) {
+  const bar = document.getElementById('pwd-bar'), hint = document.getElementById('pwd-hint');
+  if (!bar || !hint) return;
+  let score = 0;
+  if (pwd.length >= 8) score++;
+  if (/[A-Z]/.test(pwd)) score++;
+  if (/[0-9]/.test(pwd)) score++;
+  if (/[^A-Za-z0-9]/.test(pwd)) score++;
+  const m = [{w:'0',c:'#e5e7eb',t:''},{w:'25%',c:'#ef4444',t:'🔴 Lemah'},{w:'50%',c:'#f97316',t:'🟠 Cukup'},{w:'75%',c:'#eab308',t:'🟡 Kuat'},{w:'100%',c:'#16a34a',t:'🟢 Sangat Kuat'}];
+  const s = m[score] || m[0];
+  bar.style.width = s.w; bar.style.background = s.c; hint.textContent = s.t;
+}
+
+function checkPwdMatch() {
+  const p1 = document.getElementById('reg-password')?.value;
+  const p2 = document.getElementById('reg-password2')?.value;
+  const h  = document.getElementById('pwd2-hint'); if(!h||!p2) return;
+  h.textContent = p1===p2 ? '✅ Cocok' : '⚠️ Belum cocok';
+  h.style.color  = p1===p2 ? '#16a34a' : '#f97316';
+}
+
+// ══ HELPERS ══════════════════════════════════════════════════════
+function setBtnLoading(id, loading, label) {
+  const btn = document.getElementById(id); if(!btn) return;
+  btn.disabled = loading; btn.textContent = loading ? `⏳ ${label}` : label;
+}
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+function petaErrorAuth(msg) {
+  const map = {
+    'Invalid login credentials'       : '❌ Email atau kata sandi salah',
+    'Email not confirmed'             : '📧 Email belum diverifikasi — cek inbox',
+    'User already registered'         : '⚠️ Email sudah terdaftar, silakan masuk',
+    'Password should be at least 6'   : '🔒 Kata sandi minimal 8 karakter',
+    'Database error creating new user': '⚙️ Error database — jalankan supabase_setup.sql',
+    'signup is disabled'              : '⚠️ Pendaftaran dinonaktifkan',
+    'over_email_send_rate_limit'      : '⏳ Terlalu banyak percobaan, tunggu sebentar',
+  };
+  for (const [k,v] of Object.entries(map)) { if(msg.includes(k)) return v; }
+  return '❌ ' + msg;
+}
 // ══ LUPA PASSWORD ══════════════════════════════════════════════
 function bukaLupaPassword() {
   document.getElementById('lupa-email').value = document.getElementById('login-email').value || '';
