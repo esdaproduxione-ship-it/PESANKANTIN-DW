@@ -99,90 +99,538 @@
 <div id="toast-container" class="toast-container"></div>
 
 <!-- ══ SCREEN AUTH ══ -->
+<!-- ══ SCREEN AUTH ══ -->
 <div id="screen-auth" class="page active">
-  <div class="topbar" style="padding:2.5rem 1.5rem 1.5rem;text-align:center;border-radius:0 0 28px 28px;">
-    <!-- Logo diklik 5x → buka form daftar (rahasia) -->
-    <div style="font-size:3rem;margin-bottom:.5rem;cursor:default;user-select:none;" id="logo-tap" onclick="handleLogoTap()">🍽️</div>
-    <h1 style="font-size:1.8rem;font-weight:900;margin:0 0 .3rem;letter-spacing:-.5px;">Kantin DW Online</h1>
-    <p style="margin:0;opacity:.85;font-size:.95rem;">Pesan makanan dari warung langganan Anda</p>
-  </div>
-  <div style="padding:1.5rem;">
 
-    <!-- ── FORM LOGIN (selalu tampil pertama) ── -->
-    <div id="form-login">
-      <div class="form-group">
-        <label class="form-label">📧 Email</label>
-        <input type="email" id="login-email" class="form-input" placeholder="nama@email.com" autocomplete="email"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">🔒 Kata Sandi</label>
-        <div style="position:relative;">
-          <input type="password" id="login-password" class="form-input" placeholder="Masukkan kata sandi" autocomplete="current-password" style="padding-right:2.8rem;"/>
-          <span onclick="togglePwd('login-password',this)" style="position:absolute;right:.85rem;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1.1rem;">👁️</span>
-        </div>
-      </div>
-      <button class="btn btn-primary btn-full btn-lg" onclick="handleLogin()" id="btn-login" style="margin-top:.5rem;">
-        Masuk
-      </button>
-      <!-- Petunjuk kecil, tidak mencolok -->
-      <p style="text-align:center;font-size:.75rem;color:#d1d5db;margin:1.5rem 0 0;user-select:none;">
-        v1.0 · Kantin DW Online
-      </p>
+  <!-- HERO -->
+  <div class="auth-hero">
+    <div class="food-float" style="top:7%;left:5%;animation-delay:0s;font-size:1.8rem;">🍚</div>
+    <div class="food-float" style="top:13%;right:7%;animation-delay:.7s;font-size:1.5rem;">🥤</div>
+    <div class="food-float" style="top:40%;left:2%;animation-delay:1.3s;font-size:1.4rem;">🍜</div>
+    <div class="food-float" style="top:54%;right:4%;animation-delay:.4s;font-size:1.6rem;">🍟</div>
+    <div class="food-float" style="bottom:20%;left:9%;animation-delay:1s;font-size:1.3rem;">🧃</div>
+    <div class="food-float" style="bottom:8%;right:11%;animation-delay:1.6s;font-size:1.5rem;">🍰</div>
+
+    <!-- Logo: ketuk 7× → panel admin -->
+    <div class="auth-logo" id="logo-tap" onclick="handleLogoTap()">
+      <span style="font-size:2.4rem;line-height:1;">🍽️</span>
+    </div>
+    <h1 class="auth-title">Kantin DW<br/><span style="color:#86efac;">Online</span></h1>
+    <p class="auth-sub">Pesan makanan dari warung langganan<br/>Dharma Wanita — cepat &amp; mudah</p>
+    <div class="auth-stats">
+      <div class="auth-stat"><div class="auth-stat-num">🏪</div><div class="auth-stat-lbl">Multi Warung</div></div>
+      <div class="auth-stat-div"></div>
+      <div class="auth-stat"><div class="auth-stat-num">📱</div><div class="auth-stat-lbl">QRIS &amp; COD</div></div>
+      <div class="auth-stat-div"></div>
+      <div class="auth-stat"><div class="auth-stat-num">🛵</div><div class="auth-stat-lbl">Jasa Antar</div></div>
+    </div>
+  </div>
+
+  <!-- CARD FORM -->
+  <div class="auth-card">
+
+    <!-- ── Tab Masuk / Daftar (terbuka untuk semua) ── -->
+    <div class="auth-tabs" id="auth-tabs-bar">
+      <button class="auth-tab active" id="tab-btn-login"    onclick="switchTab('login')">Masuk</button>
+      <button class="auth-tab"        id="tab-btn-register" onclick="switchTab('register')">Daftar</button>
     </div>
 
-    <!-- ── FORM DAFTAR (tersembunyi, muncul lewat logo tap 5×) ── -->
-    <div id="form-register" style="display:none;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
-        <h2 style="font-size:1.1rem;font-weight:800;margin:0;">📋 Pendaftaran Akun</h2>
-        <button class="btn btn-secondary btn-sm" onclick="tutupFormDaftar()">✕ Tutup</button>
-      </div>
+    <!-- ════ PANEL: MASUK ════ -->
+    <div id="panel-login">
+      <p style="font-size:.85rem;color:var(--muted);margin:0 0 1rem;">Sudah punya akun? Masuk sekarang.</p>
 
-      <!-- Pilih Role -->
-      <div class="form-group">
-        <label class="form-label" style="font-size:.9rem;">Daftar sebagai</label>
-        <div style="display:flex;gap:.75rem;">
-          <div class="role-btn selected" onclick="selectRegisterRole('buyer')" id="rrole-buyer">
-            <div class="icon">🛒</div><div class="label">Pembeli</div>
-          </div>
-          <div class="role-btn" onclick="selectRegisterRole('seller')" id="rrole-seller">
-            <div class="icon">🏪</div><div class="label">Penjual</div>
-          </div>
+      <div class="auth-field">
+        <label class="auth-lbl">Email</label>
+        <div class="auth-inp-wrap">
+          <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+          <input type="email" id="login-email" class="auth-inp" placeholder="nama@email.com"
+            autocomplete="email" inputmode="email"
+            onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()"/>
         </div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">👤 Nama Lengkap</label>
-        <input type="text" id="reg-name" class="form-input" placeholder="Nama lengkap" autocomplete="off"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">📱 Nomor HP / WhatsApp</label>
-        <input type="tel" id="reg-phone" class="form-input" placeholder="08xxxxxxxxxx" autocomplete="off"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">📧 Email</label>
-        <input type="email" id="reg-email" class="form-input" placeholder="nama@email.com" autocomplete="off"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">🔒 Kata Sandi</label>
-        <div style="position:relative;">
-          <input type="password" id="reg-password" class="form-input" placeholder="Minimal 8 karakter" autocomplete="new-password" style="padding-right:2.8rem;"/>
-          <span onclick="togglePwd('reg-password',this)" style="position:absolute;right:.85rem;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1.1rem;">👁️</span>
+      <div class="auth-field">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.38rem;">
+          <label class="auth-lbl" style="margin:0;">Kata Sandi</label>
+          <span onclick="bukaLupaPassword()" style="font-size:.75rem;color:#16a34a;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:2px;">Lupa?</span>
         </div>
-        <div id="pwd-strength" style="height:4px;border-radius:2px;margin-top:.4rem;background:#e5e7eb;overflow:hidden;"><div id="pwd-bar" style="height:100%;width:0;transition:width .3s;border-radius:2px;"></div></div>
-        <div id="pwd-hint" style="font-size:.72rem;color:var(--muted);margin-top:.2rem;"></div>
+        <div class="auth-inp-wrap">
+          <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+          <input type="password" id="login-password" class="auth-inp" placeholder="Kata sandi Anda"
+            autocomplete="current-password" style="padding-right:3rem;"
+            onkeydown="if(event.key==='Enter')handleLogin()"/>
+          <button class="auth-eye" onclick="togglePwd('login-password',this)" tabindex="-1">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
+          </button>
+        </div>
       </div>
 
-      <!-- Info setelah daftar -->
-      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.75rem;margin-bottom:1rem;font-size:.8rem;color:#166534;">
-        ✅ Setelah klik <b>Simpan</b>, form akan kosong otomatis siap untuk pendaftar berikutnya
+      <button class="auth-btn-main" onclick="handleLogin()" id="btn-login" style="margin-top:.3rem;">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fill-rule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        Masuk Sekarang
+      </button>
+
+      <div style="display:flex;align-items:center;gap:.75rem;margin:1rem 0;">
+        <div style="flex:1;height:1px;background:#e5e7eb;"></div>
+        <span style="font-size:.73rem;color:#9ca3af;white-space:nowrap;">belum punya akun?</span>
+        <div style="flex:1;height:1px;background:#e5e7eb;"></div>
       </div>
 
-      <button class="btn btn-primary btn-full btn-lg" onclick="handleRegister()" id="btn-daftar">
-        💾 Simpan &amp; Selesai
+      <button class="auth-btn-daftar" onclick="switchTab('register')">
+        ✨ Daftar Gratis Sekarang
+      </button>
+
+      <p style="text-align:center;margin:.9rem 0 0;font-size:.7rem;color:#e5e7eb;user-select:none;">
+        v1.0 · Kantin DW Online © 2025
+      </p>
+    </div><!-- /panel-login -->
+
+    <!-- ════ PANEL: DAFTAR (terbuka untuk semua) ════ -->
+    <div id="panel-register" style="display:none;">
+
+      <!-- Step bar -->
+      <div style="display:flex;gap:.35rem;margin-bottom:.9rem;" id="step-indicator">
+        <div class="step-bar active" id="step-dot-1"></div>
+        <div class="step-bar" id="step-dot-2"></div>
+        <div class="step-bar" id="step-dot-3"></div>
+      </div>
+
+      <!-- STEP 1: Pilih Peran -->
+      <div id="reg-step-1">
+        <div style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.15rem;">Saya ingin...</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.85rem;">Pilih peran Anda di Kantin DW</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem;">
+          <div class="role-card-new selected-role" id="rc-buyer" onclick="selectRegisterRole('buyer')">
+            <div style="font-size:2.2rem;margin-bottom:.45rem;">🛒</div>
+            <div class="role-card-title">Pembeli</div>
+            <div class="role-card-sub">Pesan makanan &amp; minuman dari warung</div>
+          </div>
+          <div class="role-card-new" id="rc-seller" onclick="selectRegisterRole('seller')">
+            <div style="font-size:2.2rem;margin-bottom:.45rem;">🏪</div>
+            <div class="role-card-title">Penjual</div>
+            <div class="role-card-sub">Buka warung &amp; terima pesanan online</div>
+          </div>
+        </div>
+
+        <button class="auth-btn-main" onclick="regNextStep(2)">
+          Lanjut
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </button>
+        <p style="text-align:center;font-size:.78rem;color:var(--muted);margin:.75rem 0 0;">
+          Sudah punya akun?
+          <span onclick="switchTab('login')" style="color:#16a34a;font-weight:700;cursor:pointer;">Masuk di sini</span>
+        </p>
+      </div>
+
+      <!-- STEP 2: Data Diri -->
+      <div id="reg-step-2" style="display:none;">
+        <div style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.15rem;">Data Diri</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.85rem;">Langkah 2 dari 3</div>
+
+        <div class="auth-field">
+          <label class="auth-lbl">Nama Lengkap <span style="color:#ef4444;">*</span></label>
+          <div class="auth-inp-wrap">
+            <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+            <input type="text" id="reg-name" class="auth-inp" placeholder="Nama lengkap sesuai KTP"
+              autocomplete="name"
+              onkeydown="if(event.key==='Enter')document.getElementById('reg-phone').focus()"/>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-lbl">Nomor HP / WhatsApp <span style="color:#ef4444;">*</span></label>
+          <div class="auth-inp-wrap">
+            <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+            <input type="tel" id="reg-phone" class="auth-inp" placeholder="08xxxxxxxxxx"
+              autocomplete="tel" inputmode="numeric"
+              oninput="validatePhoneInput(this)"
+              onkeydown="if(event.key==='Enter')regNextStep(3)"/>
+          </div>
+          <div id="phone-hint" class="field-hint"></div>
+        </div>
+
+        <div style="display:flex;gap:.6rem;">
+          <button class="auth-btn-sec" onclick="regNextStep(1)" style="flex:1;">← Kembali</button>
+          <button class="auth-btn-main" onclick="regNextStep(3)" style="flex:2;">
+            Lanjut
+            <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Email & Password -->
+      <div id="reg-step-3" style="display:none;">
+        <div style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.15rem;">Email &amp; Kata Sandi</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.85rem;">Langkah 3 dari 3 · Untuk login ke aplikasi</div>
+
+        <div class="auth-field">
+          <label class="auth-lbl">Email <span style="color:#ef4444;">*</span></label>
+          <div class="auth-inp-wrap">
+            <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+            <input type="email" id="reg-email" class="auth-inp" placeholder="nama@email.com"
+              autocomplete="email" inputmode="email"
+              oninput="validateEmailInput(this)"
+              onkeydown="if(event.key==='Enter')document.getElementById('reg-password').focus()"/>
+          </div>
+          <div id="email-hint" class="field-hint"></div>
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-lbl">Kata Sandi <span style="color:#ef4444;">*</span></label>
+          <div class="auth-inp-wrap">
+            <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+            <input type="password" id="reg-password" class="auth-inp" placeholder="Min. 8 karakter"
+              autocomplete="new-password" style="padding-right:3rem;"
+              oninput="checkPwdStrength(this.value)"/>
+            <button class="auth-eye" onclick="togglePwd('reg-password',this)" tabindex="-1">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
+            </button>
+          </div>
+          <div class="pwd-bar-wrap"><div id="pwd-bar" class="pwd-bar-fill"></div></div>
+          <div id="pwd-hint" class="field-hint"></div>
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-lbl">Ulangi Kata Sandi <span style="color:#ef4444;">*</span></label>
+          <div class="auth-inp-wrap">
+            <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <input type="password" id="reg-password2" class="auth-inp" placeholder="Tulis ulang kata sandi"
+              autocomplete="new-password" style="padding-right:3rem;"
+              oninput="checkPwdMatch()"
+              onkeydown="if(event.key==='Enter')handleRegister()"/>
+            <button class="auth-eye" onclick="togglePwd('reg-password2',this)" tabindex="-1">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
+            </button>
+          </div>
+          <div id="pwd2-hint" class="field-hint"></div>
+        </div>
+
+        <!-- Persetujuan -->
+        <label style="display:flex;align-items:flex-start;gap:.5rem;font-size:.78rem;color:var(--muted);cursor:pointer;margin-bottom:.9rem;line-height:1.5;">
+          <input type="checkbox" id="reg-setuju" style="margin-top:2px;accent-color:#16a34a;width:15px;height:15px;flex-shrink:0;"/>
+          <span>Saya menyatakan data yang diisi adalah benar dan menyetujui penggunaan data untuk keperluan Kantin DW Online</span>
+        </label>
+
+        <div style="display:flex;gap:.6rem;">
+          <button class="auth-btn-sec" onclick="regNextStep(2)" style="flex:1;">← Kembali</button>
+          <button class="auth-btn-main" onclick="handleRegister()" id="btn-daftar" style="flex:2;">
+            🎉 Buat Akun
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Sukses -->
+      <div id="reg-step-4" style="display:none;text-align:center;padding:1.25rem 0 .5rem;">
+        <div style="width:86px;height:86px;background:linear-gradient(135deg,#16a34a,#4ade80);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.4rem;margin:0 auto 1rem;box-shadow:0 8px 28px rgba(22,163,74,.3);">🎉</div>
+        <div style="font-size:1.15rem;font-weight:900;color:var(--text);margin-bottom:.45rem;" id="reg-success-title">Selamat, Akun Siap!</div>
+        <div style="font-size:.85rem;color:var(--muted);line-height:1.7;margin-bottom:1.4rem;" id="reg-success-body">Akun berhasil dibuat. Silakan masuk.</div>
+        <button class="auth-btn-main" onclick="langsung_login_setelah_daftar()" style="margin-bottom:.6rem;">
+          🚀 Masuk Sekarang
+        </button>
+        <button class="auth-btn-sec" style="width:100%;" onclick="selesaiDaftar()">
+          + Daftar Akun Lain
+        </button>
+      </div>
+
+    </div><!-- /panel-register -->
+
+    <!-- ════ PANEL: ADMIN (tersembunyi — logo tap 7×) ════ -->
+    <div id="panel-admin-login" style="display:none;">
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;">
+        <button onclick="switchTab('login')" class="auth-back-btn">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/></svg>
+        </button>
+        <div>
+          <div style="font-size:.95rem;font-weight:800;color:var(--text);">🔐 Panel Administrator</div>
+          <div style="font-size:.72rem;color:var(--muted);">Akses terbatas · Khusus pengelola</div>
+        </div>
+      </div>
+
+      <div class="auth-field">
+        <label class="auth-lbl">Email Admin</label>
+        <div class="auth-inp-wrap">
+          <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+          <input type="email" id="admin-email" class="auth-inp" placeholder="admin@kantindw.id"
+            autocomplete="email"
+            onkeydown="if(event.key==='Enter')document.getElementById('admin-password').focus()"/>
+        </div>
+      </div>
+
+      <div class="auth-field">
+        <label class="auth-lbl">Kata Sandi</label>
+        <div class="auth-inp-wrap">
+          <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+          <input type="password" id="admin-password" class="auth-inp" placeholder="Kata sandi admin"
+            style="padding-right:3rem;"
+            onkeydown="if(event.key==='Enter')handleAdminLogin()"/>
+          <button class="auth-eye" onclick="togglePwd('admin-password',this)" tabindex="-1">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <button class="auth-btn-main" onclick="handleAdminLogin()" id="btn-admin-login"
+        style="background:linear-gradient(135deg,#1e3a5f,#1e40af);box-shadow:0 4px 18px rgba(30,64,175,.3);">
+        🔐 Masuk sebagai Admin
+      </button>
+    </div><!-- /panel-admin-login -->
+
+  </div><!-- /auth-card -->
+</div>
+
+<style>
+/* ══ AUTH ══ */
+#screen-auth { min-height:100dvh; display:flex; flex-direction:column; background:#fff; }
+
+.auth-hero {
+  background:linear-gradient(145deg,#052e16 0%,#14532d 40%,#166534 70%,#15803d 100%);
+  padding:2.5rem 1.5rem 2.25rem;
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  position:relative; overflow:hidden; flex-shrink:0;
+}
+.auth-hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 20% 50%,rgba(255,255,255,.06) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 20%,rgba(255,255,255,.04) 0%,transparent 50%);
+}
+.food-float {
+  position:absolute; animation:floatFood 4s ease-in-out infinite;
+  pointer-events:none; opacity:.5; filter:drop-shadow(0 2px 6px rgba(0,0,0,.25)); z-index:1;
+}
+@keyframes floatFood {
+  0%,100% { transform:translateY(0) rotate(-4deg) scale(1); }
+  50%      { transform:translateY(-12px) rotate(4deg) scale(1.05); }
+}
+.auth-logo {
+  width:80px; height:80px;
+  background:rgba(255,255,255,.13); backdrop-filter:blur(12px);
+  border:1.5px solid rgba(255,255,255,.25); border-radius:22px;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:1rem; cursor:default; user-select:none;
+  box-shadow:0 8px 32px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.2);
+  position:relative; z-index:2; transition:transform .15s;
+}
+.auth-logo:active { transform:scale(.95); }
+.auth-title {
+  font-size:1.9rem; font-weight:900; color:#fff;
+  margin:0 0 .4rem; line-height:1.15; letter-spacing:-.5px;
+  text-shadow:0 2px 12px rgba(0,0,0,.2); position:relative; z-index:2;
+}
+.auth-sub {
+  font-size:.87rem; color:rgba(255,255,255,.75);
+  margin:0; line-height:1.6; position:relative; z-index:2;
+}
+.auth-stats {
+  display:flex; align-items:center; margin-top:1.2rem;
+  background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.16);
+  border-radius:14px; padding:.62rem 1rem; position:relative; z-index:2;
+}
+.auth-stat { text-align:center; flex:1; }
+.auth-stat-num { font-size:1.25rem; }
+.auth-stat-lbl { font-size:.63rem; color:rgba(255,255,255,.7); font-weight:600; margin-top:.1rem; }
+.auth-stat-div { width:1px; height:28px; background:rgba(255,255,255,.2); margin:0 .2rem; }
+
+.auth-card {
+  background:#fff; border-radius:22px 22px 0 0;
+  padding:1.4rem 1.4rem 3rem; flex:1;
+  box-shadow:0 -6px 30px rgba(0,0,0,.08); overflow-y:auto;
+}
+
+/* Tabs */
+.auth-tabs {
+  display:flex; background:#f3f4f6; border-radius:12px;
+  padding:3px; margin-bottom:1.1rem; gap:3px;
+}
+.auth-tab {
+  flex:1; padding:.58rem; border:none; border-radius:10px;
+  font-weight:700; font-size:.9rem; cursor:pointer;
+  transition:all .2s; background:transparent; color:#6b7280;
+}
+.auth-tab.active {
+  background:#fff; color:#16a34a;
+  box-shadow:0 1px 6px rgba(0,0,0,.1);
+}
+
+/* Fields */
+.auth-field { margin-bottom:.82rem; }
+.auth-lbl {
+  display:block; font-size:.75rem; font-weight:700;
+  color:#374151; text-transform:uppercase; letter-spacing:.06em; margin-bottom:.36rem;
+}
+.auth-inp-wrap { position:relative; display:flex; align-items:center; }
+.auth-ico {
+  position:absolute; left:.88rem; width:17px; height:17px;
+  color:#9ca3af; pointer-events:none; flex-shrink:0;
+}
+.auth-inp {
+  width:100%; padding:.78rem .9rem .78rem 2.55rem;
+  border-radius:12px; border:1.5px solid #e5e7eb;
+  background:#f9fafb; font-size:.96rem; color:#111827;
+  outline:none; transition:all .2s; -webkit-appearance:none;
+}
+.auth-inp:focus { border-color:#16a34a; background:#fff; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
+.auth-inp::placeholder { color:#9ca3af; }
+.auth-eye {
+  position:absolute; right:.75rem; background:none; border:none;
+  color:#9ca3af; cursor:pointer; padding:.25rem;
+  display:flex; align-items:center; transition:color .15s;
+}
+.auth-eye:hover { color:#16a34a; }
+
+/* Main CTA button */
+.auth-btn-main {
+  width:100%; display:flex; align-items:center; justify-content:center; gap:.45rem;
+  padding:.86rem 1.2rem;
+  background:linear-gradient(135deg,#16a34a,#15803d);
+  color:#fff; font-weight:700; font-size:.97rem;
+  border:none; border-radius:13px; cursor:pointer;
+  box-shadow:0 4px 18px rgba(22,163,74,.28);
+  transition:all .18s; letter-spacing:.01em;
+}
+.auth-btn-main:hover  { filter:brightness(1.07); transform:translateY(-1px); }
+.auth-btn-main:active { transform:scale(.98); }
+.auth-btn-main:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+
+/* Daftar outline button */
+.auth-btn-daftar {
+  width:100%; display:flex; align-items:center; justify-content:center;
+  padding:.82rem 1.2rem;
+  background:#fff; color:#16a34a; font-weight:700; font-size:.97rem;
+  border:2px solid #16a34a; border-radius:13px; cursor:pointer;
+  transition:all .18s;
+}
+.auth-btn-daftar:hover { background:#f0fdf4; }
+
+/* Secondary button */
+.auth-btn-sec {
+  display:flex; align-items:center; justify-content:center;
+  padding:.78rem 1rem; background:#f3f4f6; color:#374151;
+  font-weight:600; font-size:.92rem;
+  border:1.5px solid #e5e7eb; border-radius:13px; cursor:pointer; transition:all .15s;
+}
+.auth-btn-sec:hover { background:#e5e7eb; }
+.auth-back-btn {
+  width:34px; height:34px; border-radius:9px; background:#f3f4f6;
+  border:1.5px solid #e5e7eb; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; color:#374151; flex-shrink:0; transition:background .15s;
+}
+.auth-back-btn:hover { background:#e5e7eb; }
+
+/* Step bar */
+.step-bar { flex:1; height:4px; border-radius:2px; background:#e5e7eb; transition:background .3s; }
+.step-bar.active { background:#16a34a; }
+
+/* Role cards */
+.role-card-new {
+  border:2px solid #e5e7eb; border-radius:14px; padding:1rem .7rem;
+  text-align:center; cursor:pointer; transition:all .18s; background:#f9fafb; user-select:none;
+}
+.role-card-new:active { transform:scale(.97); }
+.role-card-new.selected-role { border-color:#16a34a; background:#f0fdf4; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
+.role-card-title { font-weight:800; font-size:.93rem; color:#111827; margin-bottom:.2rem; }
+.role-card-sub   { font-size:.68rem; color:#6b7280; line-height:1.4; }
+
+/* Password */
+.pwd-bar-wrap { height:5px; border-radius:3px; background:#e5e7eb; overflow:hidden; margin-top:.4rem; }
+.pwd-bar-fill { height:100%; width:0; border-radius:3px; transition:width .35s,background .35s; }
+
+.field-hint { font-size:.72rem; margin-top:.28rem; min-height:.9rem; }
+
+/* Desktop layout */
+@media (min-width:768px) {
+  #screen-auth { flex-direction:row; }
+  .auth-hero { width:42%; min-height:100dvh; justify-content:center; padding:3rem 2rem; border-radius:0; }
+  .auth-card {
+    flex:1; border-radius:0; padding:2.25rem 2.5rem 3rem;
+    display:flex; flex-direction:column; justify-content:center;
+    box-shadow:none; border-left:1px solid #f3f4f6; max-width:460px; overflow-y:auto;
+  }
+}
+</style>
+<!-- ══ SPLASH SCREEN ══ -->
+<div id="splash-screen" style="
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(145deg,#052e16,#14532d,#15803d);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .5s ease;
+">
+  <div style="text-align:center;">
+    <!-- Logo animasi -->
+    <div style="
+      width:96px;height:96px;
+      background:rgba(255,255,255,.12);
+      border:2px solid rgba(255,255,255,.25);
+      border-radius:26px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:3rem;margin:0 auto 1.25rem;
+      animation:splashPop .5s cubic-bezier(.175,.885,.32,1.275) forwards;
+    ">🍽️</div>
+    <div style="font-size:1.75rem;font-weight:900;color:#fff;letter-spacing:-.5px;margin-bottom:.35rem;">Kantin DW Online</div>
+    <div style="font-size:.88rem;color:rgba(255,255,255,.65);margin-bottom:2.5rem;">Selamat datang, sedang memuat...</div>
+    <!-- Spinner dots -->
+    <div style="display:flex;gap:.5rem;justify-content:center;">
+      <div class="splash-dot" style="animation-delay:0s;"></div>
+      <div class="splash-dot" style="animation-delay:.2s;"></div>
+      <div class="splash-dot" style="animation-delay:.4s;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL LUPA PASSWORD ══ -->
+<div id="modal-lupa-pwd" class="modal-overlay">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;margin-bottom:1.25rem;">
+      <div style="font-size:2.5rem;margin-bottom:.5rem;">🔐</div>
+      <div style="font-size:1.1rem;font-weight:800;color:var(--text);">Reset Kata Sandi</div>
+      <div style="font-size:.85rem;color:var(--muted);margin-top:.3rem;">Kami akan kirim link reset ke email Anda</div>
+    </div>
+    <div id="lupa-form">
+      <div class="auth-field">
+        <label class="auth-lbl">Email yang terdaftar</label>
+        <div class="auth-inp-wrap">
+          <svg class="auth-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+          <input type="email" id="lupa-email" class="auth-inp" placeholder="nama@email.com"
+            onkeydown="if(event.key==='Enter')kirimResetPassword()"/>
+        </div>
+      </div>
+      <button class="auth-btn-main" onclick="kirimResetPassword()" id="btn-reset" style="margin-top:.5rem;">
+        Kirim Link Reset
+      </button>
+      <button class="auth-btn-sec btn-full" onclick="closeModal('modal-lupa-pwd')" style="margin-top:.6rem;">
+        Batal
+      </button>
+    </div>
+    <div id="lupa-sukses" style="display:none;text-align:center;padding:.5rem 0;">
+      <div style="font-size:2rem;margin-bottom:.75rem;">📧</div>
+      <div style="font-weight:700;margin-bottom:.5rem;">Email Terkirim!</div>
+      <div style="font-size:.85rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;">
+        Link reset kata sandi sudah dikirim ke <b id="lupa-email-sent"></b>.<br/>
+        Cek inbox (dan folder spam) Anda.
+      </div>
+      <button class="auth-btn-main" onclick="closeModal('modal-lupa-pwd');document.getElementById('lupa-sukses').style.display='none';document.getElementById('lupa-form').style.display='block';">
+        Kembali ke Login
       </button>
     </div>
   </div>
 </div>
+
+<style>
+@keyframes splashPop {
+  from { transform:scale(.6); opacity:0; }
+  to   { transform:scale(1);  opacity:1; }
+}
+.splash-dot {
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.6);
+  animation:splashBounce 1s ease-in-out infinite;
+}
+@keyframes splashBounce {
+  0%,80%,100% { transform:scale(0); opacity:.4; }
+  40%         { transform:scale(1); opacity:1; }
+}
+</style>
 
 <!-- ══ SCREEN BUYER ══ -->
 <div id="screen-buyer" class="page">
@@ -530,10 +978,7 @@
         <span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span>
       </div>
     </div>
-    <!-- Kritik & Saran Masuk -->
-    <div class="section-title">💬 Kritik &amp; Saran Terbaru</div>
-    <div id="admin-ks-list"></div>
-    <div class="section-title" style="margin-top:1rem;">🕐 Transaksi Terbaru</div>
+    <div class="section-title" style="margin-top:.25rem;">🕐 Transaksi Terbaru</div>
     <div id="admin-recent-orders"><div class="spinner"></div></div>
   </div>
   <div id="admin-keuangan" class="page-content page" style="display:none;">
@@ -960,191 +1405,362 @@ function hapusJadwalLibur(date) {
 
 // ══ AUTH ══════════════════════════════════════════════════════
 
-// ── Logo tap 5× → buka form daftar (rahasia) ──
+// ══ AUTH NAVIGATION ═══════════════════════════════════════════
+
+// switchTab: 'login' | 'register' | 'admin'
+function switchTab(tab) {
+  // Sembunyikan semua panel
+  ['panel-login','panel-register','panel-admin-login'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.style.display = 'none';
+  });
+  // Tampilkan panel yang dipilih
+  const panel = document.getElementById(`panel-${tab==='admin'?'admin-login':tab}`);
+  if (panel) panel.style.display = 'block';
+  // Update tab bar (hanya untuk login dan register)
+  const tabBar = document.getElementById('auth-tabs-bar');
+  if (tabBar) tabBar.style.display = tab==='admin' ? 'none' : 'flex';
+  document.getElementById('tab-btn-login')?.classList.toggle('active',    tab==='login');
+  document.getElementById('tab-btn-register')?.classList.toggle('active', tab==='register');
+  // Reset step saat buka daftar
+  if (tab==='register') { resetFormDaftar(); regNextStep(1); }
+}
+
+// Logo tap 7× → panel admin tersembunyi
 let _logoTapCount = 0, _logoTapTimer = null;
 function handleLogoTap() {
   _logoTapCount++;
   clearTimeout(_logoTapTimer);
-  _logoTapTimer = setTimeout(() => { _logoTapCount = 0; }, 2000);
-  if (_logoTapCount >= 5) {
+  _logoTapTimer = setTimeout(() => { _logoTapCount = 0; }, 2500);
+  if (_logoTapCount >= 7) {
     _logoTapCount = 0;
-    bukaFormDaftar();
+    switchTab('admin');
+    toast('🔐 Panel Administrator', 'info');
   }
 }
 
-function bukaFormDaftar() {
+function selesaiDaftar() {
   resetFormDaftar();
-  document.getElementById('form-login').style.display    = 'none';
-  document.getElementById('form-register').style.display = 'block';
+  switchTab('register');
 }
 
-function tutupFormDaftar() {
-  resetFormDaftar();
-  document.getElementById('form-register').style.display = 'none';
-  document.getElementById('form-login').style.display    = 'block';
-  // Bersihkan juga field login
-  document.getElementById('login-email').value    = '';
-  document.getElementById('login-password').value = '';
+function langsung_login_setelah_daftar() {
+  // Isi email login dari email yang baru didaftarkan, lalu pindah ke tab login
+  const email = document.getElementById('reg-email')?.value || '';
+  switchTab('login');
+  if (email) document.getElementById('login-email').value = email;
+  document.getElementById('login-password').focus();
+}
+
+// Legacy compat
+function bukaFormDaftar()  { switchTab('register'); }
+function tutupFormDaftar() { switchTab('login'); resetFormDaftar(); }
+function switchAuthTab(t)  { switchTab(t==='register'?'register':'login'); }
+
+// ── Navigasi antar step pendaftaran ──
+let _regCurrentStep = 1;
+function regNextStep(step) {
+  // Validasi sebelum maju
+  if (step > _regCurrentStep) {
+    if (_regCurrentStep === 2 && !validasiStep2()) return;
+    if (_regCurrentStep === 3 && !validasiStep3()) return;
+  }
+  _regCurrentStep = step;
+  [1,2,3,4].forEach(s => {
+    const el = document.getElementById(`reg-step-${s}`);
+    if (el) el.style.display = s === step ? 'block' : 'none';
+  });
+  // Update step indicator (hanya 3 dots)
+  [1,2,3].forEach(s => {
+    const dot = document.getElementById(`step-dot-${s}`);
+    if (!dot) return;
+    dot.style.background = s <= Math.min(step, 3) ? 'var(--green-main)' : '#e5e7eb';
+  });
+  // Sembunyikan indicator di step 4
+  const ind = document.getElementById('step-indicator');
+  if (ind) ind.style.display = step === 4 ? 'none' : 'flex';
+}
+
+function validasiStep2() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  const hint  = document.getElementById('phone-hint');
+  if (!name) { toast('Nama lengkap harus diisi', 'error'); document.getElementById('reg-name').focus(); return false; }
+  if (!phone) { toast('Nomor HP harus diisi', 'error'); document.getElementById('reg-phone').focus(); return false; }
+  if (!/^08\d{8,12}$/.test(phone)) {
+    hint.textContent = '⚠️ Format: 08xxxxxxxxxx (10–13 digit)';
+    hint.style.color = '#dc2626';
+    document.getElementById('reg-phone').focus(); return false;
+  }
+  hint.textContent = '✅ Nomor valid';
+  hint.style.color = '#16a34a';
+  return true;
+}
+
+function validasiStep3() {
+  const email    = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const password2= document.getElementById('reg-password2').value;
+  const emailH   = document.getElementById('email-hint');
+  const pwd2H    = document.getElementById('pwd2-hint');
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    emailH.textContent = '⚠️ Format email tidak valid';
+    emailH.style.color = '#dc2626';
+    document.getElementById('reg-email').focus(); return false;
+  }
+  emailH.textContent = '✅ Email valid';
+  emailH.style.color = '#16a34a';
+
+  if (password.length < 8) {
+    toast('Kata sandi minimal 8 karakter', 'error');
+    document.getElementById('reg-password').focus(); return false;
+  }
+  if (password !== password2) {
+    pwd2H.textContent = '⚠️ Kata sandi tidak cocok';
+    pwd2H.style.color = '#dc2626';
+    document.getElementById('reg-password2').focus(); return false;
+  }
+  pwd2H.textContent = '✅ Kata sandi cocok';
+  pwd2H.style.color = '#16a34a';
+  return true;
 }
 
 function resetFormDaftar() {
-  ['reg-name','reg-phone','reg-email','reg-password'].forEach(id => {
+  ['reg-name','reg-phone','reg-email','reg-password','reg-password2'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = '';
   });
-  document.getElementById('pwd-bar').style.width       = '0';
-  document.getElementById('pwd-bar').style.background  = '#e5e7eb';
-  document.getElementById('pwd-hint').textContent       = '';
+  const bar = document.getElementById('pwd-bar');
+  if (bar) { bar.style.width = '0'; bar.style.background = '#e5e7eb'; }
+  ['pwd-hint','pwd2-hint','phone-hint','email-hint'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.textContent = '';
+  });
   selectRegisterRole('buyer');
 }
 
 function selectRegisterRole(role) {
   App.registerRole = role;
   ['buyer','seller'].forEach(r => {
-    document.getElementById(`rrole-${r}`)?.classList.toggle('selected', r === role);
+    const el = document.getElementById(`rc-${r}`);
+    if (!el) return;
+    el.classList.toggle('selected-role', r === role);
+    // support lama
+    document.getElementById(`rrole-${r}`)?.classList.toggle('selected', r===role);
   });
 }
 
-// ── Toggle tampil/sembunyikan password ──
-function togglePwd(inputId, iconEl) {
-  const inp = document.getElementById(inputId);
-  if (!inp) return;
-  if (inp.type === 'password') { inp.type = 'text'; iconEl.textContent = '🙈'; }
-  else                         { inp.type = 'password'; iconEl.textContent = '👁️'; }
+// ── Admin Login ────────────────────────────────────────────────
+async function handleAdminLogin() {
+  const email    = (document.getElementById('admin-email')?.value || '').trim().toLowerCase();
+  const password = document.getElementById('admin-password')?.value || '';
+  if (!email || !password) { toast('Email dan kata sandi harus diisi', 'error'); return; }
+
+  setBtnLoading('btn-admin-login', true, 'Memverifikasi...');
+
+  if (USE_SUPABASE) {
+    const { data, error } = await SB.auth.signInWithPassword({ email, password });
+    if (error) {
+      setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+      toast(petaErrorAuth(error.message), 'error'); return;
+    }
+    const { data: prof } = await SB.from('profiles').select('*').eq('id', data.user.id).single();
+    if (prof?.role !== 'admin') {
+      await SB.auth.signOut();
+      setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+      toast('❌ Akun ini bukan admin', 'error'); return;
+    }
+    App.currentUser = { id: data.user.id, name: prof.full_name||'Admin', email, phone: prof.phone||'', role: 'admin' };
+  } else {
+    await delay(700);
+    if (!email.includes('admin')) {
+      setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+      toast('❌ Akun ini bukan admin', 'error'); return;
+    }
+    App.currentUser = { id: 'admin-1', name: 'Admin DW', email, phone: '', role: 'admin' };
+  }
+
+  setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+  loginSuccess('admin');
 }
 
-// ── Kekuatan password (real-time) ──
+// ── Validasi real-time input ───────────────────────────────────
+function validatePhoneInput(inp) {
+  const hint = document.getElementById('phone-hint'); if(!hint) return;
+  const v = inp.value.trim();
+  if (!v) { hint.textContent=''; return; }
+  const ok = /^08\d{8,12}$/.test(v);
+  hint.textContent = ok ? '✅ Nomor valid' : '⚠️ Format: 08xxxxxxxxxx (10–13 digit)';
+  hint.style.color  = ok ? '#16a34a' : '#f97316';
+}
+
+function validateEmailInput(inp) {
+  const hint = document.getElementById('email-hint'); if(!hint) return;
+  const v = inp.value.trim();
+  if (!v) { hint.textContent=''; return; }
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  hint.textContent = ok ? '✅ Email valid' : '⚠️ Format tidak valid';
+  hint.style.color  = ok ? '#16a34a' : '#f97316';
+}
+function togglePwd(inputId, iconEl) {
+  const inp = document.getElementById(inputId); if (!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  iconEl.textContent = inp.type === 'password' ? '👁️' : '🙈';
+}
+
+// ── Kekuatan password real-time ──
 document.addEventListener('DOMContentLoaded', () => {
   const pwdEl = document.getElementById('reg-password');
-  if (pwdEl) pwdEl.addEventListener('input', () => checkPwdStrength(pwdEl.value));
+  if (pwdEl) pwdEl.addEventListener('input', e => {
+    checkPwdStrength(e.target.value);
+    // Cek cocok jika pwd2 sudah diisi
+    const p2 = document.getElementById('reg-password2');
+    if (p2?.value) checkPwdMatch();
+  });
+  const pwd2El = document.getElementById('reg-password2');
+  if (pwd2El) pwd2El.addEventListener('input', () => checkPwdMatch());
+
+  // Validasi nomor HP real-time
+  const phoneEl = document.getElementById('reg-phone');
+  if (phoneEl) phoneEl.addEventListener('input', e => {
+    const hint = document.getElementById('phone-hint'); if(!hint) return;
+    const v = e.target.value.trim();
+    if (!v) { hint.textContent=''; return; }
+    if (/^08\d{8,12}$/.test(v)) { hint.textContent='✅ Nomor valid'; hint.style.color='#16a34a'; }
+    else { hint.textContent='⚠️ Format: 08xxxxxxxxxx'; hint.style.color='#f97316'; }
+  });
+
+  // Validasi email real-time
+  const emailEl = document.getElementById('reg-email');
+  if (emailEl) emailEl.addEventListener('input', e => {
+    const hint = document.getElementById('email-hint'); if(!hint) return;
+    const v = e.target.value.trim();
+    if (!v) { hint.textContent=''; return; }
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { hint.textContent='✅ Email valid'; hint.style.color='#16a34a'; }
+    else { hint.textContent='⚠️ Format tidak valid'; hint.style.color='#f97316'; }
+  });
 });
+
 function checkPwdStrength(pwd) {
-  const bar  = document.getElementById('pwd-bar');
-  const hint = document.getElementById('pwd-hint');
-  if (!bar || !hint) return;
+  const bar = document.getElementById('pwd-bar'), hint = document.getElementById('pwd-hint');
+  if (!bar||!hint) return;
   let score = 0;
-  if (pwd.length >= 8)  score++;
-  if (/[A-Z]/.test(pwd)) score++;
-  if (/[0-9]/.test(pwd)) score++;
+  if (pwd.length >= 8)           score++;
+  if (/[A-Z]/.test(pwd))         score++;
+  if (/[0-9]/.test(pwd))         score++;
   if (/[^A-Za-z0-9]/.test(pwd)) score++;
   const map = [
-    {w:'0',  c:'#e5e7eb', t:''},
-    {w:'25%', c:'#ef4444', t:'Lemah'},
-    {w:'50%', c:'#f97316', t:'Cukup'},
-    {w:'75%', c:'#eab308', t:'Kuat'},
-    {w:'100%',c:'#16a34a', t:'Sangat Kuat'},
+    {w:'0',    c:'#e5e7eb', t:''},
+    {w:'25%',  c:'#ef4444', t:'🔴 Lemah'},
+    {w:'50%',  c:'#f97316', t:'🟠 Cukup'},
+    {w:'75%',  c:'#eab308', t:'🟡 Kuat'},
+    {w:'100%', c:'#16a34a', t:'🟢 Sangat Kuat'},
   ];
-  const s = map[score] || map[0];
+  const s = map[score]||map[0];
   bar.style.width = s.w; bar.style.background = s.c; hint.textContent = s.t;
+}
+
+function checkPwdMatch() {
+  const p1 = document.getElementById('reg-password')?.value;
+  const p2 = document.getElementById('reg-password2')?.value;
+  const hint = document.getElementById('pwd2-hint'); if(!hint) return;
+  if (!p2) { hint.textContent=''; return; }
+  if (p1===p2) { hint.textContent='✅ Kata sandi cocok'; hint.style.color='#16a34a'; }
+  else         { hint.textContent='⚠️ Belum cocok'; hint.style.color='#f97316'; }
 }
 
 // ── LOGIN ──────────────────────────────────────────────────────
 async function handleLogin() {
   const email    = document.getElementById('login-email').value.trim().toLowerCase();
   const password = document.getElementById('login-password').value;
-  if (!email || !password) { toast('Email dan kata sandi harus diisi', 'error'); return; }
+  if (!email||!password) { toast('Email dan kata sandi harus diisi','error'); return; }
 
-  setBtnLoading('btn-login', true, 'Masuk...');
+  setBtnLoading('btn-login', true, 'Memverifikasi...');
 
   if (USE_SUPABASE) {
-    // ── Supabase Auth ──
     const { data, error } = await SB.auth.signInWithPassword({ email, password });
     if (error) {
-      setBtnLoading('btn-login', false, 'Masuk');
+      setBtnLoading('btn-login', false, 'Masuk Sekarang →');
       toast(petaErrorAuth(error.message), 'error'); return;
     }
-    // Ambil profil dari tabel profiles
     const { data: prof } = await SB.from('profiles').select('*').eq('id', data.user.id).single();
     const role = prof?.role || 'buyer';
     App.currentUser = {
-      id:    data.user.id,
-      name:  prof?.full_name || email.split('@')[0],
-      email: data.user.email,
-      phone: prof?.phone || '',
-      role,
-      store_id: prof?.store_id || null,
+      id: data.user.id, name: prof?.full_name || email.split('@')[0],
+      email: data.user.email, phone: prof?.phone||'', role, store_id: prof?.store_id||null,
     };
-    setBtnLoading('btn-login', false, 'Masuk');
+    setBtnLoading('btn-login', false, 'Masuk Sekarang →');
     loginSuccess(role);
-
   } else {
-    // ── Mode lokal (Supabase belum dikonfigurasi) ──
-    await delay(600);
-    let role = 'buyer', name = email.split('@')[0], phone = '';
-    if (email === ADMIN_EMAIL || email.includes('admin')) { role = 'admin'; name = 'Admin DW'; }
-    else if (email.includes('penjual') || email.includes('seller') || email.includes('warung')) {
-      role = 'seller'; name = 'Penjual';
-    }
-    App.currentUser = { id: 'u-' + Date.now(), name, email, phone, role };
-    setBtnLoading('btn-login', false, 'Masuk');
+    await delay(700);
+    let role='buyer', name=email.split('@')[0];
+    if (email===ADMIN_EMAIL||email.includes('admin'))  { role='admin';  name='Admin DW'; }
+    else if (email.includes('penjual')||email.includes('seller')||email.includes('warung')) { role='seller'; name='Penjual'; }
+    App.currentUser = { id:'u-'+Date.now(), name, email, phone:'', role };
+    setBtnLoading('btn-login', false, 'Masuk Sekarang →');
     loginSuccess(role);
   }
 }
 
 // ── DAFTAR ────────────────────────────────────────────────────
 async function handleRegister() {
+  if (!validasiStep3()) return;
+
+  // Cek persetujuan
+  if (!document.getElementById('reg-setuju')?.checked) {
+    toast('Centang persetujuan terlebih dahulu', 'error'); return;
+  }
+
   const name     = document.getElementById('reg-name').value.trim();
   const phone    = document.getElementById('reg-phone').value.trim();
   const email    = document.getElementById('reg-email').value.trim().toLowerCase();
   const password = document.getElementById('reg-password').value;
   const role     = App.registerRole;
 
-  // Validasi
-  if (!name || !email || !password) { toast('Nama, email, dan kata sandi wajib diisi', 'error'); return; }
-  if (password.length < 8)          { toast('Kata sandi minimal 8 karakter', 'error'); return; }
-  if (phone && !/^08\d{8,12}$/.test(phone)) { toast('Format nomor HP tidak valid (contoh: 08123456789)', 'error'); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast('Format email tidak valid', 'error'); return; }
-
-  setBtnLoading('btn-daftar', true, 'Menyimpan...');
+  setBtnLoading('btn-daftar', true, 'Membuat akun...');
 
   if (USE_SUPABASE) {
-    // ── Supabase SignUp ──
     const { data, error } = await SB.auth.signUp({
       email, password,
       options: { data: { full_name: name, phone, role } }
     });
     if (error) {
-      setBtnLoading('btn-daftar', false, '💾 Simpan & Selesai');
+      setBtnLoading('btn-daftar', false, '🎉 Buat Akun');
       toast(petaErrorAuth(error.message), 'error'); return;
     }
-    // Upsert ke tabel profiles
-    await SB.from('profiles').upsert({
-      id:        data.user.id,
-      full_name: name,
-      phone,
-      role,
-      email,
-      created_at: new Date().toISOString(),
-    });
-
-    setBtnLoading('btn-daftar', false, '💾 Simpan & Selesai');
-    toast(`✅ Akun ${role==='seller'?'Penjual':'Pembeli'} "${name}" berhasil didaftarkan!`, 'success');
-
+    if (data.user) {
+      await SB.from('profiles').upsert({
+        id: data.user.id, full_name: name, phone, role, email,
+        created_at: new Date().toISOString(),
+      });
+    }
   } else {
-    // ── Mode lokal ──
-    await delay(800);
-    setBtnLoading('btn-daftar', false, '💾 Simpan & Selesai');
-    toast(`✅ Akun "${name}" (${role==='seller'?'Penjual':'Pembeli'}) berhasil disimpan!`, 'success');
+    await delay(900);
   }
 
-  // Reset form → siap untuk pendaftar berikutnya, TIDAK masuk ke aplikasi
-  await delay(1500);
-  resetFormDaftar();
-  toast('Form telah direset — siap untuk pendaftar berikutnya', 'info');
+  setBtnLoading('btn-daftar', false, '🎉 Buat Akun');
+
+  const roleLabel = role === 'seller' ? 'Penjual 🏪' : 'Pembeli 🛒';
+  document.getElementById('reg-success-title').textContent = `Selamat, Akun ${roleLabel} Siap!`;
+  document.getElementById('reg-success-body').textContent  =
+    `"${name}" berhasil terdaftar. Klik tombol di bawah untuk langsung masuk, atau daftarkan akun lain.`;
+  regNextStep(4);
 }
 
-// ── LOGIN SUCCESS ─────────────────────────────────────────────
+// ── LOGIN SUCCESS ──────────────────────────────────────────────
 function loginSuccess(role) {
-  // Pastikan form daftar tersembunyi & form login terlihat untuk berikutnya
-  tutupFormDaftar();
+  hideSplash();
+  // Reset tampilan auth ke default sebelum disembunyikan
+  switchTab('login');
+  document.getElementById('login-email').value    = '';
+  document.getElementById('login-password').value = '';
   document.getElementById('screen-auth').classList.remove('active');
-  if (role === 'buyer') {
+  if (role==='buyer') {
     document.getElementById('screen-buyer').classList.add('active');
     document.getElementById('buyer-name').textContent    = App.currentUser.name;
     document.getElementById('profile-name').textContent  = App.currentUser.name;
     document.getElementById('profile-email').textContent = App.currentUser.email;
-    document.getElementById('profile-phone').textContent = App.currentUser.phone || '-';
+    document.getElementById('profile-phone').textContent = App.currentUser.phone||'-';
     loadBuyerHome();
-  } else if (role === 'seller') {
+  } else if (role==='seller') {
     document.getElementById('screen-seller').classList.add('active');
     document.getElementById('seller-store-name').textContent = App.currentUser.name;
     loadSellerDashboard();
@@ -1156,38 +1772,34 @@ function loginSuccess(role) {
 
 async function handleLogout() {
   if (USE_SUPABASE) await SB.auth.signOut();
-  App.currentUser = null; App.cart = []; App.notifikasi = [];
+  App.currentUser=null; App.cart=[]; App.notifikasi=[];
   ['screen-buyer','screen-seller','screen-admin'].forEach(s =>
-    document.getElementById(s).classList.remove('active')
-  );
+    document.getElementById(s).classList.remove('active'));
   document.getElementById('screen-auth').classList.add('active');
-  toast('Berhasil keluar', 'info');
+  toast('Berhasil keluar','info');
 }
 
 // ── Helpers ────────────────────────────────────────────────────
 function setBtnLoading(id, loading, label) {
-  const btn = document.getElementById(id); if (!btn) return;
-  btn.disabled = loading;
-  btn.textContent = loading ? `⏳ ${label}` : label;
+  const btn = document.getElementById(id); if(!btn) return;
+  btn.disabled = loading; btn.textContent = loading ? `⏳ ${label}` : label;
 }
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+function delay(ms) { return new Promise(r=>setTimeout(r,ms)); }
 function petaErrorAuth(msg) {
   const map = {
-    'Invalid login credentials'         : 'Email atau kata sandi salah',
-    'Email not confirmed'               : 'Email belum diverifikasi, cek inbox Anda',
-    'User already registered'           : 'Email ini sudah terdaftar',
-    'Password should be at least 6'     : 'Kata sandi minimal 8 karakter',
-    'Database error creating new user'  : 'Gagal daftar — lihat panduan perbaikan Supabase di bawah',
-    'signup is disabled'                : 'Pendaftaran nonaktif di Supabase dashboard',
+    'Invalid login credentials'        : '❌ Email atau kata sandi salah',
+    'Email not confirmed'              : '📧 Email belum diverifikasi — cek inbox Anda',
+    'User already registered'          : '⚠️ Email ini sudah terdaftar, silakan login',
+    'Password should be at least 6'    : '🔒 Kata sandi minimal 8 karakter',
+    'Database error creating new user' : '⚙️ Error database — jalankan supabase_setup.sql terlebih dulu',
+    'signup is disabled'               : '⚠️ Pendaftaran dinonaktifkan di Supabase dashboard',
+    'over_email_send_rate_limit'       : '⏳ Terlalu banyak percobaan — tunggu beberapa menit',
   };
-  for (const [k,v] of Object.entries(map)) { if (msg.includes(k)) return v; }
-  return msg;
+  for (const [k,v] of Object.entries(map)) { if(msg.includes(k)) return v; }
+  return '❌ ' + msg;
 }
-
-// ── switchAuthTab (legacy, aman dihapus tapi dijaga agar tidak error) ──
 function switchAuthTab(tab) {
-  if (tab === 'register') bukaFormDaftar();
-  else tutupFormDaftar();
+  if(tab==='register') bukaFormDaftar(); else tutupFormDaftar();
 }
 
 // ══ NAVIGATION ══
@@ -1240,7 +1852,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function loadBuyerHome() { loadFavoritLocal(); renderFavoritSection(); renderCategories(); renderStores(); renderPopular(); }
 
 function renderCategories() {
-  document.getElementById('categories-row').innerHTML = App.demoData.categories.map(c=>`
+  document.getElementById('categories-row').innerHTML = App.localData.categories.map(c=>`
     <div onclick="toast('Filter: ${c.name}','info')" style="flex-shrink:0;text-align:center;cursor:pointer;padding:.6rem .9rem;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.07);min-width:72px;">
       <div style="font-size:1.5rem;">${c.icon}</div>
       <div style="font-size:.7rem;font-weight:600;margin-top:.2rem;white-space:nowrap;">${c.name}</div>
@@ -1249,7 +1861,7 @@ function renderCategories() {
 
 function renderStores() {
   const list = document.getElementById('stores-list');
-  const stores = App.demoData.stores;
+  const stores = App.localData.stores;
   if (!stores.length) { list.innerHTML='<div class="empty-state"><div class="icon">😴</div><h3>Belum ada warung</h3></div>'; return; }
   list.innerHTML = stores.map(s=>{
     const status = checkStoreStatus(s);
@@ -1281,7 +1893,7 @@ function renderStores() {
 }
 
 function renderPopular() {
-  const all = App.demoData.stores.flatMap(s=>s.products.map(p=>({...p,storeName:s.name,storeId:s.id}))).sort((a,b)=>b.total_sold-a.total_sold);
+  const all = App.localData.stores.flatMap(s=>s.products.map(p=>({...p,storeName:s.name,storeId:s.id}))).sort((a,b)=>b.total_sold-a.total_sold);
   document.getElementById('popular-grid').innerHTML = all.slice(0,6).map(p=>`
     <div class="card" style="overflow:hidden;cursor:pointer;" onclick="openProductDetail('${p.storeId}','${p.id}')">
       <div style="height:100px;background:linear-gradient(135deg,#dcfce7,#86efac);display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;">
@@ -1308,7 +1920,7 @@ function handleSearch(q) {
     return;
   }
   searchTimeout = setTimeout(()=>{
-    const results = App.demoData.stores.flatMap(s=>s.products.filter(p=>p.name.toLowerCase().includes(q.toLowerCase())).map(p=>({...p,storeName:s.name,storeId:s.id})));
+    const results = App.localData.stores.flatMap(s=>s.products.filter(p=>p.name.toLowerCase().includes(q.toLowerCase())).map(p=>({...p,storeName:s.name,storeId:s.id})));
     document.getElementById('stores-section').style.display='none';
     document.getElementById('search-results').style.display='block';
     document.getElementById('search-results-grid').innerHTML = !results.length
@@ -1324,7 +1936,7 @@ function handleSearch(q) {
 
 // ══ STORE & PRODUCT DETAIL ══
 function openStoreDetail(storeId) {
-  const store = App.demoData.stores.find(s=>s.id===storeId); if(!store) return;
+  const store = App.localData.stores.find(s=>s.id===storeId); if(!store) return;
   const status = checkStoreStatus(store);
   document.getElementById('product-modal-content').innerHTML = `
     <div style="background:linear-gradient(135deg,#16a34a,#15803d);margin:-1.25rem -1.25rem 1rem;padding:1.25rem;color:#fff;">
@@ -1350,7 +1962,7 @@ function openStoreDetail(storeId) {
 
 let currentModalQty = 1;
 function openProductDetail(storeId, productId) {
-  const store=App.demoData.stores.find(s=>s.id===storeId); const product=store?.products.find(p=>p.id===productId); if(!product) return;
+  const store=App.localData.stores.find(s=>s.id===storeId); const product=store?.products.find(p=>p.id===productId); if(!product) return;
   currentModalQty=1;
   document.getElementById('product-modal-content').innerHTML = `
     <div style="background:linear-gradient(135deg,#dcfce7,#86efac);margin:-1.25rem -1.25rem 1.25rem;height:160px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;">
@@ -1388,14 +2000,14 @@ function changeQty(delta, price) {
 
 // ══ CART ══
 function addToCartFromModal(storeId, productId) {
-  const store=App.demoData.stores.find(s=>s.id===storeId); const product=store?.products.find(p=>p.id===productId); if(!product) return;
+  const store=App.localData.stores.find(s=>s.id===storeId); const product=store?.products.find(p=>p.id===productId); if(!product) return;
   const notes=document.getElementById('item-notes')?.value||'';
   addToCart(storeId, store.name, store.whatsapp, product, currentModalQty, notes);
   closeModal('modal-product'); currentModalQty=1;
 }
 
 function quickAddToCart(storeId, productId) {
-  const store=App.demoData.stores.find(s=>s.id===storeId); const product=store?.products.find(p=>p.id===productId); if(!product) return;
+  const store=App.localData.stores.find(s=>s.id===storeId); const product=store?.products.find(p=>p.id===productId); if(!product) return;
   addToCart(storeId, store.name, store.whatsapp, product, 1, '');
 }
 
@@ -1462,7 +2074,7 @@ function selectPayment(method) {
   ['cash_pickup','qris','cod'].forEach(m=>document.getElementById(`pay-${m==='cash_pickup'?'cash-pickup':m}`)?.classList.toggle('selected',m===method));
   document.getElementById('qris-panel').style.display=method==='qris'?'block':'none';
   if (method==='qris'&&App.cart.length) {
-    const store=App.demoData.stores.find(s=>s.id===App.cart[0].storeId);
+    const store=App.localData.stores.find(s=>s.id===App.cart[0].storeId);
     document.getElementById('qris-image').innerHTML = store?.qris_url
       ? `<img src="${store.qris_url}" style="width:100%;border-radius:4px;"/>`
       : `<span style="font-size:3rem;">📱</span>`;
@@ -1483,7 +2095,7 @@ async function handleCheckout() {
     payment_method:App.selectedPayment, delivery_method:App.selectedDelivery, buyer_notes:notes,
     created_at:new Date().toISOString(), ulasan:null
   };
-  App.demoData.orders.unshift(newOrder);
+  App.localData.orders.unshift(newOrder);
   App.cart=[]; updateCartBadge();
   toast('Pesanan berhasil dikirim! 🎉','success');
   setTimeout(()=>showPage('buyer-orders'),800);
@@ -1491,7 +2103,7 @@ async function handleCheckout() {
 
 // ══ NOTA CETAK ══
 function openNota(orderId) {
-  const order = [...App.demoData.orders,...App.demoData.sellerOrders].find(o=>o.id===orderId||o.order_number===orderId);
+  const order = [...App.localData.orders,...App.localData.sellerOrders].find(o=>o.id===orderId||o.order_number===orderId);
   if (!order) return;
   const ongkir = order.ongkir||0;
   const subtotal = order.subtotal || (order.total - ongkir);
@@ -1546,7 +2158,7 @@ const PROGRESS_STEPS = ['pending','confirmed','processing','ready','delivering',
 const PROGRESS_LABEL = {pending:'Menunggu',confirmed:'Dikonfirmasi',processing:'Diproses',ready:'Siap',delivering:'Diantar',completed:'Selesai'};
 
 function loadBuyerOrders() {
-  const orders = App.demoData.orders;
+  const orders = App.localData.orders;
   const list   = document.getElementById('orders-list');
   if (!orders.length) { list.innerHTML='<div class="empty-state"><div class="icon">📋</div><h3>Belum ada pesanan</h3></div>'; return; }
   list.innerHTML = orders.map(o=>{
@@ -1604,7 +2216,7 @@ function setThumb(key,val) {
 }
 
 function openUlasanModal(orderId) {
-  const order=App.demoData.orders.find(o=>o.id===orderId); if(!order) return;
+  const order=App.localData.orders.find(o=>o.id===orderId); if(!order) return;
   document.getElementById('ul-order-id').value=orderId;
   document.getElementById('ul-order-info').innerHTML=`<b>${order.order_number}</b> · ${order.stores?.name} · ${fmtDate(order.created_at)}`;
   App.ulasanRating={produk:0,penjual:0,kirim:0,layanan:0};
@@ -1625,7 +2237,7 @@ function openUlasanModal(orderId) {
 function simpanUlasan() {
   const orderId=document.getElementById('ul-order-id').value;
   const {produk,penjual,kirim,layanan}=App.ulasanRating;
-  const order=App.demoData.orders.find(o=>o.id===orderId); if(!order) return;
+  const order=App.localData.orders.find(o=>o.id===orderId); if(!order) return;
   if(!produk&&!penjual) { toast('Beri minimal 1 penilaian','error'); return; }
   const ulasan={
     id:'ul'+Date.now(), order_number:order.order_number,
@@ -1638,40 +2250,53 @@ function simpanUlasan() {
     komentar:document.getElementById('ul-komentar').value,
     created_at:new Date().toISOString()
   };
-  App.demoData.ulasan.push(ulasan);
+  App.localData.ulasan.push(ulasan);
   order.ulasan=ulasan;
   // Update rating store
-  const store=App.demoData.stores.find(s=>s.name===order.stores?.name);
+  const store=App.localData.stores.find(s=>s.name===order.stores?.name);
   if(store){
-    const all=App.demoData.ulasan.filter(u=>u.store_name===store.name&&u.produk>0);
+    const all=App.localData.ulasan.filter(u=>u.store_name===store.name&&u.produk>0);
     if(all.length) store.rating=parseFloat((all.reduce((s,u)=>s+(u.produk+u.penjual)/2,0)/all.length).toFixed(1));
   }
   toast('Ulasan berhasil dikirim 🙏','success');
   closeModal('modal-ulasan'); loadBuyerOrders();
 }
 
-function kirimKritikSaran() {
-  const kat=document.getElementById('ks-kategori').value;
-  const pesan=document.getElementById('ks-pesan').value.trim();
-  if (!pesan) { toast('Pesan tidak boleh kosong','error'); return; }
-  App.demoData.kritiksaran.push({id:'ks'+Date.now(),kategori:kat,pesan,buyer_name:App.currentUser?.name||'Anonim',created_at:new Date().toISOString()});
-  document.getElementById('ks-pesan').value='';
-  toast('Kritik & Saran terkirim, terima kasih! 🙏','success');
-}
-
 // ══ SELLER DASHBOARD ══
+
+// Helper: ambil store milik seller yang sedang login
+function getSellerStore() {
+  const sid = App.currentUser?.store_id;
+  return sid
+    ? App.localData.stores.find(s=>s.id===sid)
+    : App.localData.stores[0] || null;
+}
 function loadSellerDashboard() {
-  const store   = App.demoData.stores[0];
-  const orders  = App.demoData.sellerOrders.filter(o=>o.store_id==='s1');
+  // Cari store milik seller yang login (pakai store_id dari profil, atau store pertama)
+  const storeId = App.currentUser?.store_id || (App.localData.stores[0]?.id);
+  const store   = App.localData.stores.find(s=>s.id===storeId) || App.localData.stores[0] || null;
+  const orders  = storeId ? App.localData.sellerOrders.filter(o=>o.store_id===storeId) : [];
+
   document.getElementById('s-pending').textContent    = orders.filter(o=>o.status==='pending').length;
   document.getElementById('s-processing').textContent = orders.filter(o=>['confirmed','processing'].includes(o.status)).length;
   document.getElementById('s-completed').textContent  = orders.filter(o=>o.status==='completed').length;
   document.getElementById('s-today-rev').textContent  = fmtRp(orders.filter(o=>o.status==='completed').reduce((s,o)=>s+o.total,0));
+
+  // Jika warung belum dibuat, tampilkan panduan
+  if (!store) {
+    document.getElementById('store-open-label').textContent = 'Warung belum dibuat';
+    document.getElementById('store-auto-note').textContent  = '👉 Buka menu Warung untuk mengisi profil warung Anda';
+    setStoreStatusBadge(false);
+    renderJadwalLibur();
+    renderSellerOrders([]);
+    return;
+  }
+
   const status = checkStoreStatus(store);
-  document.getElementById('store-open-toggle').checked = status.buka;
+  document.getElementById('store-open-toggle').checked   = status.buka;
   document.getElementById('store-open-label').textContent = status.label;
-  const today=new Date().toISOString().slice(0,10);
-  const libInfo=isHariLibur(today);
+  const today   = new Date().toISOString().slice(0,10);
+  const libInfo = isHariLibur(today);
   document.getElementById('store-auto-note').textContent = libInfo.libur ? `⚠️ Otomatis tutup: ${libInfo.alasan}` : '';
   setStoreStatusBadge(status.buka);
   renderJadwalLibur();
@@ -1713,7 +2338,7 @@ function renderSellerOrders(orders) {
 }
 
 function updateOrderStatus(orderId, newStatus) {
-  const o=App.demoData.sellerOrders.find(o=>o.id===orderId); if(!o) return;
+  const o=App.localData.sellerOrders.find(o=>o.id===orderId); if(!o) return;
   o.status=newStatus; toast(`Status: ${STATUS_LABEL[newStatus]}`,'success'); loadSellerDashboard();
 }
 
@@ -1725,7 +2350,7 @@ function toggleStoreOpen(isOpen) {
 
 // ══ SELLER PRODUCTS ══
 function loadSellerProducts() {
-  const products=App.demoData.stores[0].products;
+  const products=getSellerStore()?.products||[];
   document.getElementById('seller-products-list').innerHTML = products.map(p=>`
     <div class="card" style="padding:.85rem;margin-bottom:.65rem;display:flex;gap:.75rem;align-items:center;">
       <div style="width:56px;height:56px;background:var(--green-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">🍽️</div>
@@ -1738,7 +2363,7 @@ function loadSellerProducts() {
 }
 
 function openProductModal(productId) {
-  const p=productId?App.demoData.stores[0].products.find(x=>x.id===productId):null;
+  const p=productId?getSellerStore()?.products||[].find(x=>x.id===productId):null;
   document.getElementById('product-form-title').textContent=p?'Edit Produk':'Tambah Produk';
   document.getElementById('pf-id').value=productId||'';
   document.getElementById('pf-name').value=p?.name||'';
@@ -1765,7 +2390,7 @@ function previewQrisImage(input) {
     document.getElementById('qris-preview').src=e.target.result;
     document.getElementById('qris-preview').style.display='block';
     document.getElementById('qris-placeholder').style.display='none';
-    App.demoData.stores[0].qris_url=e.target.result;
+    const st=getSellerStore(); if(st) st.qris_url=e.target.result;
     toast('QRIS berhasil diupload ✅','success');
   }; r.readAsDataURL(file);
 }
@@ -1774,7 +2399,7 @@ function saveProduct() {
   const name=document.getElementById('pf-name').value.trim();
   const price=parseFloat(document.getElementById('pf-price').value);
   if (!name||!price) { toast('Nama dan harga harus diisi','error'); return; }
-  const products=App.demoData.stores[0].products, id=document.getElementById('pf-id').value;
+  const products=getSellerStore()?.products||[], id=document.getElementById('pf-id').value;
   if (id) {
     const idx=products.findIndex(p=>p.id===id);
     if(idx!==-1) products[idx]={...products[idx],name,price,description:document.getElementById('pf-desc').value,stock:parseInt(document.getElementById('pf-stock').value)||(-1)};
@@ -1788,12 +2413,13 @@ function saveProduct() {
 
 function deleteProduct(productId) {
   if(!confirm('Hapus produk ini?')) return;
-  App.demoData.stores[0].products=App.demoData.stores[0].products.filter(p=>p.id!==productId);
+  const st=getSellerStore(); if(st&&st.products) st.products=st.products.filter(p=>p.id!==productId);
   toast('Produk dihapus','info'); loadSellerProducts();
 }
 
 function loadStoreForm() {
-  const s=App.demoData.stores[0];
+  const s=getSellerStore();
+  if(!s) return; // belum ada warung, form kosong
   document.getElementById('store-name-input').value=s.name;
   document.getElementById('store-desc-input').value=s.description;
   document.getElementById('store-wa-input').value=s.whatsapp;
@@ -1804,7 +2430,7 @@ function loadStoreForm() {
 }
 
 function saveStoreProfile() {
-  const s=App.demoData.stores[0];
+  const s=getSellerStore();
   s.name=document.getElementById('store-name-input').value;
   s.description=document.getElementById('store-desc-input').value;
   s.whatsapp=document.getElementById('store-wa-input').value;
@@ -1831,7 +2457,7 @@ function setLaporanTab(tab) {
   loadLaporan();
 }
 function loadLaporan() {
-  let orders=[...App.demoData.sellerOrders];
+  let orders=[...App.localData.sellerOrders];
   if (laporanTab==='harian') {
     const sel=document.getElementById('lap-date').value;
     if(sel) orders=orders.filter(o=>o.created_at.slice(0,10)===sel);
@@ -1869,13 +2495,13 @@ function setIuranTab(tab) {
   renderIuranList();
 }
 function loadSellerIuran() {
-  const items=App.demoData.iuran.filter(i=>i.store_id==='s1');
+  const items=App.localData.iuran.filter(i=>i.store_id===(getSellerStore()?.id||'s1'));
   document.getElementById('iuran-belum').textContent=fmtRp(items.filter(i=>i.status==='belum').reduce((s,i)=>s+i.jumlah,0));
   document.getElementById('iuran-sudah').textContent=fmtRp(items.filter(i=>i.status==='lunas').reduce((s,i)=>s+i.jumlah,0));
   renderIuranList();
 }
 function renderIuranList() {
-  const items=App.demoData.iuran.filter(i=>i.store_id==='s1'&&i.jenis===iuranTab);
+  const items=App.localData.iuran.filter(i=>i.store_id===(getSellerStore()?.id||'s1')&&i.jenis===iuranTab);
   const list=document.getElementById('iuran-list');
   if(!items.length){list.innerHTML='<div class="empty-state"><div class="icon">🧾</div><h3>Belum ada tagihan</h3></div>';return;}
   list.innerHTML=items.map(i=>`
@@ -1893,26 +2519,21 @@ function renderIuranList() {
 
 // ══ ADMIN ══
 function loadAdminDashboard() {
-  document.getElementById('a-sellers').textContent=App.demoData.stores.length;
-  document.getElementById('a-buyers').textContent=48;
-  document.getElementById('a-orders').textContent=312;
-  document.getElementById('a-revenue').textContent=fmtRp(4875000);
-  // KS terbaru
-  const ksList=document.getElementById('admin-ks-list');
-  const ks=App.demoData.kritiksaran.slice(-3).reverse();
-  ksList.innerHTML=ks.length?ks.map(k=>`
-    <div class="card" style="padding:.75rem;margin-bottom:.5rem;">
-      <div style="display:flex;justify-content:space-between;margin-bottom:.25rem;">
-        <span class="badge badge-confirmed">${k.kategori}</span>
-        <span style="font-size:.75rem;color:var(--muted);">${timeAgo(k.created_at)}</span>
-      </div>
-      <div style="font-size:.85rem;">"${k.pesan}"</div>
-      <div style="font-size:.75rem;color:var(--muted);margin-top:.25rem;">— ${k.buyer_name}</div>
-    </div>`).join(''):'<div style="font-size:.85rem;color:var(--muted);padding:.5rem 0;">Belum ada kritik & saran</div>';
-  // Recent orders
-  const list=document.getElementById('admin-recent-orders');
-  const all=[...App.demoData.orders,...App.demoData.sellerOrders].slice(0,5);
-  list.innerHTML=all.map(o=>`
+  const stores  = App.localData.stores;
+  const orders  = [...App.localData.orders, ...App.localData.sellerOrders];
+  const omzet   = orders.filter(o=>o.status==='completed').reduce((s,o)=>s+o.total,0);
+  document.getElementById('a-sellers').textContent = stores.length || '—';
+  document.getElementById('a-buyers').textContent  = '—';
+  document.getElementById('a-orders').textContent  = orders.length || '—';
+  document.getElementById('a-revenue').textContent = orders.length ? fmtRp(omzet) : '—';
+
+  // Transaksi terbaru
+  const list = document.getElementById('admin-recent-orders');
+  if (!orders.length) {
+    list.innerHTML = `<div class="empty-state"><div class="icon">📦</div><h3>Belum ada transaksi</h3><p>Transaksi akan muncul di sini setelah pembeli mulai memesan</p></div>`;
+    return;
+  }
+  list.innerHTML = orders.slice(0,5).map(o=>`
     <div class="card order-${o.status}" style="padding:.85rem;margin-bottom:.6rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <div><div style="font-size:.85rem;font-weight:700;">${o.order_number}</div><div style="font-size:.75rem;color:var(--muted);">${timeAgo(o.created_at)}</div></div>
@@ -1922,7 +2543,7 @@ function loadAdminDashboard() {
 }
 
 function loadAdminOrders() {
-  const all=[...App.demoData.orders,...App.demoData.sellerOrders].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  const all=[...App.localData.orders,...App.localData.sellerOrders].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
   document.getElementById('admin-all-orders').innerHTML=all.map(o=>`
     <div class="card order-${o.status}" style="padding:.85rem;margin-bottom:.6rem;">
       <div style="display:flex;justify-content:space-between;margin-bottom:.4rem;"><div style="font-weight:700;font-size:.9rem;">${o.order_number}</div><span class="badge badge-${o.status}">${STATUS_LABEL[o.status]||o.status}</span></div>
@@ -1939,7 +2560,7 @@ function loadAdminOrders() {
 }
 
 function loadAdminStores() {
-  document.getElementById('admin-stores-list').innerHTML=App.demoData.stores.map(s=>{
+  document.getElementById('admin-stores-list').innerHTML=App.localData.stores.map(s=>{
     const status=checkStoreStatus(s);
     return `<div class="card" style="padding:1rem;margin-bottom:.75rem;display:flex;gap:.75rem;align-items:center;">
       <div style="width:56px;height:56px;border-radius:12px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">🏪</div>
@@ -1970,7 +2591,7 @@ function loadAdminUsers() {
 
 function loadAdminUlasan(){
   const list=document.getElementById('admin-ulasan-list');
-  const ulasan=[...App.demoData.ulasan].reverse();
+  const ulasan=[...App.localData.ulasan].reverse();
   if(!ulasan.length){list.innerHTML='<div class="empty-state"><div class="icon">⭐</div><h3>Belum ada ulasan</h3></div>';return;}
   const stars=(n,max=5)=>n?('★'.repeat(n)+'☆'.repeat(max-n)):'—';
   const thumb=(t)=>t===1?'👍':t===-1?'👎':'—';
@@ -2005,7 +2626,7 @@ function setFinTab(tab) {
   if(tab==='iuran')    loadAdminIuran();
 }
 function loadNeraca(){
-  const lunas=App.demoData.iuran.filter(i=>i.status==='lunas');
+  const lunas=App.localData.iuran.filter(i=>i.status==='lunas');
   const sewa=lunas.filter(i=>i.jenis==='sewa').reduce((s,i)=>s+i.jumlah,0);
   const komisi=lunas.filter(i=>i.jenis==='komisi').reduce((s,i)=>s+i.jumlah,0);
   const ops=250000;
@@ -2019,8 +2640,8 @@ function loadNeraca(){
   document.getElementById('ner-saldo').style.color=saldo>=0?'var(--green-dark)':'#dc2626';
 }
 function loadLabaRugi(){
-  const omzet=App.demoData.sellerOrders.filter(o=>o.status==='completed').reduce((s,o)=>s+o.total,0);
-  const masuk=App.demoData.iuran.filter(i=>i.status==='lunas').reduce((s,i)=>s+i.jumlah,0);
+  const omzet=App.localData.sellerOrders.filter(o=>o.status==='completed').reduce((s,o)=>s+o.total,0);
+  const masuk=App.localData.iuran.filter(i=>i.status==='lunas').reduce((s,i)=>s+i.jumlah,0);
   const keluar=250000, laba=masuk-keluar;
   document.getElementById('lr-omzet').textContent=fmtRp(omzet);
   document.getElementById('lr-masuk').textContent=fmtRp(masuk);
@@ -2029,9 +2650,9 @@ function loadLabaRugi(){
   document.getElementById('lr-laba').style.color=laba>=0?'var(--green-main)':'#dc2626';
 }
 function loadTrafik(){
-  const storeStats=App.demoData.stores.map(s=>({
-    name:s.name, trx:App.demoData.sellerOrders.filter(o=>o.store_id===s.id).length,
-    omzet:App.demoData.sellerOrders.filter(o=>o.store_id===s.id&&o.status==='completed').reduce((s,o)=>s+o.total,0)
+  const storeStats=App.localData.stores.map(s=>({
+    name:s.name, trx:App.localData.sellerOrders.filter(o=>o.store_id===s.id).length,
+    omzet:App.localData.sellerOrders.filter(o=>o.store_id===s.id&&o.status==='completed').reduce((s,o)=>s+o.total,0)
   })).sort((a,b)=>b.omzet-a.omzet);
   const ri=(s,rank,color)=>`<div class="card" style="padding:.85rem;margin-bottom:.6rem;display:flex;gap:.75rem;align-items:center;">
     <div style="width:36px;height:36px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.9rem;flex-shrink:0;">${rank}</div>
@@ -2042,7 +2663,7 @@ function loadTrafik(){
   document.getElementById('trafik-terendah').innerHTML=[...storeStats].reverse().slice(0,3).map((s,i)=>ri(s,storeStats.length-i,'#94a3b8')).join('');
 }
 function loadAdminIuran(){
-  document.getElementById('admin-iuran-list').innerHTML=App.demoData.iuran.map(i=>`
+  document.getElementById('admin-iuran-list').innerHTML=App.localData.iuran.map(i=>`
     <div class="card ${i.status==='lunas'?'iuran-lunas':'iuran-card'}" style="padding:.85rem;margin-bottom:.65rem;">
       <div style="display:flex;justify-content:space-between;margin-bottom:.3rem;">
         <div><div style="font-weight:700;font-size:.9rem;">${i.store_name}</div><div style="font-size:.75rem;color:var(--muted);">${i.jenis==='sewa'?'Sewa Lapak':'Komisi Antar'} · ${i.periode}</div></div>
@@ -2054,7 +2675,7 @@ function loadAdminIuran(){
       </div>
     </div>`).join('');
 }
-function tandaiLunas(id){const i=App.demoData.iuran.find(x=>x.id===id);if(!i)return;i.status='lunas';i.bayar_at=new Date().toISOString().slice(0,10);toast('Ditandai lunas ✅','success');loadAdminIuran();loadNeraca();}
+function tandaiLunas(id){const i=App.localData.iuran.find(x=>x.id===id);if(!i)return;i.status='lunas';i.bayar_at=new Date().toISOString().slice(0,10);toast('Ditandai lunas ✅','success');loadAdminIuran();loadNeraca();}
 function openModalTambahIuran(){document.getElementById('iuran-periode').value=new Date().toISOString().slice(0,7);openModal('modal-iuran');}
 function saveTambahIuran(){
   const seller=document.getElementById('iuran-seller').value;
@@ -2062,8 +2683,8 @@ function saveTambahIuran(){
   const jumlah=parseFloat(document.getElementById('iuran-jumlah').value);
   const periode=document.getElementById('iuran-periode').value;
   if(!jumlah){toast('Jumlah harus diisi','error');return;}
-  const store=App.demoData.stores.find(s=>s.id===seller);
-  App.demoData.iuran.push({id:'i'+Date.now(),store_id:seller,store_name:store?.name||seller,jenis,periode,jumlah,status:'belum',bayar_at:null});
+  const store=App.localData.stores.find(s=>s.id===seller);
+  App.localData.iuran.push({id:'i'+Date.now(),store_id:seller,store_name:store?.name||seller,jenis,periode,jumlah,status:'belum',bayar_at:null});
   toast('Tagihan ditambahkan','success'); closeModal('modal-iuran'); loadAdminIuran();
 }
 
@@ -2087,7 +2708,7 @@ function renderFavoritSection() {
   const favEl=document.getElementById('favorit-section');
   if(!favEl) return;
   if(!App.favorit.length){ favEl.innerHTML=''; return; }
-  const items=App.demoData.stores.flatMap(s=>s.products.filter(p=>App.favorit.includes(p.id)).map(p=>({...p,storeName:s.name,storeId:s.id})));
+  const items=App.localData.stores.flatMap(s=>s.products.filter(p=>App.favorit.includes(p.id)).map(p=>({...p,storeName:s.name,storeId:s.id})));
   if(!items.length){ favEl.innerHTML=''; return; }
   favEl.innerHTML=`<div class="section-title">❤️ Menu Favorit Saya</div>
     <div style="display:flex;gap:.6rem;overflow-x:auto;padding-bottom:.5rem;">
@@ -2183,7 +2804,7 @@ async function handleCheckout() {
   const subtotal=App.cart.reduce((s,c)=>s+c.price*c.qty,0);
   const ongkir=App.selectedDelivery==='delivery'?ONGKIR:0;
   const notes=document.getElementById('order-notes').value;
-  const store=App.demoData.stores.find(s=>s.id===App.cart[0].storeId);
+  const store=App.localData.stores.find(s=>s.id===App.cart[0].storeId);
   const newOrder = {
     id:'o'+Date.now(),
     order_number:'ORD-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+Math.floor(Math.random()*9000+1000),
@@ -2193,7 +2814,7 @@ async function handleCheckout() {
     payment_method:App.selectedPayment, delivery_method:App.selectedDelivery, buyer_notes:notes,
     created_at:new Date().toISOString(), ulasan:null
   };
-  App.demoData.orders.unshift(newOrder);
+  App.localData.orders.unshift(newOrder);
   App.cart=[]; updateCartBadge();
   toast('Pesanan berhasil dikirim! 🎉','success');
   // Push notif ke pembeli
@@ -2212,15 +2833,137 @@ async function handleCheckout() {
   setTimeout(()=>showPage('buyer-orders'),800);
 }
 
-// ══ INIT ══
-document.addEventListener('DOMContentLoaded',()=>{
-  ['buyer-orders','buyer-cart','buyer-profile'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
-  renderJadwalLibur();
-  loadFavoritLocal();
-  // Minta izin notifikasi browser
-  if('Notification' in window && Notification.permission==='default'){
-    Notification.requestPermission();
+// ══ LUPA PASSWORD ══════════════════════════════════════════════
+function bukaLupaPassword() {
+  document.getElementById('lupa-email').value = document.getElementById('login-email').value || '';
+  document.getElementById('lupa-form').style.display   = 'block';
+  document.getElementById('lupa-sukses').style.display = 'none';
+  openModal('modal-lupa-pwd');
+}
+
+async function kirimResetPassword() {
+  const email = document.getElementById('lupa-email').value.trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    toast('Masukkan email yang valid', 'error'); return;
   }
+  setBtnLoading('btn-reset', true, 'Mengirim...');
+
+  if (USE_SUPABASE) {
+    const { error } = await SB.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/?reset=true'
+    });
+    if (error) {
+      setBtnLoading('btn-reset', false, 'Kirim Link Reset');
+      toast(petaErrorAuth(error.message), 'error'); return;
+    }
+  } else {
+    await delay(900);
+  }
+
+  setBtnLoading('btn-reset', false, 'Kirim Link Reset');
+  document.getElementById('lupa-email-sent').textContent = email;
+  document.getElementById('lupa-form').style.display   = 'none';
+  document.getElementById('lupa-sukses').style.display = 'block';
+}
+
+// ══ SPLASH SCREEN ══════════════════════════════════════════════
+function hideSplash() {
+  const el = document.getElementById('splash-screen');
+  if (!el) return;
+  el.style.opacity = '0';
+  setTimeout(() => el.remove(), 500);
+}
+
+// ══ AUTO SESSION RESTORE ═══════════════════════════════════════
+// Cek apakah user sudah login sebelumnya (Supabase menyimpan session di localStorage)
+async function checkExistingSession() {
+  if (!USE_SUPABASE) { hideSplash(); return; }
+
+  try {
+    // Cek apakah ini link reset password
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('reset') === 'true' || url.hash.includes('type=recovery')) {
+      hideSplash();
+      toast('Silakan buat kata sandi baru Anda', 'info');
+      return;
+    }
+
+    const { data: { session } } = await SB.auth.getSession();
+    if (session?.user) {
+      // Session aktif — ambil profil dan langsung masuk
+      const { data: prof } = await SB.from('profiles')
+        .select('*').eq('id', session.user.id).single();
+      const role = prof?.role || 'buyer';
+      App.currentUser = {
+        id:       session.user.id,
+        name:     prof?.full_name || session.user.email.split('@')[0],
+        email:    session.user.email,
+        phone:    prof?.phone || '',
+        role,
+        store_id: prof?.store_id || null,
+      };
+      hideSplash();
+      loginSuccess(role);
+    } else {
+      hideSplash();
+    }
+  } catch(e) {
+    console.warn('Session check error:', e);
+    hideSplash();
+  }
+
+  // Pantau perubahan auth state (logout dari tab lain, session expire, dll)
+  SB.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT' && App.currentUser) {
+      App.currentUser = null; App.cart = []; App.notifikasi = [];
+      ['screen-buyer','screen-seller','screen-admin'].forEach(s =>
+        document.getElementById(s)?.classList.remove('active'));
+      document.getElementById('screen-auth')?.classList.add('active');
+      toast('Sesi Anda telah berakhir, silakan login kembali', 'info');
+    }
+  });
+}
+
+// ══ INIT ══
+document.addEventListener('DOMContentLoaded', () => {
+  // Sembunyikan halaman2 yang bukan auth
+  ['buyer-orders','buyer-cart','buyer-profile'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.style.display = 'none';
+  });
+
+  // Pasang event listener password real-time
+  const pwdEl  = document.getElementById('reg-password');
+  const pwd2El = document.getElementById('reg-password2');
+  const phEl   = document.getElementById('reg-phone');
+  const emEl   = document.getElementById('reg-email');
+
+  if (pwdEl)  pwdEl.addEventListener('input',  e => { checkPwdStrength(e.target.value); if(pwd2El?.value) checkPwdMatch(); });
+  if (pwd2El) pwd2El.addEventListener('input', () => checkPwdMatch());
+  if (phEl)   phEl.addEventListener('input',   e => {
+    const hint = document.getElementById('phone-hint'); if(!hint) return;
+    const v = e.target.value.trim();
+    if (!v) { hint.textContent=''; return; }
+    hint.textContent = /^08\d{8,12}$/.test(v) ? '✅ Nomor valid' : '⚠️ Format: 08xxxxxxxxxx';
+    hint.style.color = /^08\d{8,12}$/.test(v) ? '#16a34a' : '#f97316';
+  });
+  if (emEl)   emEl.addEventListener('input',   e => {
+    const hint = document.getElementById('email-hint'); if(!hint) return;
+    const v = e.target.value.trim();
+    if (!v) { hint.textContent=''; return; }
+    hint.textContent = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '✅ Email valid' : '⚠️ Format tidak valid';
+    hint.style.color = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '#16a34a' : '#f97316';
+  });
+
+  loadFavoritLocal();
+  renderJadwalLibur();
+
+  // Minta izin notifikasi browser
+  if ('Notification' in window && Notification.permission === 'default') {
+    setTimeout(() => Notification.requestPermission(), 3000);
+  }
+
+  // Cek session — jika Supabase aktif akan auto-login, jika tidak langsung hide splash
+  checkExistingSession();
 });
 
 // ══ PWA ══
