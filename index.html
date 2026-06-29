@@ -101,541 +101,573 @@
 <!-- ══ SCREEN AUTH ══ -->
 <!-- ══ SCREEN AUTH ══ -->
 <!-- ══ SCREEN AUTH ══ -->
+<!-- ══ SCREEN AUTH ══ -->
 <div id="screen-auth" class="page active">
 
-  <!-- ── HERO ── -->
-  <div class="ah-hero">
-    <div class="ah-food" style="top:6%;left:4%;font-size:2rem;animation-delay:0s;">🍚</div>
-    <div class="ah-food" style="top:14%;right:6%;font-size:1.6rem;animation-delay:.8s;">🥤</div>
-    <div class="ah-food" style="top:42%;left:1%;font-size:1.5rem;animation-delay:1.4s;">🍜</div>
-    <div class="ah-food" style="top:58%;right:3%;font-size:1.7rem;animation-delay:.3s;">🍟</div>
-    <div class="ah-food" style="bottom:18%;left:8%;font-size:1.4rem;animation-delay:1s;">🧃</div>
-    <div class="ah-food" style="bottom:7%;right:10%;font-size:1.6rem;animation-delay:1.7s;">🍰</div>
-    <div class="ah-food" style="top:30%;left:46%;font-size:1.2rem;animation-delay:.5s;opacity:.3;">☕</div>
+  <!-- TAMPILAN UTAMA: LOGIN -->
+  <div id="view-login" class="auth-view">
+    <!-- Atas: Brand -->
+    <div class="auth-brand-top">
+      <div class="auth-brand-logo" id="logo-tap" onclick="handleLogoTap()">🍽️</div>
+      <div class="auth-brand-name">Kantin DW Online</div>
+      <div class="auth-brand-sub">Pesan makanan dari warung Dharma Wanita</div>
+    </div>
 
-    <div class="ah-logo" id="logo-tap" onclick="handleLogoTap()">🍽️</div>
-    <div class="ah-brand">Kantin DW <span style="color:#86efac;">Online</span></div>
-    <div class="ah-tagline">Pesan makanan & minuman warung<br/>Dharma Wanita — cepat, mudah, aman</div>
+    <!-- Bawah: Form -->
+    <div class="auth-form-card">
+      <h2 class="auth-form-title">Masuk</h2>
 
-    <div class="ah-chips">
-      <span class="ah-chip">🏪 Multi Warung</span>
-      <span class="ah-chip">📱 QRIS & COD</span>
-      <span class="ah-chip">🛵 Jasa Antar</span>
+      <!-- Toggle WA / Email -->
+      <div class="auth-toggle-row" id="login-toggle">
+        <button class="auth-toggle-btn active" id="lt-wa"    onclick="loginSetMode('wa')">📱 WhatsApp</button>
+        <button class="auth-toggle-btn"        id="lt-email" onclick="loginSetMode('email')">📧 Email</button>
+      </div>
+
+      <!-- Field WA -->
+      <div id="lf-wa">
+        <div class="auth-field">
+          <label class="auth-lbl">Nomor WhatsApp</label>
+          <div class="auth-phone-row">
+            <span class="auth-phone-prefix">+62</span>
+            <input id="l-wa" type="tel" class="auth-inp auth-inp-phone"
+              placeholder="8xxxxxxxxxx" inputmode="numeric"
+              oninput="this.value=this.value.replace(/\D/g,'')"
+              onkeydown="if(event.key==='Enter')document.getElementById('l-wa-pwd').focus()"/>
+          </div>
+        </div>
+        <div class="auth-field">
+          <div class="auth-lbl-row">
+            <label class="auth-lbl">Kata Sandi</label>
+            <span class="auth-link-sm" onclick="bukaLupaPassword()">Lupa?</span>
+          </div>
+          <div class="auth-pwd-row">
+            <input id="l-wa-pwd" type="password" class="auth-inp"
+              placeholder="Kata sandi Anda" autocomplete="current-password"
+              onkeydown="if(event.key==='Enter')handleLogin()"/>
+            <button class="auth-eye-btn" onclick="togglePwd('l-wa-pwd',this)">👁️</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Field Email -->
+      <div id="lf-email" style="display:none;">
+        <div class="auth-field">
+          <label class="auth-lbl">Email</label>
+          <input id="l-email" type="email" class="auth-inp"
+            placeholder="nama@email.com" autocomplete="email" inputmode="email"
+            onkeydown="if(event.key==='Enter')document.getElementById('l-email-pwd').focus()"/>
+        </div>
+        <div class="auth-field">
+          <div class="auth-lbl-row">
+            <label class="auth-lbl">Kata Sandi</label>
+            <span class="auth-link-sm" onclick="bukaLupaPassword()">Lupa?</span>
+          </div>
+          <div class="auth-pwd-row">
+            <input id="l-email-pwd" type="password" class="auth-inp"
+              placeholder="Kata sandi Anda" autocomplete="current-password"
+              onkeydown="if(event.key==='Enter')handleLogin()"/>
+            <button class="auth-eye-btn" onclick="togglePwd('l-email-pwd',this)">👁️</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="auth-btn-primary" onclick="handleLogin()" id="btn-login">
+        Masuk
+      </button>
+
+      <div class="auth-divider"><span>Belum punya akun?</span></div>
+
+      <button class="auth-btn-outline" onclick="authShowView('daftar-pilih')">
+        Daftar Sekarang — Gratis
+      </button>
     </div>
   </div>
 
-  <!-- ── CARD ── -->
-  <div class="ah-card">
 
-    <!-- Tab bar -->
-    <div class="ah-tabs" id="ah-tabs-bar">
-      <button class="ah-tab active" id="ahtab-masuk"  onclick="ahSwitchTab('masuk')">Masuk</button>
-      <button class="ah-tab"        id="ahtab-daftar" onclick="ahSwitchTab('daftar')">Daftar</button>
+  <!-- TAMPILAN: PILIH CARA DAFTAR -->
+  <div id="view-daftar-pilih" class="auth-view" style="display:none;">
+    <div class="auth-back-bar">
+      <button class="auth-back" onclick="authShowView('login')">← Kembali</button>
+      <span class="auth-step-txt">Pendaftaran Akun</span>
     </div>
+    <div class="auth-form-card">
+      <h2 class="auth-form-title">Daftar sebagai</h2>
+      <p class="auth-form-sub">Pilih peran Anda di Kantin DW Online</p>
 
-    <!-- ══════════ PANEL MASUK ══════════ -->
-    <div id="ah-panel-masuk">
-      <!-- Social/Quick login -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem;">
-        <button class="ah-social-btn" onclick="quickLoginWA()">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L.054 23.445a.75.75 0 00.922.922l5.594-1.478A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.712 9.712 0 01-4.95-1.354l-.355-.211-3.677.971.984-3.594-.231-.369A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-          Masuk via WA
-        </button>
-        <button class="ah-social-btn" onclick="ahSwitchMethod('email')">
-          <svg viewBox="0 0 20 20" fill="#6b7280" width="18" height="18"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-          Masuk via Email
-        </button>
+      <div class="auth-role-grid">
+        <div class="auth-role-card" id="role-buyer" onclick="pilihRole('buyer')">
+          <div class="auth-role-icon">🛒</div>
+          <div class="auth-role-name">Pembeli</div>
+          <div class="auth-role-desc">Pesan makanan & minuman dari warung</div>
+          <div class="auth-role-check" id="rchk-buyer">✓</div>
+        </div>
+        <div class="auth-role-card" id="role-seller" onclick="pilihRole('seller')">
+          <div class="auth-role-icon">🏪</div>
+          <div class="auth-role-name">Penjual</div>
+          <div class="auth-role-desc">Buka lapak & terima pesanan online</div>
+          <div class="auth-role-check" id="rchk-seller" style="display:none;">✓</div>
+        </div>
       </div>
 
-      <div class="ah-divider"><span>atau masuk dengan</span></div>
+      <div class="auth-divider" style="margin:1.1rem 0;"><span>Pilih metode pendaftaran</span></div>
 
-      <!-- Method switcher login -->
-      <div class="ah-method-tabs" id="login-method-tabs">
-        <button class="ah-method-tab active" id="lmt-wa"    onclick="ahSwitchMethod('wa')">📱 WhatsApp</button>
-        <button class="ah-method-tab"        id="lmt-email" onclick="ahSwitchMethod('email')">📧 Email</button>
-      </div>
-
-      <!-- Login via WA (OTP) -->
-      <div id="login-wa-panel">
-        <div class="ah-field">
-          <label class="ah-lbl">Nomor WhatsApp</label>
-          <div class="ah-inp-wrap">
-            <div class="ah-prefix">+62</div>
-            <input type="tel" id="login-wa" class="ah-inp ah-inp-prefix" placeholder="8xxxxxxxxxx"
-              inputmode="numeric" autocomplete="tel"
-              oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-              onkeydown="if(event.key==='Enter')kirimOTPLogin()"/>
-          </div>
-          <div id="login-wa-hint" class="ah-hint"></div>
-        </div>
-        <div id="login-otp-panel" style="display:none;">
-          <div class="ah-otp-info">
-            <span style="font-size:1.1rem;">💬</span>
-            <span id="login-otp-info-txt">Kode OTP dikirim ke WA Anda</span>
-          </div>
-          <div class="ah-field">
-            <label class="ah-lbl">Kode OTP (6 digit)</label>
-            <div class="ah-otp-boxes" id="otp-boxes-login">
-              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
-              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
-              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
-              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
-              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
-              <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-login')" onkeydown="otpBack(event,this)"/>
-            </div>
-          </div>
-          <button class="ah-btn-main" onclick="verifikasiOTPLogin()" id="btn-verif-login">✅ Verifikasi &amp; Masuk</button>
-          <p style="text-align:center;font-size:.78rem;color:var(--muted);margin:.6rem 0 0;">
-            Tidak dapat kode? <span id="resend-timer-login" style="color:#16a34a;font-weight:600;cursor:pointer;" onclick="kirimOTPLogin()">Kirim ulang</span>
-          </p>
-        </div>
-        <button class="ah-btn-main" onclick="kirimOTPLogin()" id="btn-otp-login" style="margin-top:.3rem;">
-          📲 Kirim Kode OTP
+      <div style="display:flex;flex-direction:column;gap:.65rem;">
+        <button class="auth-btn-wa" onclick="authShowView('daftar-wa')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L.054 23.445a.75.75 0 00.922.922l5.594-1.478A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.712 9.712 0 01-4.95-1.354l-.355-.211-3.677.971.984-3.594-.231-.369A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+          Daftar via WhatsApp
+        </button>
+        <button class="auth-btn-outline" onclick="authShowView('daftar-email')">
+          📧 Daftar via Email
         </button>
       </div>
 
-      <!-- Login via Email -->
-      <div id="login-email-panel" style="display:none;">
-        <div class="ah-field">
-          <label class="ah-lbl">Email</label>
-          <div class="ah-inp-wrap">
-            <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-            <input type="email" id="login-email" class="ah-inp" placeholder="nama@email.com"
-              autocomplete="email" inputmode="email"
-              onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()"/>
-          </div>
-        </div>
-        <div class="ah-field">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;">
-            <label class="ah-lbl" style="margin:0;">Kata Sandi</label>
-            <span onclick="bukaLupaPassword()" style="font-size:.75rem;color:#16a34a;font-weight:600;cursor:pointer;">Lupa?</span>
-          </div>
-          <div class="ah-inp-wrap">
-            <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-            <input type="password" id="login-password" class="ah-inp" placeholder="Kata sandi"
-              autocomplete="current-password" style="padding-right:3rem;"
-              onkeydown="if(event.key==='Enter')handleLogin()"/>
-            <button class="ah-eye" onclick="togglePwd('login-password',this)" tabindex="-1">👁️</button>
-          </div>
-        </div>
-        <button class="ah-btn-main" onclick="handleLogin()" id="btn-login">Masuk Sekarang</button>
+      <p class="auth-note-bottom">Sudah punya akun? <span class="auth-link" onclick="authShowView('login')">Masuk</span></p>
+    </div>
+  </div>
+
+
+  <!-- TAMPILAN: DAFTAR via WA -->
+  <div id="view-daftar-wa" class="auth-view" style="display:none;">
+    <div class="auth-back-bar">
+      <button class="auth-back" onclick="authShowView('daftar-pilih')">← Kembali</button>
+      <span class="auth-step-txt">Daftar via WhatsApp</span>
+    </div>
+    <div class="auth-form-card">
+      <h2 class="auth-form-title">Data Akun WA</h2>
+      <p class="auth-form-sub">Isi lengkap, OTP dikirim ke WA Anda</p>
+
+      <div class="auth-field">
+        <label class="auth-lbl">Nama Lengkap</label>
+        <input id="rw-name" type="text" class="auth-inp"
+          placeholder="Nama sesuai KTP" autocomplete="name"
+          onkeydown="if(event.key==='Enter')document.getElementById('rw-phone').focus()"/>
       </div>
 
-      <div class="ah-divider" style="margin:.9rem 0;"><span>belum punya akun?</span></div>
-      <button class="ah-btn-outline" onclick="ahSwitchTab('daftar')">✨ Daftar Gratis — Pembeli / Penjual</button>
-      <p style="text-align:center;margin:.9rem 0 0;font-size:.68rem;color:#d1d5db;user-select:none;">v1.0 · Kantin DW Online © 2025</p>
-    </div><!-- /panel masuk -->
-
-
-    <!-- ══════════ PANEL DAFTAR ══════════ -->
-    <div id="ah-panel-daftar" style="display:none;">
-
-      <!-- Step bar -->
-      <div class="ah-stepbar">
-        <div class="ah-step-item active" id="dstep-1">
-          <div class="ah-step-circle" id="dsc-1">1</div>
-          <div class="ah-step-lbl">Peran</div>
+      <div class="auth-field">
+        <label class="auth-lbl">Nomor WhatsApp</label>
+        <div class="auth-phone-row">
+          <span class="auth-phone-prefix">+62</span>
+          <input id="rw-phone" type="tel" class="auth-inp auth-inp-phone"
+            placeholder="8xxxxxxxxxx" inputmode="numeric"
+            oninput="this.value=this.value.replace(/\D/g,'');rwValidatePhone(this)"
+            onkeydown="if(event.key==='Enter')document.getElementById('rw-pwd').focus()"/>
         </div>
-        <div class="ah-step-line" id="dsl-1"></div>
-        <div class="ah-step-item" id="dstep-2">
-          <div class="ah-step-circle" id="dsc-2">2</div>
-          <div class="ah-step-lbl">Identitas</div>
-        </div>
-        <div class="ah-step-line" id="dsl-2"></div>
-        <div class="ah-step-item" id="dstep-3">
-          <div class="ah-step-circle" id="dsc-3">3</div>
-          <div class="ah-step-lbl">Akun</div>
-        </div>
+        <div id="rw-phone-hint" class="auth-hint"></div>
       </div>
 
-      <!-- STEP 1: Pilih Peran -->
-      <div id="reg-step-1">
-        <p style="font-size:.82rem;color:var(--muted);margin:.1rem 0 .9rem;">Pilih peran Anda di Kantin DW</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem;">
-          <div class="ah-role selected-role" id="rc-buyer" onclick="selectRegisterRole('buyer')">
-            <div class="ah-role-icon">🛒</div>
-            <div class="ah-role-title">Pembeli</div>
-            <div class="ah-role-sub">Pesan makanan &amp; minuman dari warung</div>
-            <div class="ah-role-check" id="rcheck-buyer">✓</div>
-          </div>
-          <div class="ah-role" id="rc-seller" onclick="selectRegisterRole('seller')">
-            <div class="ah-role-icon">🏪</div>
-            <div class="ah-role-title">Penjual</div>
-            <div class="ah-role-sub">Buka lapak &amp; terima pesanan online</div>
-            <div class="ah-role-check" id="rcheck-seller" style="display:none;">✓</div>
+      <div class="auth-field">
+        <label class="auth-lbl">Buat Kata Sandi</label>
+        <div class="auth-pwd-row">
+          <input id="rw-pwd" type="password" class="auth-inp"
+            placeholder="Min. 8 karakter" autocomplete="new-password"
+            oninput="checkPwdStrength(this.value)"
+            onkeydown="if(event.key==='Enter')kirimOTPDaftar()"/>
+          <button class="auth-eye-btn" onclick="togglePwd('rw-pwd',this)">👁️</button>
+        </div>
+        <div class="auth-pwdbar"><div id="pwd-bar" class="auth-pwdfill"></div></div>
+        <div id="pwd-hint" class="auth-hint"></div>
+      </div>
+
+      <button class="auth-btn-wa" onclick="kirimOTPDaftar()" id="btn-kirim-otp">
+        📲 Kirim Kode OTP ke WA
+      </button>
+
+      <!-- OTP Panel (muncul setelah OTP dikirim) -->
+      <div id="otp-panel" style="display:none;margin-top:1.1rem;">
+        <div class="auth-otp-info" id="otp-info-txt">
+          💬 Kode OTP dikirim ke WA Anda
+        </div>
+        <div class="auth-field" style="margin-top:.75rem;">
+          <label class="auth-lbl">Masukkan Kode OTP (6 digit)</label>
+          <div class="auth-otp-grid" id="otp-boxes">
+            <input class="auth-otp-box" maxlength="1" inputmode="numeric"
+              oninput="otpNext(this,'otp-boxes')" onkeydown="otpBack(event,this)"/>
+            <input class="auth-otp-box" maxlength="1" inputmode="numeric"
+              oninput="otpNext(this,'otp-boxes')" onkeydown="otpBack(event,this)"/>
+            <input class="auth-otp-box" maxlength="1" inputmode="numeric"
+              oninput="otpNext(this,'otp-boxes')" onkeydown="otpBack(event,this)"/>
+            <input class="auth-otp-box" maxlength="1" inputmode="numeric"
+              oninput="otpNext(this,'otp-boxes')" onkeydown="otpBack(event,this)"/>
+            <input class="auth-otp-box" maxlength="1" inputmode="numeric"
+              oninput="otpNext(this,'otp-boxes')" onkeydown="otpBack(event,this)"/>
+            <input class="auth-otp-box" maxlength="1" inputmode="numeric"
+              oninput="otpNext(this,'otp-boxes')" onkeydown="otpBack(event,this)"/>
           </div>
         </div>
-        <!-- Info keamanan penjual -->
-        <div id="seller-security-info" style="display:none;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:.75rem;margin-bottom:.85rem;font-size:.78rem;color:#92400e;line-height:1.5;">
-          🔐 <strong>Akun Penjual</strong> dilindungi verifikasi 2 langkah (nomor WA + email). Data transaksi dan keuangan hanya bisa diakses setelah login.
-        </div>
-        <button class="ah-btn-main" onclick="regNextStep(2)">Lanjut →</button>
-        <p style="text-align:center;font-size:.78rem;color:var(--muted);margin:.75rem 0 0;">
-          Sudah punya akun? <span onclick="ahSwitchTab('masuk')" style="color:#16a34a;font-weight:700;cursor:pointer;">Masuk</span>
+        <button class="auth-btn-primary" onclick="verifikasiOTPDaftar()" id="btn-verif-otp">
+          ✅ Verifikasi &amp; Buat Akun
+        </button>
+        <p style="text-align:center;font-size:.78rem;color:var(--muted);margin:.6rem 0 0;">
+          Tidak terima OTP?
+          <span id="resend-otp" class="auth-link" onclick="kirimOTPDaftar()">Kirim ulang</span>
         </p>
       </div>
+    </div>
+  </div>
 
-      <!-- STEP 2: Identitas -->
-      <div id="reg-step-2" style="display:none;">
-        <p style="font-size:.82rem;color:var(--muted);margin:.1rem 0 .85rem;">Langkah 2 dari 3 · Data diri</p>
-        <div class="ah-field">
-          <label class="ah-lbl">Nama Lengkap <span style="color:#ef4444;">*</span></label>
-          <div class="ah-inp-wrap">
-            <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
-            <input type="text" id="reg-name" class="ah-inp" placeholder="Nama sesuai KTP" autocomplete="name"
-              onkeydown="if(event.key==='Enter')document.getElementById('reg-phone').focus()"/>
-          </div>
-        </div>
-        <div class="ah-field">
-          <label class="ah-lbl">Nomor WhatsApp <span style="color:#ef4444;">*</span></label>
-          <div class="ah-inp-wrap">
-            <div class="ah-prefix">+62</div>
-            <input type="tel" id="reg-phone" class="ah-inp ah-inp-prefix" placeholder="8xxxxxxxxxx"
-              inputmode="numeric" autocomplete="tel"
-              oninput="this.value=this.value.replace(/[^0-9]/g,'');validateRegPhone(this)"
-              onkeydown="if(event.key==='Enter')regNextStep(3)"/>
-          </div>
-          <div id="phone-hint" class="ah-hint"></div>
-        </div>
-        <div style="display:flex;gap:.6rem;">
-          <button class="ah-btn-sec" onclick="regNextStep(1)" style="flex:1;">← Kembali</button>
-          <button class="ah-btn-main" onclick="regNextStep(3)" style="flex:2;">Lanjut →</button>
+
+  <!-- TAMPILAN: DAFTAR via EMAIL -->
+  <div id="view-daftar-email" class="auth-view" style="display:none;">
+    <div class="auth-back-bar">
+      <button class="auth-back" onclick="authShowView('daftar-pilih')">← Kembali</button>
+      <span class="auth-step-txt">Daftar via Email</span>
+    </div>
+    <div class="auth-form-card">
+      <h2 class="auth-form-title">Data Akun Email</h2>
+      <p class="auth-form-sub">Link verifikasi akan dikirim ke email Anda</p>
+
+      <div class="auth-field">
+        <label class="auth-lbl">Nama Lengkap</label>
+        <input id="re-name" type="text" class="auth-inp"
+          placeholder="Nama sesuai KTP" autocomplete="name"
+          onkeydown="if(event.key==='Enter')document.getElementById('re-phone').focus()"/>
+      </div>
+
+      <div class="auth-field">
+        <label class="auth-lbl">Nomor WhatsApp <span style="color:#9ca3af;font-weight:400;">(opsional)</span></label>
+        <div class="auth-phone-row">
+          <span class="auth-phone-prefix">+62</span>
+          <input id="re-phone" type="tel" class="auth-inp auth-inp-phone"
+            placeholder="8xxxxxxxxxx" inputmode="numeric"
+            oninput="this.value=this.value.replace(/\D/g,'')"
+            onkeydown="if(event.key==='Enter')document.getElementById('re-email').focus()"/>
         </div>
       </div>
 
-      <!-- STEP 3: Akun (metode: WA OTP atau Email) -->
-      <div id="reg-step-3" style="display:none;">
-        <p style="font-size:.82rem;color:var(--muted);margin:.1rem 0 .85rem;">Langkah 3 dari 3 · Pilih metode akun</p>
-
-        <!-- Toggle metode -->
-        <div class="ah-method-tabs" style="margin-bottom:.9rem;" id="reg-method-tabs">
-          <button class="ah-method-tab active" id="rmt-wa"    onclick="ahSwitchRegMethod('wa')">📱 via WhatsApp</button>
-          <button class="ah-method-tab"        id="rmt-email" onclick="ahSwitchRegMethod('email')">📧 via Email</button>
-        </div>
-
-        <!-- Metode WA -->
-        <div id="reg-wa-panel">
-          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.75rem;margin-bottom:.85rem;font-size:.8rem;color:#166534;line-height:1.5;">
-            📲 Kode OTP akan dikirim ke <strong id="reg-wa-preview">nomor WA Anda</strong>. Tidak perlu membuat kata sandi!
-          </div>
-          <div id="reg-otp-panel-wa" style="display:none;">
-            <div class="ah-otp-info">
-              <span style="font-size:1.1rem;">💬</span>
-              <span id="reg-otp-info-txt">Masukkan kode OTP dari WhatsApp</span>
-            </div>
-            <div class="ah-field">
-              <label class="ah-lbl">Kode OTP (6 digit)</label>
-              <div class="ah-otp-boxes" id="otp-boxes-reg">
-                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
-                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
-                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
-                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
-                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
-                <input class="ah-otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this,'otp-boxes-reg')" onkeydown="otpBack(event,this)"/>
-              </div>
-            </div>
-            <button class="ah-btn-main" onclick="verifikasiOTPReg()" id="btn-verif-reg">🎉 Verifikasi &amp; Buat Akun</button>
-            <p style="text-align:center;font-size:.78rem;color:var(--muted);margin:.6rem 0 0;">
-              Tidak dapat kode? <span style="color:#16a34a;font-weight:600;cursor:pointer;" onclick="kirimOTPReg()">Kirim ulang</span>
-            </p>
-          </div>
-          <button class="ah-btn-main" onclick="kirimOTPReg()" id="btn-otp-reg">📲 Kirim Kode OTP ke WA</button>
-        </div>
-
-        <!-- Metode Email -->
-        <div id="reg-email-panel" style="display:none;">
-          <div class="ah-field">
-            <label class="ah-lbl">Email <span style="color:#ef4444;">*</span></label>
-            <div class="ah-inp-wrap">
-              <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-              <input type="email" id="reg-email" class="ah-inp" placeholder="nama@email.com"
-                autocomplete="email" inputmode="email"
-                oninput="validateRegEmail(this)"
-                onkeydown="if(event.key==='Enter')document.getElementById('reg-password').focus()"/>
-            </div>
-            <div id="email-hint" class="ah-hint"></div>
-          </div>
-          <div class="ah-field">
-            <label class="ah-lbl">Kata Sandi <span style="color:#ef4444;">*</span></label>
-            <div class="ah-inp-wrap">
-              <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-              <input type="password" id="reg-password" class="ah-inp" placeholder="Min. 8 karakter"
-                autocomplete="new-password" style="padding-right:3rem;"
-                oninput="checkPwdStrength(this.value)"/>
-              <button class="ah-eye" onclick="togglePwd('reg-password',this)" tabindex="-1">👁️</button>
-            </div>
-            <div class="ah-pwdbar"><div id="pwd-bar" class="ah-pwdfill"></div></div>
-            <div id="pwd-hint" class="ah-hint"></div>
-          </div>
-          <div class="ah-field">
-            <label class="ah-lbl">Ulangi Kata Sandi <span style="color:#ef4444;">*</span></label>
-            <div class="ah-inp-wrap">
-              <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-              <input type="password" id="reg-password2" class="ah-inp" placeholder="Ulangi kata sandi"
-                autocomplete="new-password" style="padding-right:3rem;"
-                oninput="checkPwdMatch()"
-                onkeydown="if(event.key==='Enter')handleRegister()"/>
-              <button class="ah-eye" onclick="togglePwd('reg-password2',this)" tabindex="-1">👁️</button>
-            </div>
-            <div id="pwd2-hint" class="ah-hint"></div>
-          </div>
-          <!-- Syarat -->
-          <label style="display:flex;align-items:flex-start;gap:.5rem;font-size:.76rem;color:var(--muted);cursor:pointer;margin-bottom:.85rem;line-height:1.5;">
-            <input type="checkbox" id="reg-setuju" style="margin-top:2px;accent-color:#16a34a;width:15px;height:15px;flex-shrink:0;"/>
-            <span>Saya menyatakan data benar dan menyetujui syarat penggunaan Kantin DW Online</span>
-          </label>
-          <button class="ah-btn-main" onclick="handleRegister()" id="btn-daftar">🎉 Buat Akun Sekarang</button>
-        </div>
-
-        <div style="margin-top:.65rem;">
-          <button class="ah-btn-sec" onclick="regNextStep(2)" style="width:100%;">← Kembali</button>
-        </div>
+      <div class="auth-field">
+        <label class="auth-lbl">Email</label>
+        <input id="re-email" type="email" class="auth-inp"
+          placeholder="nama@email.com" autocomplete="email" inputmode="email"
+          onkeydown="if(event.key==='Enter')document.getElementById('re-pwd').focus()"/>
+        <div id="re-email-hint" class="auth-hint"></div>
       </div>
 
-      <!-- STEP 4: Sukses -->
-      <div id="reg-step-4" style="display:none;text-align:center;padding:1.5rem 0 .5rem;">
-        <div class="ah-success-icon">🎉</div>
-        <div style="font-size:1.15rem;font-weight:900;color:var(--text);margin-bottom:.4rem;" id="reg-success-title">Akun Siap!</div>
-        <div style="font-size:.84rem;color:var(--muted);line-height:1.7;margin-bottom:1.4rem;" id="reg-success-body">Akun berhasil dibuat. Silakan masuk.</div>
-        <button class="ah-btn-main" onclick="langsung_login_setelah_daftar()" style="margin-bottom:.6rem;">🚀 Masuk Sekarang</button>
-        <button class="ah-btn-sec" style="width:100%;" onclick="selesaiDaftar()">+ Daftar Akun Lain</button>
+      <div class="auth-field">
+        <label class="auth-lbl">Buat Kata Sandi</label>
+        <div class="auth-pwd-row">
+          <input id="re-pwd" type="password" class="auth-inp"
+            placeholder="Min. 8 karakter" autocomplete="new-password"
+            oninput="checkPwdStrength2(this.value)"
+            onkeydown="if(event.key==='Enter')document.getElementById('re-pwd2').focus()"/>
+          <button class="auth-eye-btn" onclick="togglePwd('re-pwd',this)">👁️</button>
+        </div>
+        <div class="auth-pwdbar"><div id="pwd-bar2" class="auth-pwdfill"></div></div>
+        <div id="pwd-hint2" class="auth-hint"></div>
       </div>
 
-    </div><!-- /panel daftar -->
+      <div class="auth-field">
+        <label class="auth-lbl">Ulangi Kata Sandi</label>
+        <div class="auth-pwd-row">
+          <input id="re-pwd2" type="password" class="auth-inp"
+            placeholder="Ulangi kata sandi" autocomplete="new-password"
+            oninput="checkPwdMatch2()"
+            onkeydown="if(event.key==='Enter')handleRegisterEmail()"/>
+          <button class="auth-eye-btn" onclick="togglePwd('re-pwd2',this)">👁️</button>
+        </div>
+        <div id="pwd2-hint2" class="auth-hint"></div>
+      </div>
 
-
-    <!-- ════ PANEL ADMIN (logo tap 7×) ════ -->
-    <div id="ah-panel-admin" style="display:none;">
-      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;">
-        <button onclick="ahSwitchTab('masuk')" class="ah-back-btn">←</button>
-        <div>
-          <div style="font-size:.95rem;font-weight:800;color:var(--text);">🔐 Panel Administrator</div>
-          <div style="font-size:.72rem;color:var(--muted);">Akses terbatas · Hanya pengelola</div>
-        </div>
-      </div>
-      <div class="ah-field">
-        <label class="ah-lbl">Email Admin</label>
-        <div class="ah-inp-wrap">
-          <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-          <input type="email" id="admin-email" class="ah-inp" placeholder="admin@kantindw.id" autocomplete="email"
-            onkeydown="if(event.key==='Enter')document.getElementById('admin-password').focus()"/>
-        </div>
-      </div>
-      <div class="ah-field">
-        <label class="ah-lbl">Kata Sandi</label>
-        <div class="ah-inp-wrap">
-          <svg class="ah-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-          <input type="password" id="admin-password" class="ah-inp" placeholder="Kata sandi admin"
-            style="padding-right:3rem;"
-            onkeydown="if(event.key==='Enter')handleAdminLogin()"/>
-          <button class="ah-eye" onclick="togglePwd('admin-password',this)" tabindex="-1">👁️</button>
-        </div>
-      </div>
-      <button class="ah-btn-main" onclick="handleAdminLogin()" id="btn-admin-login"
-        style="background:linear-gradient(135deg,#1e3a5f,#1e40af);box-shadow:0 4px 18px rgba(30,64,175,.3);">
-        🔐 Masuk sebagai Admin
+      <button class="auth-btn-primary" onclick="handleRegisterEmail()" id="btn-daftar-email">
+        Buat Akun
       </button>
-    </div><!-- /panel admin -->
 
-  </div><!-- /ah-card -->
-</div>
+      <p class="auth-note-bottom" style="margin-top:.9rem;">
+        📧 Link verifikasi akan dikirim ke email Anda. Klik link tersebut untuk mengaktifkan akun.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- TAMPILAN: SUKSES DAFTAR -->
+  <div id="view-sukses" class="auth-view" style="display:none;">
+    <div class="auth-form-card" style="margin-top:30vh;text-align:center;">
+      <div class="auth-sukses-icon" id="sukses-icon">🎉</div>
+      <h2 class="auth-form-title" id="sukses-title">Akun Berhasil Dibuat!</h2>
+      <p class="auth-form-sub" id="sukses-body">Akun Anda siap digunakan.</p>
+      <button class="auth-btn-primary" onclick="authShowView('login')" style="margin-top:1.25rem;">
+        Masuk Sekarang
+      </button>
+    </div>
+  </div>
+
+
+  <!-- TAMPILAN: ADMIN (logo 7×) -->
+  <div id="view-admin" class="auth-view" style="display:none;">
+    <div class="auth-back-bar">
+      <button class="auth-back" onclick="authShowView('login')">← Kembali</button>
+      <span class="auth-step-txt">Panel Administrator</span>
+    </div>
+    <div class="auth-form-card">
+      <h2 class="auth-form-title">🔐 Masuk sebagai Admin</h2>
+      <p class="auth-form-sub">Akses terbatas · Khusus pengelola</p>
+      <div class="auth-field">
+        <label class="auth-lbl">Email Admin</label>
+        <input id="adm-email" type="email" class="auth-inp"
+          placeholder="admin@kantindw.id" autocomplete="email"
+          onkeydown="if(event.key==='Enter')document.getElementById('adm-pwd').focus()"/>
+      </div>
+      <div class="auth-field">
+        <label class="auth-lbl">Kata Sandi</label>
+        <div class="auth-pwd-row">
+          <input id="adm-pwd" type="password" class="auth-inp"
+            placeholder="Kata sandi admin"
+            onkeydown="if(event.key==='Enter')handleAdminLogin()"/>
+          <button class="auth-eye-btn" onclick="togglePwd('adm-pwd',this)">👁️</button>
+        </div>
+      </div>
+      <button class="auth-btn-primary" onclick="handleAdminLogin()" id="btn-admin-login"
+        style="background:linear-gradient(135deg,#1e40af,#1e3a8a);">
+        Masuk
+      </button>
+    </div>
+  </div>
+
+</div><!-- /screen-auth -->
 
 <style>
-/* ══ AUTH STYLES ══ */
-#screen-auth { min-height:100dvh; display:flex; flex-direction:column; background:#fff; }
-
-.ah-hero {
-  background:linear-gradient(145deg,#052e16 0%,#14532d 40%,#166534 70%,#15803d 100%);
-  padding:2.25rem 1.5rem 2rem;
-  display:flex; flex-direction:column; align-items:center; text-align:center;
-  position:relative; overflow:hidden; flex-shrink:0;
+/* ══ AUTH — CLEAN & MINIMAL ══ */
+#screen-auth {
+  min-height: 100dvh;
+  background: linear-gradient(160deg, #052e16 0%, #15803d 60%, #16a34a 100%);
+  display: flex; flex-direction: column;
 }
-.ah-hero::before {
-  content:''; position:absolute; inset:0;
-  background:radial-gradient(ellipse at 20% 50%,rgba(255,255,255,.06) 0%,transparent 60%),
-             radial-gradient(ellipse at 80% 20%,rgba(255,255,255,.04) 0%,transparent 50%);
+.auth-view {
+  min-height: 100dvh;
+  display: flex; flex-direction: column;
+  animation: authFadeIn .25s ease;
 }
-.ah-food {
-  position:absolute; animation:floatAH 4s ease-in-out infinite;
-  pointer-events:none; opacity:.45; filter:drop-shadow(0 2px 6px rgba(0,0,0,.3)); z-index:1;
-}
-@keyframes floatAH {
-  0%,100% { transform:translateY(0) rotate(-4deg); }
-  50%      { transform:translateY(-12px) rotate(4deg); }
-}
-.ah-logo {
-  width:76px; height:76px; font-size:2.2rem;
-  background:rgba(255,255,255,.13); backdrop-filter:blur(12px);
-  border:1.5px solid rgba(255,255,255,.25); border-radius:20px;
-  display:flex; align-items:center; justify-content:center;
-  margin-bottom:.9rem; cursor:default; user-select:none;
-  box-shadow:0 8px 32px rgba(0,0,0,.2); position:relative; z-index:2;
-  transition:transform .15s;
-}
-.ah-logo:active { transform:scale(.93); }
-.ah-brand {
-  font-size:1.85rem; font-weight:900; color:#fff;
-  letter-spacing:-.5px; line-height:1.15;
-  text-shadow:0 2px 12px rgba(0,0,0,.2); position:relative; z-index:2; margin-bottom:.4rem;
-}
-.ah-tagline {
-  font-size:.86rem; color:rgba(255,255,255,.75);
-  line-height:1.6; position:relative; z-index:2;
-}
-.ah-chips { display:flex; gap:.45rem; margin-top:1.1rem; flex-wrap:wrap; justify-content:center; position:relative; z-index:2; }
-.ah-chip  {
-  background:rgba(255,255,255,.1); color:rgba(255,255,255,.9);
-  border:1px solid rgba(255,255,255,.18); border-radius:99px;
-  padding:.25rem .75rem; font-size:.68rem; font-weight:600;
+@keyframes authFadeIn {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 
-.ah-card {
-  background:#fff; border-radius:22px 22px 0 0;
-  padding:1.35rem 1.35rem 3rem; flex:1;
-  box-shadow:0 -6px 30px rgba(0,0,0,.08); overflow-y:auto;
+/* Brand top */
+.auth-brand-top {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 2.5rem 1.5rem 1.5rem; text-align: center;
+  position: relative;
+}
+.auth-brand-logo {
+  width: 76px; height: 76px; font-size: 2.2rem;
+  background: rgba(255,255,255,.15);
+  border: 1.5px solid rgba(255,255,255,.25);
+  border-radius: 20px; display: flex;
+  align-items: center; justify-content: center;
+  margin-bottom: .9rem; cursor: default; user-select: none;
+  box-shadow: 0 8px 28px rgba(0,0,0,.2);
+  transition: transform .15s;
+}
+.auth-brand-logo:active { transform: scale(.92); }
+.auth-brand-name {
+  font-size: 1.75rem; font-weight: 900; color: #fff;
+  letter-spacing: -.5px; margin-bottom: .3rem;
+  text-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+.auth-brand-sub {
+  font-size: .88rem; color: rgba(255,255,255,.72); line-height: 1.5;
 }
 
-/* Tabs */
-.ah-tabs { display:flex; background:#f3f4f6; border-radius:12px; padding:3px; margin-bottom:1rem; gap:3px; }
-.ah-tab  { flex:1; padding:.56rem; border:none; border-radius:10px; font-weight:700; font-size:.9rem; cursor:pointer; transition:all .2s; background:transparent; color:#6b7280; }
-.ah-tab.active { background:#fff; color:#16a34a; box-shadow:0 1px 6px rgba(0,0,0,.1); }
-
-/* Social buttons */
-.ah-social-btn {
-  display:flex; align-items:center; justify-content:center; gap:.4rem;
-  padding:.68rem .5rem; border:1.5px solid #e5e7eb; border-radius:11px;
-  background:#fff; font-size:.82rem; font-weight:600; color:#374151; cursor:pointer;
-  transition:all .15s;
+/* Form card */
+.auth-form-card {
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding: 1.6rem 1.5rem 2.5rem;
+  box-shadow: 0 -6px 30px rgba(0,0,0,.1);
 }
-.ah-social-btn:hover { background:#f9fafb; border-color:#d1d5db; }
-.ah-social-btn:active { transform:scale(.97); }
-
-/* Method tabs */
-.ah-method-tabs { display:flex; gap:.4rem; }
-.ah-method-tab  {
-  flex:1; padding:.48rem .5rem; border:1.5px solid #e5e7eb; border-radius:9px;
-  background:#fff; font-size:.8rem; font-weight:600; color:#6b7280; cursor:pointer;
-  transition:all .15s; text-align:center;
+@media (min-width:768px) {
+  #screen-auth { flex-direction: row; align-items: stretch; }
+  .auth-view { flex-direction: row; min-height: 100dvh; }
+  .auth-brand-top {
+    width: 42%; justify-content: center;
+    padding: 3rem 2.5rem; background: transparent;
+  }
+  .auth-form-card {
+    flex: 1; border-radius: 0; padding: 2.5rem;
+    display: flex; flex-direction: column; justify-content: center;
+    max-width: 420px; box-shadow: none;
+    border-left: 1px solid #f3f4f6;
+  }
+  .auth-back-bar { position: absolute; top: 0; left: 0; right: 0; }
 }
-.ah-method-tab.active { border-color:#16a34a; background:#f0fdf4; color:#16a34a; }
 
-/* Divider */
-.ah-divider { display:flex; align-items:center; gap:.6rem; margin:.8rem 0; }
-.ah-divider::before,.ah-divider::after { content:''; flex:1; height:1px; background:#e5e7eb; }
-.ah-divider span { font-size:.72rem; color:#9ca3af; white-space:nowrap; }
+/* Back bar */
+.auth-back-bar {
+  display: flex; align-items: center; gap: .75rem;
+  padding: 1rem 1.25rem; background: rgba(0,0,0,.15);
+  flex-shrink: 0;
+}
+.auth-back {
+  background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.3);
+  color: #fff; font-size: .9rem; font-weight: 600;
+  border-radius: 8px; padding: .4rem .85rem; cursor: pointer;
+  transition: background .15s;
+}
+.auth-back:hover { background: rgba(255,255,255,.3); }
+.auth-step-txt { color: rgba(255,255,255,.85); font-size: .88rem; font-weight: 600; }
+
+/* Typography */
+.auth-form-title { font-size: 1.2rem; font-weight: 900; color: #111827; margin: 0 0 .3rem; }
+.auth-form-sub   { font-size: .84rem; color: #6b7280; margin: 0 0 1.1rem; line-height: 1.5; }
+
+/* Toggle WA / Email */
+.auth-toggle-row {
+  display: flex; background: #f3f4f6; border-radius: 10px;
+  padding: 3px; gap: 3px; margin-bottom: 1rem;
+}
+.auth-toggle-btn {
+  flex: 1; padding: .52rem; border: none; border-radius: 8px;
+  font-size: .87rem; font-weight: 600; cursor: pointer;
+  background: transparent; color: #6b7280; transition: all .18s;
+}
+.auth-toggle-btn.active {
+  background: #fff; color: #16a34a;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
 
 /* Fields */
-.ah-field { margin-bottom:.8rem; }
-.ah-lbl   { display:block; font-size:.73rem; font-weight:700; color:#374151; text-transform:uppercase; letter-spacing:.06em; margin-bottom:.34rem; }
-.ah-inp-wrap { position:relative; display:flex; align-items:center; }
-.ah-ico  { position:absolute; left:.85rem; width:16px; height:16px; color:#9ca3af; pointer-events:none; flex-shrink:0; }
-.ah-prefix { background:#f3f4f6; border:1.5px solid #e5e7eb; border-right:none; border-radius:11px 0 0 11px; padding:.77rem .7rem; font-size:.88rem; font-weight:600; color:#374151; flex-shrink:0; }
-.ah-inp  {
-  width:100%; padding:.77rem .9rem .77rem 2.5rem;
-  border-radius:11px; border:1.5px solid #e5e7eb;
-  background:#f9fafb; font-size:.95rem; color:#111827;
-  outline:none; transition:all .2s; -webkit-appearance:none;
+.auth-field { margin-bottom: .85rem; }
+.auth-lbl {
+  display: block; font-size: .76rem; font-weight: 700;
+  color: #374151; text-transform: uppercase;
+  letter-spacing: .06em; margin-bottom: .36rem;
 }
-.ah-inp-prefix { border-radius:0 11px 11px 0 !important; padding-left:.85rem !important; }
-.ah-inp:focus  { border-color:#16a34a; background:#fff; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
-.ah-inp::placeholder { color:#9ca3af; }
-.ah-eye { position:absolute; right:.7rem; background:none; border:none; color:#9ca3af; cursor:pointer; padding:.25rem; font-size:1rem; transition:color .15s; }
-.ah-eye:hover { color:#16a34a; }
-.ah-hint { font-size:.71rem; margin-top:.26rem; min-height:.85rem; }
+.auth-lbl-row {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: .36rem;
+}
+.auth-lbl-row .auth-lbl { margin: 0; }
+.auth-link-sm {
+  font-size: .76rem; color: #16a34a; font-weight: 600; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.auth-inp {
+  width: 100%; padding: .78rem 1rem;
+  border: 1.5px solid #e5e7eb; border-radius: 11px;
+  background: #f9fafb; font-size: .95rem; color: #111827;
+  outline: none; transition: all .18s; -webkit-appearance: none;
+  box-sizing: border-box;
+}
+.auth-inp:focus { border-color: #16a34a; background: #fff; box-shadow: 0 0 0 3px rgba(22,163,74,.1); }
+.auth-inp::placeholder { color: #9ca3af; }
 
-/* OTP boxes */
-.ah-otp-info { display:flex; align-items:center; gap:.5rem; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:9px; padding:.6rem .8rem; margin-bottom:.75rem; font-size:.8rem; color:#166534; }
-.ah-otp-boxes { display:flex; gap:.4rem; margin:.4rem 0 .85rem; }
-.ah-otp-box   {
-  flex:1; text-align:center; font-size:1.3rem; font-weight:800; color:#111827;
-  padding:.55rem .2rem; border-radius:10px; border:2px solid #e5e7eb;
-  background:#f9fafb; outline:none; transition:all .2s; max-width:46px;
+/* Phone input */
+.auth-phone-row { display: flex; }
+.auth-phone-prefix {
+  padding: .78rem .75rem; background: #f3f4f6; border: 1.5px solid #e5e7eb;
+  border-right: none; border-radius: 11px 0 0 11px;
+  font-size: .9rem; font-weight: 700; color: #374151; flex-shrink: 0;
 }
-.ah-otp-box:focus { border-color:#16a34a; background:#fff; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
+.auth-inp-phone { border-radius: 0 11px 11px 0 !important; }
 
-/* Buttons */
-.ah-btn-main {
-  width:100%; display:flex; align-items:center; justify-content:center; gap:.45rem;
-  padding:.84rem 1.2rem;
-  background:linear-gradient(135deg,#16a34a,#15803d);
-  color:#fff; font-weight:700; font-size:.96rem;
-  border:none; border-radius:13px; cursor:pointer;
-  box-shadow:0 4px 18px rgba(22,163,74,.28); transition:all .18s;
+/* Password */
+.auth-pwd-row { position: relative; }
+.auth-pwd-row .auth-inp { padding-right: 3rem; }
+.auth-eye-btn {
+  position: absolute; right: .7rem; top: 50%; transform: translateY(-50%);
+  background: none; border: none; font-size: 1rem; cursor: pointer;
+  color: #9ca3af; transition: color .15s; padding: .25rem;
 }
-.ah-btn-main:hover   { filter:brightness(1.07); transform:translateY(-1px); }
-.ah-btn-main:active  { transform:scale(.98); }
-.ah-btn-main:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
-.ah-btn-outline {
-  width:100%; padding:.82rem; background:#fff; color:#16a34a;
-  border:2px solid #16a34a; border-radius:13px; font-weight:700; font-size:.95rem; cursor:pointer; transition:all .18s;
-}
-.ah-btn-outline:hover { background:#f0fdf4; }
-.ah-btn-sec   {
-  display:flex; align-items:center; justify-content:center;
-  padding:.76rem 1rem; background:#f3f4f6; color:#374151;
-  font-weight:600; font-size:.9rem; border:1.5px solid #e5e7eb; border-radius:12px; cursor:pointer; transition:all .15s;
-}
-.ah-btn-sec:hover { background:#e5e7eb; }
-.ah-back-btn  {
-  width:34px; height:34px; border-radius:9px; background:#f3f4f6; border:1.5px solid #e5e7eb;
-  display:flex; align-items:center; justify-content:center; cursor:pointer; color:#374151; font-size:1rem; flex-shrink:0;
-}
-
-/* Step bar */
-.ah-stepbar { display:flex; align-items:center; margin-bottom:1rem; }
-.ah-step-item { display:flex; flex-direction:column; align-items:center; gap:.25rem; }
-.ah-step-circle {
-  width:28px; height:28px; border-radius:50%;
-  background:#e5e7eb; color:#9ca3af; font-weight:800; font-size:.8rem;
-  display:flex; align-items:center; justify-content:center; transition:all .3s;
-}
-.ah-step-item.active   .ah-step-circle { background:#16a34a; color:#fff; }
-.ah-step-item.done     .ah-step-circle { background:#dcfce7; color:#16a34a; }
-.ah-step-lbl { font-size:.63rem; font-weight:600; color:#9ca3af; transition:color .3s; }
-.ah-step-item.active .ah-step-lbl { color:#16a34a; }
-.ah-step-line { flex:1; height:2px; background:#e5e7eb; margin:0 .3rem; padding-bottom:1.2rem; transition:background .3s; }
-.ah-step-line.done { background:#16a34a; }
-
-/* Role cards */
-.ah-role {
-  border:2px solid #e5e7eb; border-radius:14px; padding:1rem .7rem;
-  text-align:center; cursor:pointer; transition:all .18s; background:#f9fafb;
-  user-select:none; position:relative;
-}
-.ah-role:active { transform:scale(.97); }
-.ah-role.selected-role { border-color:#16a34a; background:#f0fdf4; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
-.ah-role-icon  { font-size:2.1rem; margin-bottom:.4rem; }
-.ah-role-title { font-weight:800; font-size:.92rem; color:#111827; margin-bottom:.18rem; }
-.ah-role-sub   { font-size:.67rem; color:#6b7280; line-height:1.4; }
-.ah-role-check {
-  position:absolute; top:6px; right:8px;
-  background:#16a34a; color:#fff; border-radius:50%;
-  width:18px; height:18px; font-size:.7rem; font-weight:900;
-  display:flex; align-items:center; justify-content:center;
-}
+.auth-eye-btn:hover { color: #16a34a; }
 
 /* Password bar */
-.ah-pwdbar  { height:5px; border-radius:3px; background:#e5e7eb; overflow:hidden; margin-top:.4rem; }
-.ah-pwdfill { height:100%; width:0; border-radius:3px; transition:width .35s,background .35s; }
+.auth-pwdbar  { height: 4px; border-radius: 2px; background: #e5e7eb; overflow: hidden; margin-top: .4rem; }
+.auth-pwdfill { height: 100%; width: 0; border-radius: 2px; transition: width .3s, background .3s; }
 
-/* Success */
-.ah-success-icon {
-  width:84px; height:84px;
-  background:linear-gradient(135deg,#16a34a,#4ade80);
-  border-radius:50%; display:flex; align-items:center; justify-content:center;
-  font-size:2.3rem; margin:0 auto 1rem; box-shadow:0 8px 28px rgba(22,163,74,.3);
+/* Hints */
+.auth-hint { font-size: .72rem; margin-top: .28rem; min-height: .85rem; }
+
+/* Buttons */
+.auth-btn-primary {
+  width: 100%; padding: .86rem;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff; font-weight: 700; font-size: .97rem;
+  border: none; border-radius: 12px; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(22,163,74,.3);
+  transition: all .18s; letter-spacing: .01em;
+  display: flex; align-items: center; justify-content: center; gap: .4rem;
+}
+.auth-btn-primary:hover   { filter: brightness(1.06); transform: translateY(-1px); }
+.auth-btn-primary:active  { transform: scale(.98); }
+.auth-btn-primary:disabled{ opacity: .6; cursor: not-allowed; transform: none; }
+
+.auth-btn-outline {
+  width: 100%; padding: .82rem;
+  background: #fff; color: #16a34a; font-weight: 700; font-size: .95rem;
+  border: 2px solid #16a34a; border-radius: 12px; cursor: pointer;
+  transition: all .18s;
+}
+.auth-btn-outline:hover { background: #f0fdf4; }
+
+.auth-btn-wa {
+  width: 100%; padding: .84rem;
+  background: #25d366; color: #fff; font-weight: 700; font-size: .95rem;
+  border: none; border-radius: 12px; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37,211,102,.3);
+  transition: all .18s; display: flex; align-items: center; justify-content: center; gap: .5rem;
+}
+.auth-btn-wa:hover   { filter: brightness(1.06); transform: translateY(-1px); }
+.auth-btn-wa:active  { transform: scale(.98); }
+.auth-btn-wa:disabled{ opacity: .6; cursor: not-allowed; transform: none; }
+
+/* Divider */
+.auth-divider {
+  display: flex; align-items: center; gap: .6rem; margin: .9rem 0;
+}
+.auth-divider::before,.auth-divider::after {
+  content: ''; flex: 1; height: 1px; background: #e5e7eb;
+}
+.auth-divider span { font-size: .73rem; color: #9ca3af; white-space: nowrap; }
+
+/* Role cards */
+.auth-role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-bottom: .1rem; }
+.auth-role-card {
+  border: 2px solid #e5e7eb; border-radius: 14px;
+  padding: 1rem .75rem; text-align: center;
+  cursor: pointer; transition: all .18s; background: #f9fafb;
+  position: relative; user-select: none;
+}
+.auth-role-card:active   { transform: scale(.97); }
+.auth-role-card.selected { border-color: #16a34a; background: #f0fdf4; box-shadow: 0 0 0 3px rgba(22,163,74,.1); }
+.auth-role-icon  { font-size: 2rem; margin-bottom: .4rem; }
+.auth-role-name  { font-weight: 800; font-size: .92rem; color: #111827; margin-bottom: .2rem; }
+.auth-role-desc  { font-size: .68rem; color: #6b7280; line-height: 1.4; }
+.auth-role-check {
+  position: absolute; top: 6px; right: 8px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #16a34a; color: #fff;
+  font-size: .7rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
 }
 
-/* Desktop */
-@media (min-width:768px) {
-  #screen-auth { flex-direction:row; }
-  .ah-hero { width:40%; min-height:100dvh; justify-content:center; padding:3rem 2rem; border-radius:0; }
-  .ah-card {
-    flex:1; border-radius:0; padding:2rem 2.5rem 3rem;
-    display:flex; flex-direction:column; justify-content:center;
-    box-shadow:none; border-left:1px solid #f3f4f6; max-width:460px; overflow-y:auto;
-  }
+/* OTP */
+.auth-otp-info {
+  background: #f0fdf4; border: 1px solid #bbf7d0;
+  border-radius: 10px; padding: .65rem .85rem;
+  font-size: .82rem; color: #166534; line-height: 1.5;
 }
+.auth-otp-grid {
+  display: flex; gap: .4rem; margin-top: .5rem;
+}
+.auth-otp-box {
+  flex: 1; text-align: center; font-size: 1.35rem; font-weight: 800;
+  color: #111827; padding: .6rem .2rem;
+  border-radius: 10px; border: 2px solid #e5e7eb;
+  background: #f9fafb; outline: none; max-width: 50px;
+  transition: all .18s;
+}
+.auth-otp-box:focus { border-color: #16a34a; background: #fff; box-shadow: 0 0 0 3px rgba(22,163,74,.1); }
+
+/* Sukses */
+.auth-sukses-icon {
+  width: 80px; height: 80px; font-size: 2.2rem;
+  background: linear-gradient(135deg, #16a34a, #4ade80);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1rem; box-shadow: 0 8px 24px rgba(22,163,74,.3);
+}
+
+/* Misc */
+.auth-link { color: #16a34a; font-weight: 700; cursor: pointer; }
+.auth-note-bottom { text-align: center; font-size: .8rem; color: #6b7280; margin: .85rem 0 0; line-height: 1.5; }
 </style>
 <!-- ══ SPLASH SCREEN ══ -->
 <div id="splash-screen" style="
@@ -2465,436 +2497,439 @@ async function handleCheckout() {
   setTimeout(()=>showPage('buyer-orders'),800);
 }
 
-// ══ AUTH — NAVIGASI ════════════════════════════════════════════
-let _regMethod = 'wa'; // 'wa' | 'email'
-let _loginMethod = 'wa';
-let _otpSent = false;
-let _demoOTP = '123456'; // hanya untuk mode lokal tanpa Supabase
+// ══ AUTH STATE ════════════════════════════════════════════════
+let _authRole    = 'buyer';   // peran yang dipilih saat daftar
+let _regMode     = 'wa';      // 'wa' | 'email'
+let _loginMode   = 'wa';      // 'wa' | 'email'
+let _demoOTP     = '';        // OTP sementara (mode lokal)
+let _logoTaps    = 0;
+let _logoTimer   = null;
 
-// Tab Masuk / Daftar
-function ahSwitchTab(tab) {
-  const panels = {
-    masuk:  'ah-panel-masuk',
-    daftar: 'ah-panel-daftar',
-    admin:  'ah-panel-admin',
-  };
-  Object.entries(panels).forEach(([k,id]) => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = k === tab ? 'block' : 'none';
+// ══ NAVIGASI AUTH ════════════════════════════════════════════
+// Setiap "view" adalah halaman penuh — bukan scroll
+const AUTH_VIEWS = ['login','daftar-pilih','daftar-wa','daftar-email','sukses','admin'];
+
+function authShowView(name) {
+  AUTH_VIEWS.forEach(v => {
+    const el = document.getElementById(`view-${v}`);
+    if (el) el.style.display = v === name ? 'flex' : 'none';
   });
-  const tabBar = document.getElementById('ah-tabs-bar');
-  if (tabBar) tabBar.style.display = tab === 'admin' ? 'none' : 'flex';
-  document.getElementById('ahtab-masuk')?.classList.toggle('active',  tab === 'masuk');
-  document.getElementById('ahtab-daftar')?.classList.toggle('active', tab === 'daftar');
-  if (tab === 'daftar') { resetFormDaftar(); regNextStep(1); }
+  // Scroll ke atas
+  window.scrollTo(0, 0);
+  // Reset form jika kembali ke login
+  if (name === 'login') {
+    document.getElementById('l-wa').value       = '';
+    document.getElementById('l-wa-pwd').value   = '';
+    document.getElementById('l-email').value    = '';
+    document.getElementById('l-email-pwd').value= '';
+  }
 }
 
-// Legacy compat
-function switchTab(t)      { ahSwitchTab(t === 'login' ? 'masuk' : t === 'register' ? 'daftar' : t); }
-function switchAuthTab(t)  { ahSwitchTab(t === 'register' ? 'daftar' : 'masuk'); }
-function bukaFormDaftar()  { ahSwitchTab('daftar'); }
-function tutupFormDaftar() { ahSwitchTab('masuk'); resetFormDaftar(); }
-
-// Metode login: WA / Email
-function ahSwitchMethod(m) {
-  _loginMethod = m;
-  document.getElementById('login-wa-panel')?.style.setProperty('display',    m==='wa'    ? 'block' : 'none');
-  document.getElementById('login-email-panel')?.style.setProperty('display', m==='email' ? 'block' : 'none');
-  document.getElementById('lmt-wa')?.classList.toggle('active',    m==='wa');
-  document.getElementById('lmt-email')?.classList.toggle('active', m==='email');
-}
-
-// Metode registrasi: WA / Email
-function ahSwitchRegMethod(m) {
-  _regMethod = m;
-  document.getElementById('reg-wa-panel')?.style.setProperty('display',    m==='wa'    ? 'block' : 'none');
-  document.getElementById('reg-email-panel')?.style.setProperty('display', m==='email' ? 'block' : 'none');
-  document.getElementById('rmt-wa')?.classList.toggle('active',    m==='wa');
-  document.getElementById('rmt-email')?.classList.toggle('active', m==='email');
-}
-
-// Logo tap 7× → panel admin
-let _logoTapCount = 0, _logoTapTimer = null;
+// ── Logo tap 7× → panel admin ────────────────────────────────
 function handleLogoTap() {
-  _logoTapCount++;
-  clearTimeout(_logoTapTimer);
-  _logoTapTimer = setTimeout(() => { _logoTapCount = 0; }, 2500);
-  if (_logoTapCount >= 7) {
-    _logoTapCount = 0;
-    ahSwitchTab('admin');
+  _logoTaps++;
+  clearTimeout(_logoTimer);
+  _logoTimer = setTimeout(() => { _logoTaps = 0; }, 2500);
+  if (_logoTaps >= 7) {
+    _logoTaps = 0;
+    authShowView('admin');
     toast('🔐 Panel Administrator', 'info');
   }
 }
 
-// ══ STEP REGISTER ══════════════════════════════════════════════
-let _regCurrentStep = 1;
-
-function regNextStep(step) {
-  if (step > _regCurrentStep) {
-    if (_regCurrentStep === 2 && !validasiStep2()) return;
-    if (_regCurrentStep === 3 && _regMethod === 'email' && !validasiStep3()) return;
-  }
-  _regCurrentStep = step;
-  [1,2,3,4].forEach(s => {
-    const el = document.getElementById(`reg-step-${s}`);
-    if (el) el.style.display = s === step ? 'block' : 'none';
-  });
-  // Update stepbar
-  [1,2,3].forEach(s => {
-    const circle = document.getElementById(`dsc-${s}`);
-    const item   = document.getElementById(`dstep-${s}`);
-    const line   = document.getElementById(`dsl-${s}`);
-    if (!circle || !item) return;
-    item.classList.toggle('active', s === step);
-    item.classList.toggle('done',   s < step);
-    if (circle) circle.textContent = s < step ? '✓' : String(s);
-    if (line)   line.classList.toggle('done', s < step);
-  });
-  // Preview nomor WA di step 3
-  if (step === 3) {
-    const phone = document.getElementById('reg-phone')?.value || '';
-    const preview = phone ? `+62${phone}` : 'nomor WA Anda';
-    const el = document.getElementById('reg-wa-preview');
-    if (el) el.textContent = preview;
-  }
+// ── Toggle login WA/Email ──────────────────────────────────────
+function loginSetMode(m) {
+  _loginMode = m;
+  document.getElementById('lf-wa').style.display    = m === 'wa'    ? 'block' : 'none';
+  document.getElementById('lf-email').style.display = m === 'email' ? 'block' : 'none';
+  document.getElementById('lt-wa').classList.toggle('active',    m === 'wa');
+  document.getElementById('lt-email').classList.toggle('active', m === 'email');
 }
 
-function selectRegisterRole(role) {
-  App.registerRole = role;
+// ── Pilih role ─────────────────────────────────────────────────
+function pilihRole(role) {
+  _authRole = role;
   ['buyer','seller'].forEach(r => {
-    const card  = document.getElementById(`rc-${r}`);
-    const check = document.getElementById(`rcheck-${r}`);
-    if (card)  card.classList.toggle('selected-role', r === role);
-    if (check) check.style.display = r === role ? 'flex' : 'none';
+    document.getElementById(`role-${r}`)?.classList.toggle('selected', r === role);
+    const chk = document.getElementById(`rchk-${r}`);
+    if (chk) chk.style.display = r === role ? 'flex' : 'none';
   });
-  // Tampil info keamanan khusus penjual
-  const info = document.getElementById('seller-security-info');
-  if (info) info.style.display = role === 'seller' ? 'block' : 'none';
 }
 
-function resetFormDaftar() {
-  ['reg-name','reg-phone','reg-email','reg-password','reg-password2'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value = '';
-  });
-  const bar = document.getElementById('pwd-bar');
-  if (bar) { bar.style.width = '0'; bar.style.background = '#e5e7eb'; }
-  ['pwd-hint','pwd2-hint','phone-hint','email-hint'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.textContent = '';
-  });
-  document.getElementById('reg-setuju') && (document.getElementById('reg-setuju').checked = false);
-  // Reset OTP panels
-  ['reg-otp-panel-wa'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.style.display = 'none';
-  });
-  const btnOtp = document.getElementById('btn-otp-reg');
-  if (btnOtp) btnOtp.style.display = 'flex';
-  clearOTPBoxes('otp-boxes-reg');
-  clearOTPBoxes('otp-boxes-login');
-  _otpSent = false;
-  selectRegisterRole('buyer');
-  ahSwitchRegMethod('wa');
+// ── Helpers ────────────────────────────────────────────────────
+function togglePwd(id, btn) {
+  const el = document.getElementById(id); if (!el) return;
+  el.type = el.type === 'password' ? 'text' : 'password';
+  btn.textContent = el.type === 'password' ? '👁️' : '🙈';
 }
 
-function selesaiDaftar() { resetFormDaftar(); ahSwitchTab('daftar'); }
+function setBtnLoading(id, loading, label) {
+  const btn = document.getElementById(id); if (!btn) return;
+  btn.disabled = loading;
+  btn.textContent = loading ? `⏳ ${label}` : label;
+}
 
-function langsung_login_setelah_daftar() {
-  const email = document.getElementById('reg-email')?.value || '';
-  ahSwitchTab('masuk');
-  ahSwitchMethod('email');
-  if (email) {
-    const el = document.getElementById('login-email');
-    if (el) { el.value = email; document.getElementById('login-password')?.focus(); }
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function petaErrorAuth(msg) {
+  const map = {
+    'Invalid login credentials'       : '❌ Nomor WA/Email atau kata sandi salah',
+    'Email not confirmed'             : '📧 Email belum diverifikasi — cek inbox Anda',
+    'User already registered'         : '⚠️ Akun sudah terdaftar, silakan masuk',
+    'Password should be at least'     : '🔒 Kata sandi minimal 8 karakter',
+    'Database error creating new user': '⚙️ Error database — hubungi admin',
+    'signup is disabled'              : '⚠️ Pendaftaran dinonaktifkan',
+    'over_email_send_rate_limit'      : '⏳ Terlalu banyak percobaan, tunggu sebentar',
+    'Invalid API key'                 : '⚙️ Konfigurasi Supabase belum benar',
+  };
+  for (const [k, v] of Object.entries(map)) {
+    if (msg.toLowerCase().includes(k.toLowerCase())) return v;
   }
+  return '❌ ' + msg;
 }
 
-// ══ VALIDASI ═══════════════════════════════════════════════════
-function validasiStep2() {
-  const name  = document.getElementById('reg-name')?.value.trim() || '';
-  const phone = document.getElementById('reg-phone')?.value.trim() || '';
-  if (!name)  { toast('Nama lengkap harus diisi', 'error'); document.getElementById('reg-name')?.focus(); return false; }
-  if (!phone || !/^8\d{8,12}$/.test(phone)) {
-    toast('Nomor WA tidak valid (contoh: 8123456789)', 'error');
-    document.getElementById('reg-phone')?.focus(); return false;
-  }
-  return true;
-}
-
-function validasiStep3() {
-  const email = document.getElementById('reg-email')?.value.trim() || '';
-  const pwd   = document.getElementById('reg-password')?.value || '';
-  const pwd2  = document.getElementById('reg-password2')?.value || '';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    toast('Format email tidak valid', 'error'); return false;
-  }
-  if (pwd.length < 8) { toast('Kata sandi minimal 8 karakter', 'error'); return false; }
-  if (pwd !== pwd2)   { toast('Kata sandi tidak cocok', 'error'); return false; }
-  if (!document.getElementById('reg-setuju')?.checked) {
-    toast('Centang persetujuan terlebih dahulu', 'error'); return false;
-  }
-  return true;
-}
-
-function validateRegPhone(inp) {
-  const hint = document.getElementById('phone-hint'); if(!hint) return;
+// ── Validasi nomor WA ──────────────────────────────────────────
+function rwValidatePhone(inp) {
+  const hint = document.getElementById('rw-phone-hint'); if (!hint) return;
   const v = inp.value.trim();
-  if (!v) { hint.textContent=''; return; }
+  if (!v) { hint.textContent = ''; return; }
   const ok = /^8\d{8,12}$/.test(v);
-  hint.textContent = ok ? '✅ Nomor valid' : '⚠️ Mulai dari 8... (tanpa 0 dan +62)';
+  hint.textContent = ok ? '✅ Nomor valid' : '⚠️ Format: 8xxxxxxxxxx (tanpa 0 dan +62)';
   hint.style.color  = ok ? '#16a34a' : '#f97316';
 }
 
-function validateRegEmail(inp) {
-  const hint = document.getElementById('email-hint'); if(!hint) return;
-  const v = inp.value.trim();
-  if (!v) { hint.textContent=''; return; }
-  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-  hint.textContent = ok ? '✅ Email valid' : '⚠️ Format tidak valid';
-  hint.style.color  = ok ? '#16a34a' : '#f97316';
+// ── Password strength ──────────────────────────────────────────
+function _pwdStrength(pwd) {
+  let s = 0;
+  if (pwd.length >= 8) s++;
+  if (/[A-Z]/.test(pwd)) s++;
+  if (/[0-9]/.test(pwd)) s++;
+  if (/[^A-Za-z0-9]/.test(pwd)) s++;
+  return s;
+}
+function _renderPwdBar(barId, hintId, pwd) {
+  const bar  = document.getElementById(barId);
+  const hint = document.getElementById(hintId);
+  if (!bar || !hint) return;
+  const s = _pwdStrength(pwd);
+  const m = [
+    { w:'0',    c:'#e5e7eb', t:'' },
+    { w:'25%',  c:'#ef4444', t:'🔴 Lemah' },
+    { w:'50%',  c:'#f97316', t:'🟠 Cukup' },
+    { w:'75%',  c:'#eab308', t:'🟡 Kuat' },
+    { w:'100%', c:'#16a34a', t:'🟢 Sangat Kuat' },
+  ];
+  bar.style.width      = m[s].w;
+  bar.style.background = m[s].c;
+  hint.textContent     = m[s].t;
+}
+function checkPwdStrength(pwd)  { _renderPwdBar('pwd-bar',  'pwd-hint',  pwd); }
+function checkPwdStrength2(pwd) { _renderPwdBar('pwd-bar2', 'pwd-hint2', pwd); }
+
+function checkPwdMatch2() {
+  const p1   = document.getElementById('re-pwd')?.value  || '';
+  const p2   = document.getElementById('re-pwd2')?.value || '';
+  const hint = document.getElementById('pwd2-hint2'); if (!hint || !p2) return;
+  hint.textContent = p1 === p2 ? '✅ Cocok' : '⚠️ Belum cocok';
+  hint.style.color  = p1 === p2 ? '#16a34a' : '#f97316';
 }
 
-// ── Legacy wrappers ──────────────────────────────────────────
-function validatePhoneInput(inp) { validateRegPhone(inp); }
-function validateEmailInput(inp) { validateRegEmail(inp); }
-
-// ══ OTP BOXES ══════════════════════════════════════════════════
+// ── OTP boxes ──────────────────────────────────────────────────
 function otpNext(inp, groupId) {
-  inp.value = inp.value.replace(/[^0-9]/g, '');
+  inp.value = inp.value.replace(/\D/g, '');
   if (inp.value.length === 1) {
-    const boxes = document.getElementById(groupId)?.querySelectorAll('.ah-otp-box');
-    if (!boxes) return;
-    const arr = Array.from(boxes);
-    const idx = arr.indexOf(inp);
-    if (idx < arr.length - 1) arr[idx + 1].focus();
-    // Auto-verify jika semua terisi
-    const code = arr.map(b => b.value).join('');
-    if (code.length === 6) {
-      if (groupId === 'otp-boxes-login') verifikasiOTPLogin();
-      else verifikasiOTPReg();
-    }
+    const boxes = Array.from(
+      document.getElementById(groupId)?.querySelectorAll('.auth-otp-box') || []
+    );
+    const idx = boxes.indexOf(inp);
+    if (idx < boxes.length - 1) boxes[idx + 1].focus();
+    // Auto-verifikasi jika semua terisi
+    if (boxes.every(b => b.value)) verifikasiOTPDaftar();
   }
 }
-
 function otpBack(e, inp) {
   if (e.key === 'Backspace' && !inp.value) {
-    const boxes = inp.closest('.ah-otp-boxes')?.querySelectorAll('.ah-otp-box');
-    if (!boxes) return;
-    const arr = Array.from(boxes);
-    const idx = arr.indexOf(inp);
-    if (idx > 0) arr[idx - 1].focus();
+    const boxes = Array.from(
+      inp.closest('.auth-otp-grid')?.querySelectorAll('.auth-otp-box') || []
+    );
+    const idx = boxes.indexOf(inp);
+    if (idx > 0) boxes[idx - 1].focus();
   }
 }
-
-function getOTPCode(groupId) {
-  const boxes = document.getElementById(groupId)?.querySelectorAll('.ah-otp-box');
-  return boxes ? Array.from(boxes).map(b => b.value).join('') : '';
+function getOTPValue(groupId) {
+  return Array.from(
+    document.getElementById(groupId)?.querySelectorAll('.auth-otp-box') || []
+  ).map(b => b.value).join('');
 }
-
 function clearOTPBoxes(groupId) {
-  document.getElementById(groupId)?.querySelectorAll('.ah-otp-box').forEach(b => { b.value = ''; });
+  document.getElementById(groupId)
+    ?.querySelectorAll('.auth-otp-box')
+    .forEach(b => { b.value = ''; });
 }
 
-// ══ OTP LOGIN via WA ════════════════════════════════════════════
-async function kirimOTPLogin() {
-  const raw   = document.getElementById('login-wa')?.value.trim() || '';
-  const phone = raw.startsWith('0') ? raw.slice(1) : raw;
-  if (!/^8\d{8,12}$/.test(phone)) {
-    toast('Nomor WA tidak valid', 'error'); return;
+// ── Kirim OTP via Fonnte ────────────────────────────────────────
+async function kirimWAOTP(wa62, otp, jenis) {
+  const msg = jenis === 'daftar'
+    ? `Halo! Kode verifikasi *Kantin DW Online* Anda: *${otp}*\n\nKode berlaku 5 menit.\nJangan bagikan ke siapapun.`
+    : `Kode masuk *Kantin DW Online*: *${otp}*\nBerlaku 5 menit.`;
+  try {
+    const resp = await fetch('https://api.fonnte.com/send', {
+      method: 'POST',
+      headers: { 'Authorization': FONNTE_TOKEN },
+      body: new URLSearchParams({ target: wa62, message: msg, countryCode: '62' }),
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!data.status) console.warn('Fonnte:', data);
+    return !!data.status;
+  } catch(e) {
+    console.warn('Fonnte error:', e);
+    return false;
   }
-  setBtnLoading('btn-otp-login', true, 'Mengirim...');
+}
 
-  // Di produksi: kirim via Fonnte/WA API
-  // Untuk sekarang: simulasi OTP (ganti dengan API call nyata)
+// Modal tampil OTP di layar (jika Fonnte belum aktif / fallback)
+function tampilModalOTP(otp, wa) {
+  document.getElementById('modal-otp-lokal')?.remove();
+  const note = FONNTE_TOKEN.includes('GANTI')
+    ? 'Fonnte WA belum dikonfigurasi'
+    : 'Pengiriman WA gagal';
+  const m = document.createElement('div');
+  m.id = 'modal-otp-lokal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;';
+  m.innerHTML = `
+    <div style="background:#fff;border-radius:20px;padding:2rem 1.75rem;max-width:300px;width:100%;text-align:center;">
+      <div style="font-size:2.2rem;margin-bottom:.6rem;">📲</div>
+      <div style="font-weight:900;font-size:1.05rem;color:#111827;margin-bottom:.25rem;">Kode OTP Anda</div>
+      <div style="font-size:.78rem;color:#6b7280;margin-bottom:1rem;">${note} — kode ditampilkan di sini</div>
+      <div style="background:#f0fdf4;border:2px solid #16a34a;border-radius:12px;padding:1rem;margin-bottom:1rem;">
+        <div style="letter-spacing:.4em;font-size:2.2rem;font-weight:900;color:#16a34a;font-family:monospace;">${otp}</div>
+        <div style="font-size:.73rem;color:#6b7280;margin-top:.25rem;">Berlaku 5 menit</div>
+      </div>
+      <button onclick="document.getElementById('modal-otp-lokal').remove()"
+        style="background:#16a34a;color:#fff;border:none;border-radius:10px;padding:.7rem 1.5rem;font-weight:700;cursor:pointer;width:100%;">
+        Mengerti
+      </button>
+    </div>`;
+  document.body.appendChild(m);
+  m.addEventListener('click', e => { if (e.target === m) m.remove(); });
+}
+
+// Countdown resend
+function startCountdown(elId, secs) {
+  const el = document.getElementById(elId); if (!el) return;
+  el.style.pointerEvents = 'none'; el.style.color = '#9ca3af';
+  let n = secs;
+  el.textContent = `Kirim ulang (${n}s)`;
+  const t = setInterval(() => {
+    n--;
+    el.textContent = n > 0 ? `Kirim ulang (${n}s)` : 'Kirim ulang';
+    if (n <= 0) {
+      clearInterval(t);
+      el.style.pointerEvents = 'auto';
+      el.style.color = '#16a34a';
+    }
+  }, 1000);
+}
+
+// ══ DAFTAR via WA ═════════════════════════════════════════════
+async function kirimOTPDaftar() {
+  const name  = document.getElementById('rw-name')?.value.trim()  || '';
+  const phone = document.getElementById('rw-phone')?.value.trim() || '';
+  const pwd   = document.getElementById('rw-pwd')?.value          || '';
+
+  if (!name)  { toast('Nama lengkap harus diisi', 'error'); document.getElementById('rw-name').focus(); return; }
+  if (!/^8\d{8,12}$/.test(phone)) { toast('Nomor WA tidak valid (contoh: 81234567890)', 'error'); document.getElementById('rw-phone').focus(); return; }
+  if (pwd.length < 8) { toast('Kata sandi minimal 8 karakter', 'error'); document.getElementById('rw-pwd').focus(); return; }
+
+  setBtnLoading('btn-kirim-otp', true, 'Mengirim OTP...');
+
+  // Buat OTP 6 digit
   _demoOTP = Math.floor(100000 + Math.random() * 900000).toString();
-  await delay(800);
+  const wa62 = `62${phone}`;
 
-  if (_fnReady) {
-    await kirimWAOTP(`62${phone}`, _demoOTP, 'login');
-  } else {
-    console.log(`[DEV] OTP Login: ${_demoOTP}`);
-    tampilOTPLokal(_demoOTP, `+62${phone}`);
+  let terkirim = false;
+  if (!FONNTE_TOKEN.includes('GANTI')) {
+    terkirim = await kirimWAOTP(wa62, _demoOTP, 'daftar');
   }
+  if (!terkirim) tampilModalOTP(_demoOTP, wa62);
 
-  setBtnLoading('btn-otp-login', false, '📲 Kirim Ulang OTP');
-  document.getElementById('login-otp-panel').style.display = 'block';
-  document.getElementById('btn-otp-login').style.display   = 'none';
-  const info = document.getElementById('login-otp-info-txt');
-  if (info) info.textContent = `Kode OTP dikirim ke +62${phone}`;
-  clearOTPBoxes('otp-boxes-login');
-  document.querySelector('#otp-boxes-login .ah-otp-box')?.focus();
-  mulaiCountdown('resend-timer-login', 60);
+  setBtnLoading('btn-kirim-otp', false, '📲 Kirim Ulang OTP');
+
+  // Tampilkan panel OTP
+  document.getElementById('otp-panel').style.display = 'block';
+  document.getElementById('btn-kirim-otp').textContent = '📲 Kirim Ulang OTP';
+  document.getElementById('otp-info-txt').textContent = `💬 Kode OTP dikirim ke +62${phone}`;
+  clearOTPBoxes('otp-boxes');
+  document.querySelector('#otp-boxes .auth-otp-box')?.focus();
+  startCountdown('resend-otp', 60);
 }
 
-async function verifikasiOTPLogin() {
-  const code  = getOTPCode('otp-boxes-login');
-  const raw   = document.getElementById('login-wa')?.value.trim() || '';
-  const phone = raw.startsWith('0') ? raw.slice(1) : raw;
+async function verifikasiOTPDaftar() {
+  const otp   = getOTPValue('otp-boxes');
+  const name  = document.getElementById('rw-name')?.value.trim()  || '';
+  const phone = document.getElementById('rw-phone')?.value.trim() || '';
+  const pwd   = document.getElementById('rw-pwd')?.value          || '';
   const wa62  = `62${phone}`;
 
-  if (code.length < 6) { toast('Masukkan 6 digit OTP', 'error'); return; }
-  setBtnLoading('btn-verif-login', true, 'Memverifikasi...');
+  if (otp.length < 6) { toast('Masukkan 6 digit OTP', 'error'); return; }
+  if (otp !== _demoOTP) { toast('❌ Kode OTP salah', 'error'); clearOTPBoxes('otp-boxes'); document.querySelector('#otp-boxes .auth-otp-box')?.focus(); return; }
 
-  if (code !== _demoOTP && !USE_SUPABASE) {
-    setBtnLoading('btn-verif-login', false, '✅ Verifikasi & Masuk');
-    toast('Kode OTP salah', 'error'); return;
-  }
-
-  await delay(600);
-  // Di produksi: cari user berdasarkan nomor WA di tabel profiles
-  // Jika belum terdaftar → arahkan ke daftar
-  App.currentUser = { id:'u-'+Date.now(), name:'Pengguna', phone:wa62, email:'', role:'buyer' };
-  setBtnLoading('btn-verif-login', false, '✅ Verifikasi & Masuk');
-  loginSuccess('buyer');
-}
-
-// ══ OTP REGISTRASI via WA ═══════════════════════════════════════
-async function kirimOTPReg() {
-  if (!validasiStep2()) return;
-  const phone = document.getElementById('reg-phone')?.value.trim() || '';
-  const wa62  = `62${phone}`;
-
-  setBtnLoading('btn-otp-reg', true, 'Mengirim...');
-  _demoOTP = Math.floor(100000 + Math.random() * 900000).toString();
-  await delay(800);
-
-  if (_fnReady) {
-    await kirimWAOTP(wa62, _demoOTP, 'daftar');
-  } else {
-    console.log(`[DEV] OTP Registrasi: ${_demoOTP}`);
-    tampilOTPLokal(_demoOTP, `+62${phone}`);
-  }
-
-  setBtnLoading('btn-otp-reg', false, '📲 Kirim Ulang OTP');
-  document.getElementById('reg-otp-panel-wa').style.display = 'block';
-  document.getElementById('btn-otp-reg').style.display      = 'none';
-  const info = document.getElementById('reg-otp-info-txt');
-  if (info) info.textContent = `Kode OTP dikirim ke +62${phone}`;
-  clearOTPBoxes('otp-boxes-reg');
-  document.querySelector('#otp-boxes-reg .ah-otp-box')?.focus();
-}
-
-async function verifikasiOTPReg() {
-  const code  = getOTPCode('otp-boxes-reg');
-  const name  = document.getElementById('reg-name')?.value.trim() || '';
-  const phone = document.getElementById('reg-phone')?.value.trim() || '';
-  const role  = App.registerRole;
-  const wa62  = `62${phone}`;
-
-  if (code.length < 6) { toast('Masukkan 6 digit OTP', 'error'); return; }
-  if (code !== _demoOTP && !USE_SUPABASE) {
-    toast('Kode OTP salah', 'error'); return;
-  }
-
-  setBtnLoading('btn-verif-reg', true, 'Membuat akun...');
+  setBtnLoading('btn-verif-otp', true, 'Membuat akun...');
 
   if (USE_SUPABASE) {
-    // Supabase: gunakan signUp dengan phone (jika phone auth aktif)
-    // atau buat user dengan dummy email berbasis nomor WA
-    const dummyEmail = `wa${phone}@kantindw.id`;
-    const dummyPwd   = `KDW${phone}${Date.now()}`;
+    // Gunakan email dummy berbasis nomor WA agar kompatibel Supabase Auth
+    const dummyEmail = `wa${phone}@kantindw.internal`;
     const { data, error } = await SB.auth.signUp({
-      email: dummyEmail, password: dummyPwd,
-      options: { data: { full_name: name, phone: wa62, role } }
+      email: dummyEmail, password: pwd,
+      options: { data: { full_name: name, phone: wa62, role: _authRole, login_method: 'wa' } }
     });
     if (error && !error.message.includes('already registered')) {
-      setBtnLoading('btn-verif-reg', false, '🎉 Verifikasi & Buat Akun');
+      setBtnLoading('btn-verif-otp', false, '✅ Verifikasi & Buat Akun');
       toast(petaErrorAuth(error.message), 'error'); return;
     }
     if (data?.user) {
       await SB.from('profiles').upsert({
-        id: data.user.id, full_name: name, phone: wa62, role,
-        email: dummyEmail, created_at: new Date().toISOString(),
+        id: data.user.id, full_name: name, phone: wa62,
+        role: _authRole, email: dummyEmail,
+        login_method: 'wa', created_at: new Date().toISOString(),
       });
     }
   } else {
-    await delay(900);
+    await delay(800);
   }
 
-  setBtnLoading('btn-verif-reg', false, '🎉 Verifikasi & Buat Akun');
-  tampilSuksesDaftar(name, role);
+  setBtnLoading('btn-verif-otp', false, '✅ Verifikasi & Buat Akun');
+  tampilSukses(name, _authRole, 'wa');
 }
 
-// ══ REGISTRASI via EMAIL ════════════════════════════════════════
-async function handleRegister() {
-  if (!validasiStep3()) return;
+// ══ DAFTAR via EMAIL ═══════════════════════════════════════════
+async function handleRegisterEmail() {
+  const name  = document.getElementById('re-name')?.value.trim()  || '';
+  const phone = document.getElementById('re-phone')?.value.trim() || '';
+  const email = document.getElementById('re-email')?.value.trim().toLowerCase() || '';
+  const pwd   = document.getElementById('re-pwd')?.value          || '';
+  const pwd2  = document.getElementById('re-pwd2')?.value         || '';
 
-  const name  = document.getElementById('reg-name')?.value.trim()  || '';
-  const phone = document.getElementById('reg-phone')?.value.trim() || '';
-  const email = document.getElementById('reg-email')?.value.trim().toLowerCase() || '';
-  const pwd   = document.getElementById('reg-password')?.value || '';
-  const role  = App.registerRole;
-  const wa62  = phone ? `62${phone}` : '';
+  if (!name)  { toast('Nama lengkap harus diisi', 'error'); document.getElementById('re-name').focus(); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast('Format email tidak valid', 'error'); document.getElementById('re-email').focus(); return; }
+  if (pwd.length < 8) { toast('Kata sandi minimal 8 karakter', 'error'); return; }
+  if (pwd !== pwd2)   { toast('Kata sandi tidak cocok', 'error'); document.getElementById('re-pwd2').focus(); return; }
 
-  setBtnLoading('btn-daftar', true, 'Membuat akun...');
+  const wa62 = phone ? `62${phone}` : '';
+  setBtnLoading('btn-daftar-email', true, 'Membuat akun...');
 
   if (USE_SUPABASE) {
     const { data, error } = await SB.auth.signUp({
       email, password: pwd,
-      options: { data: { full_name: name, phone: wa62, role } }
+      options: {
+        data: { full_name: name, phone: wa62, role: _authRole, login_method: 'email' },
+        emailRedirectTo: window.location.origin,
+      }
     });
     if (error) {
-      setBtnLoading('btn-daftar', false, '🎉 Buat Akun Sekarang');
+      setBtnLoading('btn-daftar-email', false, 'Buat Akun');
       toast(petaErrorAuth(error.message), 'error'); return;
     }
     if (data?.user) {
       await SB.from('profiles').upsert({
-        id: data.user.id, full_name: name, phone: wa62, role, email,
+        id: data.user.id, full_name: name, phone: wa62,
+        role: _authRole, email, login_method: 'email',
         created_at: new Date().toISOString(),
       });
+      // Kirim notifikasi WA jika ada nomor
+      if (wa62 && !FONNTE_TOKEN.includes('GANTI')) {
+        const msg = `Halo ${name}! Akun *Kantin DW Online* Anda berhasil dibuat.\n\nEmail: ${email}\nPeran: ${_authRole === 'seller' ? 'Penjual 🏪' : 'Pembeli 🛒'}\n\nSilakan cek email untuk verifikasi.`;
+        kirimWAOTP(wa62, '', 'notif').catch(() => {});
+        // kirim notif custom
+        fetch('https://api.fonnte.com/send', {
+          method: 'POST',
+          headers: { 'Authorization': FONNTE_TOKEN },
+          body: new URLSearchParams({ target: wa62, message: msg, countryCode: '62' })
+        }).catch(() => {});
+      }
     }
   } else {
-    await delay(900);
+    await delay(800);
   }
 
-  setBtnLoading('btn-daftar', false, '🎉 Buat Akun Sekarang');
-  tampilSuksesDaftar(name, role);
+  setBtnLoading('btn-daftar-email', false, 'Buat Akun');
+  tampilSukses(name, _authRole, 'email');
 }
 
-function tampilSuksesDaftar(name, role) {
-  const label = role === 'seller' ? 'Penjual 🏪' : 'Pembeli 🛒';
-  const el1   = document.getElementById('reg-success-title');
-  const el2   = document.getElementById('reg-success-body');
-  if (el1) el1.textContent = `Selamat, ${name}! 🎉`;
-  if (el2) el2.textContent = `Akun ${label} berhasil dibuat. Silakan masuk untuk mulai ${role === 'seller' ? 'menerima pesanan' : 'memesan makanan'}.`;
-  regNextStep(4);
+function tampilSukses(name, role, method) {
+  const roleLabel = role === 'seller' ? 'Penjual 🏪' : 'Pembeli 🛒';
+  const bodyWA    = `Akun berhasil dibuat! Sekarang Anda bisa masuk menggunakan nomor WA dan kata sandi yang sudah dibuat.`;
+  const bodyEmail = `Link verifikasi dikirim ke email Anda. Klik link tersebut lalu masuk dengan email dan kata sandi.`;
+  document.getElementById('sukses-title').textContent = `Selamat, ${name}!`;
+  document.getElementById('sukses-body').textContent  = method === 'wa' ? bodyWA : bodyEmail;
+  authShowView('sukses');
 }
 
-// ══ LOGIN via EMAIL ═════════════════════════════════════════════
+// ══ LOGIN ══════════════════════════════════════════════════════
 async function handleLogin() {
-  const email = (document.getElementById('login-email')?.value || '').trim().toLowerCase();
-  const pwd   = document.getElementById('login-password')?.value || '';
-  if (!email || !pwd) { toast('Email dan kata sandi harus diisi', 'error'); return; }
-
   setBtnLoading('btn-login', true, 'Memverifikasi...');
 
+  let email = '', password = '';
+
+  if (_loginMode === 'wa') {
+    const phone = document.getElementById('l-wa')?.value.trim() || '';
+    password     = document.getElementById('l-wa-pwd')?.value   || '';
+    if (!phone || !password) {
+      setBtnLoading('btn-login', false, 'Masuk');
+      toast('Nomor WA dan kata sandi harus diisi', 'error'); return;
+    }
+    if (!/^8\d{8,12}$/.test(phone)) {
+      setBtnLoading('btn-login', false, 'Masuk');
+      toast('Format nomor WA tidak valid', 'error'); return;
+    }
+    // Email dummy yang dipakai saat daftar via WA
+    email = `wa${phone}@kantindw.internal`;
+  } else {
+    email    = document.getElementById('l-email')?.value.trim().toLowerCase() || '';
+    password = document.getElementById('l-email-pwd')?.value || '';
+    if (!email || !password) {
+      setBtnLoading('btn-login', false, 'Masuk');
+      toast('Email dan kata sandi harus diisi', 'error'); return;
+    }
+  }
+
   if (USE_SUPABASE) {
-    const { data, error } = await SB.auth.signInWithPassword({ email, password: pwd });
+    const { data, error } = await SB.auth.signInWithPassword({ email, password });
     if (error) {
-      setBtnLoading('btn-login', false, 'Masuk Sekarang');
+      setBtnLoading('btn-login', false, 'Masuk');
       toast(petaErrorAuth(error.message), 'error'); return;
     }
     const { data: prof } = await SB.from('profiles').select('*').eq('id', data.user.id).single();
     const role = prof?.role || 'buyer';
     App.currentUser = {
-      id: data.user.id, name: prof?.full_name || email.split('@')[0],
-      email: data.user.email, phone: prof?.phone || '', role, store_id: prof?.store_id || null,
+      id:       data.user.id,
+      name:     prof?.full_name || email.split('@')[0],
+      email:    prof?.email || data.user.email,
+      phone:    prof?.phone || '',
+      role,
+      store_id: prof?.store_id || null,
     };
-    setBtnLoading('btn-login', false, 'Masuk Sekarang');
+    setBtnLoading('btn-login', false, 'Masuk');
     loginSuccess(role);
   } else {
-    await delay(700);
-    let role = 'buyer', name = email.split('@')[0];
-    if (email.includes('admin'))  { role = 'admin';  name = 'Admin DW'; }
-    else if (email.includes('penjual') || email.includes('seller') || email.includes('warung')) { role = 'seller'; name = 'Penjual'; }
-    App.currentUser = { id: 'u-'+Date.now(), name, email, phone: '', role };
-    setBtnLoading('btn-login', false, 'Masuk Sekarang');
+    // Mode lokal — deteksi role dari email/WA
+    await delay(600);
+    let role = 'buyer', name = 'Pengguna';
+    const identifier = email.toLowerCase();
+    if (identifier.includes('admin'))  { role = 'admin';  name = 'Admin DW'; }
+    else if (identifier.includes('penjual') || identifier.includes('seller') || identifier.includes('warung')) {
+      role = 'seller'; name = 'Penjual';
+    }
+    App.currentUser = { id: 'u-' + Date.now(), name, email, phone: '', role };
+    setBtnLoading('btn-login', false, 'Masuk');
     loginSuccess(role);
   }
 }
 
-// ══ ADMIN LOGIN ══════════════════════════════════════════════════
+// ══ ADMIN LOGIN ════════════════════════════════════════════════
 async function handleAdminLogin() {
-  const email = (document.getElementById('admin-email')?.value || '').trim().toLowerCase();
-  const pwd   = document.getElementById('admin-password')?.value || '';
+  const email = document.getElementById('adm-email')?.value.trim().toLowerCase() || '';
+  const pwd   = document.getElementById('adm-pwd')?.value || '';
   if (!email || !pwd) { toast('Email dan kata sandi harus diisi', 'error'); return; }
 
   setBtnLoading('btn-admin-login', true, 'Memverifikasi...');
@@ -2902,177 +2937,91 @@ async function handleAdminLogin() {
   if (USE_SUPABASE) {
     const { data, error } = await SB.auth.signInWithPassword({ email, password: pwd });
     if (error) {
-      setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+      setBtnLoading('btn-admin-login', false, 'Masuk');
       toast(petaErrorAuth(error.message), 'error'); return;
     }
     const { data: prof } = await SB.from('profiles').select('*').eq('id', data.user.id).single();
     if (prof?.role !== 'admin') {
       await SB.auth.signOut();
-      setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+      setBtnLoading('btn-admin-login', false, 'Masuk');
       toast('❌ Akun ini bukan admin', 'error'); return;
     }
     App.currentUser = { id: data.user.id, name: prof.full_name || 'Admin', email, phone: prof.phone || '', role: 'admin' };
   } else {
-    await delay(700);
+    await delay(600);
     if (!email.includes('admin')) {
-      setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
-      toast('❌ Akun ini bukan admin', 'error'); return;
+      setBtnLoading('btn-admin-login', false, 'Masuk');
+      toast('❌ Bukan akun admin', 'error'); return;
     }
-    App.currentUser = { id: 'admin-1', name: 'Admin DW', email, phone: '', role: 'admin' };
+    App.currentUser = { id: 'adm-1', name: 'Admin DW', email, phone: '', role: 'admin' };
   }
 
-  setBtnLoading('btn-admin-login', false, '🔐 Masuk sebagai Admin');
+  setBtnLoading('btn-admin-login', false, 'Masuk');
   loginSuccess('admin');
 }
 
-// ══ KIRIM WA OTP (Fonnte — Gratis tier 100 pesan/bulan) ════════
-async function kirimWAOTP(to, otp, jenis) {
-  const msg = jenis === 'login'
-    ? `Kode masuk *Kantin DW Online* Anda: *${otp}*\nBerlaku 5 menit. Jangan bagikan ke siapapun.`
-    : `Selamat datang di *Kantin DW Online*!\nKode verifikasi pendaftaran Anda: *${otp}*\nBerlaku 5 menit.`;
-  try {
-    // FONNTE_TOKEN diambil dari const di bagian KONFIGURASI atas
-    const resp = await fetch('https://api.fonnte.com/send', {
-      method: 'POST',
-      headers: { 'Authorization': FONNTE_TOKEN },
-      body: new URLSearchParams({ target: to, message: msg, countryCode: '62' })
-    });
-    const result = await resp.json().catch(() => ({}));
-    if (!result.status) {
-      console.warn('Fonnte response:', result);
-      tampilOTPLokal(otp, to);
-    }
-  } catch(e) {
-    console.warn('Fonnte error:', e);
-    tampilOTPLokal(otp, to);
-  }
-}
-
-// ── Modal OTP lokal (Fonnte belum aktif / fallback) ───────────
-function tampilOTPLokal(otp, target) {
-  document.getElementById('modal-otp-lokal')?.remove();
-  const note = FONNTE_TOKEN.includes('GANTI')
-    ? 'Fonnte WA belum dikonfigurasi — kode ditampilkan di sini'
-    : 'Pengiriman WA gagal — kode ditampilkan di sini';
-  const m = document.createElement('div');
-  m.id = 'modal-otp-lokal';
-  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:9998;display:flex;align-items:center;justify-content:center;padding:1.5rem;';
-  m.innerHTML = `
-    <div style="background:#fff;border-radius:20px;padding:2rem 1.75rem;max-width:320px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);">
-      <div style="font-size:2.5rem;margin-bottom:.65rem;">📲</div>
-      <div style="font-weight:900;font-size:1.05rem;color:#111827;margin-bottom:.3rem;">Kode OTP Anda</div>
-      <div style="font-size:.78rem;color:#6b7280;margin-bottom:1rem;">${note}</div>
-      <div style="background:#f0fdf4;border:2px solid #16a34a;border-radius:14px;padding:1.1rem;margin-bottom:1rem;">
-        <div style="letter-spacing:.4em;font-size:2.4rem;font-weight:900;color:#16a34a;font-family:monospace;">${otp}</div>
-        <div style="font-size:.73rem;color:#6b7280;margin-top:.3rem;">Berlaku 5 menit · Jangan bagikan</div>
-      </div>
-      <div style="font-size:.77rem;color:#9ca3af;margin-bottom:1rem;">Salin kode di atas ke kotak OTP</div>
-      <button onclick="document.getElementById('modal-otp-lokal').remove()"
-        style="background:#16a34a;color:#fff;border:none;border-radius:11px;padding:.75rem 1.5rem;font-weight:700;font-size:.93rem;cursor:pointer;width:100%;">
-        Mengerti
-      </button>
-    </div>`;
-  document.body.appendChild(m);
-  m.addEventListener('click', e => { if(e.target===m) m.remove(); });
-}
-
-// ══ COUNTDOWN RESEND ════════════════════════════════════════════
-function mulaiCountdown(elId, detik) {
-  const el = document.getElementById(elId); if(!el) return;
-  let sisa = detik;
-  el.style.pointerEvents = 'none'; el.style.color = '#9ca3af';
-  const interval = setInterval(() => {
-    sisa--;
-    el.textContent = `Kirim ulang (${sisa}s)`;
-    if (sisa <= 0) {
-      clearInterval(interval);
-      el.textContent = 'Kirim ulang';
-      el.style.pointerEvents = 'auto'; el.style.color = '#16a34a';
-    }
-  }, 1000);
-  el.textContent = `Kirim ulang (${sisa}s)`;
-}
-
-// ══ LOGIN SUCCESS ════════════════════════════════════════════════
+// ══ LOGIN SUCCESS — pindah ke halaman baru ═════════════════════
 function loginSuccess(role) {
   hideSplash();
-  ahSwitchTab('masuk'); // reset panel auth
-  document.getElementById('login-email') && (document.getElementById('login-email').value = '');
-  document.getElementById('login-password') && (document.getElementById('login-password').value = '');
+
+  // Sembunyikan SEMUA screen auth
   document.getElementById('screen-auth').classList.remove('active');
+  document.getElementById('screen-auth').style.display = 'none';
+
+  // Tampilkan screen sesuai role
   if (role === 'buyer') {
-    document.getElementById('screen-buyer').classList.add('active');
+    const sc = document.getElementById('screen-buyer');
+    sc.classList.add('active'); sc.style.display = 'block';
     document.getElementById('buyer-name').textContent    = App.currentUser.name;
     document.getElementById('profile-name').textContent  = App.currentUser.name;
     document.getElementById('profile-email').textContent = App.currentUser.email || App.currentUser.phone || '-';
     document.getElementById('profile-phone').textContent = App.currentUser.phone || '-';
+    // Pastikan halaman buyer dimulai dari HOME bukan scroll
+    showPage('buyer-home');
     loadBuyerHome();
+
   } else if (role === 'seller') {
-    document.getElementById('screen-seller').classList.add('active');
+    const sc = document.getElementById('screen-seller');
+    sc.classList.add('active'); sc.style.display = 'block';
     document.getElementById('seller-store-name').textContent = App.currentUser.name;
+    showSellerPage('seller-dashboard');
     loadSellerDashboard();
-  } else {
-    document.getElementById('screen-admin').classList.add('active');
+
+  } else if (role === 'admin') {
+    const sc = document.getElementById('screen-admin');
+    sc.classList.add('active'); sc.style.display = 'block';
+    showAdminPage('admin-dashboard');
     loadAdminDashboard();
   }
+
+  window.scrollTo(0, 0);
+  toast(`Selamat datang, ${App.currentUser.name}! 👋`, 'success');
 }
 
+// ══ LOGOUT ═════════════════════════════════════════════════════
 async function handleLogout() {
   if (USE_SUPABASE) await SB.auth.signOut();
   App.currentUser = null; App.cart = []; App.notifikasi = [];
-  ['screen-buyer','screen-seller','screen-admin'].forEach(s =>
-    document.getElementById(s)?.classList.remove('active'));
-  document.getElementById('screen-auth').classList.add('active');
+
+  // Sembunyikan semua screen app
+  ['screen-buyer','screen-seller','screen-admin'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('active'); el.style.display = 'none'; }
+  });
+
+  // Tampilkan auth screen
+  const auth = document.getElementById('screen-auth');
+  auth.classList.add('active'); auth.style.display = 'flex';
+  authShowView('login');
+  window.scrollTo(0, 0);
   toast('Berhasil keluar', 'info');
 }
 
-// ══ PASSWORD ═════════════════════════════════════════════════════
-function togglePwd(id, btn) {
-  const inp = document.getElementById(id); if(!inp) return;
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-  btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
-}
-
-function checkPwdStrength(pwd) {
-  const bar = document.getElementById('pwd-bar'), hint = document.getElementById('pwd-hint');
-  if (!bar || !hint) return;
-  let score = 0;
-  if (pwd.length >= 8) score++;
-  if (/[A-Z]/.test(pwd)) score++;
-  if (/[0-9]/.test(pwd)) score++;
-  if (/[^A-Za-z0-9]/.test(pwd)) score++;
-  const m = [{w:'0',c:'#e5e7eb',t:''},{w:'25%',c:'#ef4444',t:'🔴 Lemah'},{w:'50%',c:'#f97316',t:'🟠 Cukup'},{w:'75%',c:'#eab308',t:'🟡 Kuat'},{w:'100%',c:'#16a34a',t:'🟢 Sangat Kuat'}];
-  const s = m[score] || m[0];
-  bar.style.width = s.w; bar.style.background = s.c; hint.textContent = s.t;
-}
-
-function checkPwdMatch() {
-  const p1 = document.getElementById('reg-password')?.value;
-  const p2 = document.getElementById('reg-password2')?.value;
-  const h  = document.getElementById('pwd2-hint'); if(!h||!p2) return;
-  h.textContent = p1===p2 ? '✅ Cocok' : '⚠️ Belum cocok';
-  h.style.color  = p1===p2 ? '#16a34a' : '#f97316';
-}
-
-// ══ HELPERS ══════════════════════════════════════════════════════
-function setBtnLoading(id, loading, label) {
-  const btn = document.getElementById(id); if(!btn) return;
-  btn.disabled = loading; btn.textContent = loading ? `⏳ ${label}` : label;
-}
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
-function petaErrorAuth(msg) {
-  const map = {
-    'Invalid login credentials'       : '❌ Email atau kata sandi salah',
-    'Email not confirmed'             : '📧 Email belum diverifikasi — cek inbox',
-    'User already registered'         : '⚠️ Email sudah terdaftar, silakan masuk',
-    'Password should be at least 6'   : '🔒 Kata sandi minimal 8 karakter',
-    'Database error creating new user': '⚙️ Error database — jalankan supabase_setup.sql',
-    'signup is disabled'              : '⚠️ Pendaftaran dinonaktifkan',
-    'over_email_send_rate_limit'      : '⏳ Terlalu banyak percobaan, tunggu sebentar',
-  };
-  for (const [k,v] of Object.entries(map)) { if(msg.includes(k)) return v; }
-  return '❌ ' + msg;
-}
+// Legacy compat
+function ahSwitchTab(t)   { authShowView(t === 'masuk' ? 'login' : t === 'daftar' ? 'daftar-pilih' : t); }
+function switchTab(t)     { authShowView(t === 'login' ? 'login' : t === 'register' ? 'daftar-pilih' : t); }
+function switchAuthTab(t) { authShowView(t === 'register' ? 'daftar-pilih' : 'login'); }
+function selectRegisterRole(r) { pilihRole(r); }
 // ══ LUPA PASSWORD ══════════════════════════════════════════════
 function bukaLupaPassword() {
   document.getElementById('lupa-email').value = document.getElementById('login-email').value || '';
