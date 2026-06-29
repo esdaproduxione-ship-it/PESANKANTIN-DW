@@ -1342,15 +1342,21 @@
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  KONFIGURASI — ganti SUPABASE_URL & SUPABASE_ANON_KEY
-//  dengan nilai dari dashboard Supabase project Anda
+//  ⚙️  KONFIGURASI — isi 3 nilai di bawah lalu deploy ulang
 // ══════════════════════════════════════════════════════════════
+
+// 1️⃣  Supabase — dari https://supabase.com → Settings → API
 const SUPABASE_URL      = 'https://GANTI_PROJECT_ID.supabase.co';
 const SUPABASE_ANON_KEY = 'GANTI_ANON_KEY';
 
-// Email admin yang ditetapkan — sesuaikan dengan email admin sebenarnya
+// 2️⃣  Email admin
 const ADMIN_EMAIL = 'admin@kantindw.id';
 
+// 3️⃣  Fonnte WA OTP — daftar GRATIS di https://fonnte.com
+//     Dashboard Fonnte → Token API → salin ke sini
+const FONNTE_TOKEN = 'GANTI_FONNTE_TOKEN';
+
+// ── Biaya antar ───────────────────────────────────────────────
 const ONGKIR = 1000;
 
 const LIBUR_NASIONAL_2025 = [
@@ -1367,10 +1373,12 @@ const LIBUR_NASIONAL_2026 = [
 ];
 const LIBUR_NASIONAL = [...LIBUR_NASIONAL_2025, ...LIBUR_NASIONAL_2026];
 
-// ── Inisialisasi Supabase (aktif jika URL sudah diisi) ──────
+// ── Inisialisasi Supabase ─────────────────────────────────────
 let SB = null;
+const _sbReady = !SUPABASE_URL.includes('GANTI');
+const _fnReady = !FONNTE_TOKEN.includes('GANTI');
 try {
-  if (!SUPABASE_URL.includes('GANTI') && window.supabase) {
+  if (_sbReady && window.supabase) {
     SB = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log('✅ Supabase terhubung');
   } else {
@@ -1378,8 +1386,8 @@ try {
   }
 } catch(e) { console.error('Supabase error:', e); }
 
-// ── Deteksi mode ────────────────────────────────────────────
 const USE_SUPABASE = !!SB;
+
 
 // ══ APP STATE ══════════════════════════════════════════════
 const App = {
@@ -2699,13 +2707,11 @@ async function kirimOTPLogin() {
   _demoOTP = Math.floor(100000 + Math.random() * 900000).toString();
   await delay(800);
 
-  if (!USE_SUPABASE) {
-    // Mode lokal — tampilkan OTP di console saja
-    console.log(`[DEV] OTP Login: ${_demoOTP}`);
-    toast(`[DEV] OTP: ${_demoOTP} (lihat console)`, 'info');
-  } else {
-    // Kirim via WA (integrasi Fonnte — gratis tier)
+  if (_fnReady) {
     await kirimWAOTP(`62${phone}`, _demoOTP, 'login');
+  } else {
+    console.log(`[DEV] OTP Login: ${_demoOTP}`);
+    tampilOTPLokal(_demoOTP, `+62${phone}`);
   }
 
   setBtnLoading('btn-otp-login', false, '📲 Kirim Ulang OTP');
@@ -2750,11 +2756,11 @@ async function kirimOTPReg() {
   _demoOTP = Math.floor(100000 + Math.random() * 900000).toString();
   await delay(800);
 
-  if (!USE_SUPABASE) {
-    console.log(`[DEV] OTP Registrasi: ${_demoOTP}`);
-    toast(`[DEV] OTP: ${_demoOTP} (lihat console)`, 'info');
-  } else {
+  if (_fnReady) {
     await kirimWAOTP(wa62, _demoOTP, 'daftar');
+  } else {
+    console.log(`[DEV] OTP Registrasi: ${_demoOTP}`);
+    tampilOTPLokal(_demoOTP, `+62${phone}`);
   }
 
   setBtnLoading('btn-otp-reg', false, '📲 Kirim Ulang OTP');
@@ -2925,18 +2931,49 @@ async function kirimWAOTP(to, otp, jenis) {
     ? `Kode masuk *Kantin DW Online* Anda: *${otp}*\nBerlaku 5 menit. Jangan bagikan ke siapapun.`
     : `Selamat datang di *Kantin DW Online*!\nKode verifikasi pendaftaran Anda: *${otp}*\nBerlaku 5 menit.`;
   try {
-    // Ganti FONNTE_TOKEN dengan token dari https://fonnte.com (gratis daftar)
-    const FONNTE_TOKEN = 'GANTI_FONNTE_TOKEN';
-    if (FONNTE_TOKEN === 'GANTI_FONNTE_TOKEN') {
-      console.log(`[WA OTP ke ${to}]: ${otp}`);
-      return; // skip jika belum dikonfigurasi
-    }
-    await fetch('https://api.fonnte.com/send', {
+    // FONNTE_TOKEN diambil dari const di bagian KONFIGURASI atas
+    const resp = await fetch('https://api.fonnte.com/send', {
       method: 'POST',
       headers: { 'Authorization': FONNTE_TOKEN },
       body: new URLSearchParams({ target: to, message: msg, countryCode: '62' })
     });
-  } catch(e) { console.warn('Fonnte error:', e); }
+    const result = await resp.json().catch(() => ({}));
+    if (!result.status) {
+      console.warn('Fonnte response:', result);
+      tampilOTPLokal(otp, to);
+    }
+  } catch(e) {
+    console.warn('Fonnte error:', e);
+    tampilOTPLokal(otp, to);
+  }
+}
+
+// ── Modal OTP lokal (Fonnte belum aktif / fallback) ───────────
+function tampilOTPLokal(otp, target) {
+  document.getElementById('modal-otp-lokal')?.remove();
+  const note = FONNTE_TOKEN.includes('GANTI')
+    ? 'Fonnte WA belum dikonfigurasi — kode ditampilkan di sini'
+    : 'Pengiriman WA gagal — kode ditampilkan di sini';
+  const m = document.createElement('div');
+  m.id = 'modal-otp-lokal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:9998;display:flex;align-items:center;justify-content:center;padding:1.5rem;';
+  m.innerHTML = `
+    <div style="background:#fff;border-radius:20px;padding:2rem 1.75rem;max-width:320px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);">
+      <div style="font-size:2.5rem;margin-bottom:.65rem;">📲</div>
+      <div style="font-weight:900;font-size:1.05rem;color:#111827;margin-bottom:.3rem;">Kode OTP Anda</div>
+      <div style="font-size:.78rem;color:#6b7280;margin-bottom:1rem;">${note}</div>
+      <div style="background:#f0fdf4;border:2px solid #16a34a;border-radius:14px;padding:1.1rem;margin-bottom:1rem;">
+        <div style="letter-spacing:.4em;font-size:2.4rem;font-weight:900;color:#16a34a;font-family:monospace;">${otp}</div>
+        <div style="font-size:.73rem;color:#6b7280;margin-top:.3rem;">Berlaku 5 menit · Jangan bagikan</div>
+      </div>
+      <div style="font-size:.77rem;color:#9ca3af;margin-bottom:1rem;">Salin kode di atas ke kotak OTP</div>
+      <button onclick="document.getElementById('modal-otp-lokal').remove()"
+        style="background:#16a34a;color:#fff;border:none;border-radius:11px;padding:.75rem 1.5rem;font-weight:700;font-size:.93rem;cursor:pointer;width:100%;">
+        Mengerti
+      </button>
+    </div>`;
+  document.body.appendChild(m);
+  m.addEventListener('click', e => { if(e.target===m) m.remove(); });
 }
 
 // ══ COUNTDOWN RESEND ════════════════════════════════════════════
