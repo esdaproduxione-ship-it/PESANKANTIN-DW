@@ -1455,6 +1455,65 @@ const App = {
   get demoData() { return this.localData; }
 };
 
+// ══ NAVIGASI — BUYER / SELLER / ADMIN ═══════════════════════
+
+// ── Buyer pages ──────────────────────────────────────────────
+function showPage(pageId) {
+  const pages = ['buyer-home','buyer-orders','buyer-cart','buyer-profile'];
+  pages.forEach(p => {
+    const el = document.getElementById(p);
+    if (el) el.style.display = (p === pageId) ? 'block' : 'none';
+  });
+  const navMap = {'buyer-home':'bnav-home','buyer-orders':'bnav-orders','buyer-cart':'bnav-cart','buyer-profile':'bnav-profile'};
+  document.querySelectorAll('#screen-buyer .nav-item').forEach(n => n.classList.remove('active'));
+  const navId = navMap[pageId];
+  if (navId) document.getElementById(navId)?.classList.add('active');
+  window.scrollTo(0, 0);
+  if (pageId === 'buyer-orders') loadBuyerOrders();
+  if (pageId === 'buyer-cart')   renderCart();
+}
+
+// ── Seller pages ─────────────────────────────────────────────
+function showSellerPage(pageId) {
+  const pages = ['seller-dashboard','seller-products','seller-store','seller-laporan','seller-iuran'];
+  pages.forEach(p => {
+    const el = document.getElementById(p);
+    if (el) el.style.display = (p === pageId) ? 'block' : 'none';
+  });
+  const navMap = {'seller-dashboard':'snav-dash','seller-products':'snav-products','seller-store':'snav-store','seller-laporan':'snav-laporan','seller-iuran':'snav-iuran'};
+  document.querySelectorAll('#screen-seller .nav-item').forEach(n => n.classList.remove('active'));
+  const navId = navMap[pageId];
+  if (navId) document.getElementById(navId)?.classList.add('active');
+  window.scrollTo(0, 0);
+  if (pageId === 'seller-products') loadSellerProducts();
+  if (pageId === 'seller-store')    loadStoreForm();
+  if (pageId === 'seller-laporan')  initLaporan();
+  if (pageId === 'seller-iuran')    loadSellerIuran();
+}
+
+// ── Admin pages ───────────────────────────────────────────────
+function showAdminPage(pageId) {
+  const pages = ['admin-dashboard','admin-keuangan','admin-orders','admin-stores','admin-users','admin-ulasan'];
+  pages.forEach(p => {
+    const el = document.getElementById(p);
+    if (el) el.style.display = (p === pageId) ? 'block' : 'none';
+  });
+  const navMap = {'admin-dashboard':'anav-dash','admin-keuangan':'anav-keuangan','admin-orders':'anav-orders','admin-stores':'anav-stores','admin-ulasan':'anav-ulasan'};
+  document.querySelectorAll('#screen-admin .nav-item').forEach(n => n.classList.remove('active'));
+  const navId = navMap[pageId];
+  if (navId) document.getElementById(navId)?.classList.add('active');
+  window.scrollTo(0, 0);
+  if (pageId === 'admin-orders')   loadAdminOrders();
+  if (pageId === 'admin-stores')   loadAdminStores();
+  if (pageId === 'admin-users')    loadAdminUsers();
+  if (pageId === 'admin-keuangan') loadAdminKeuangan();
+  if (pageId === 'admin-ulasan')   loadAdminUlasan();
+}
+
+// ── Modal ─────────────────────────────────────────────────────
+function openModal(id)  { document.getElementById(id)?.classList.add('open'); }
+function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
+
 // ══ UTILS ══
 const fmtRp = n => 'Rp ' + Number(n).toLocaleString('id-ID');
 const fmtDate = d => new Date(d).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
@@ -3068,16 +3127,25 @@ function hideSplash() {
 async function checkExistingSession() {
   if (!USE_SUPABASE) { hideSplash(); return; }
 
+  // ── Pengaman: paksa splash hilang setelah 6 detik apapun yang terjadi ──
+  const safetyTimer = setTimeout(() => {
+    console.warn('⏱️ Supabase tidak merespons dalam 6 detik — lanjut ke login');
+    hideSplash();
+  }, 6000);
+
   try {
     // Cek apakah ini link reset password
     const url = new URL(window.location.href);
     if (url.searchParams.get('reset') === 'true' || url.hash.includes('type=recovery')) {
+      clearTimeout(safetyTimer);
       hideSplash();
       toast('Silakan buat kata sandi baru Anda', 'info');
       return;
     }
 
     const { data: { session } } = await SB.auth.getSession();
+    clearTimeout(safetyTimer); // berhasil dapat respons, batalkan pengaman
+
     if (session?.user) {
       // Session aktif — ambil profil dan langsung masuk
       const { data: prof } = await SB.from('profiles')
@@ -3097,20 +3165,27 @@ async function checkExistingSession() {
       hideSplash();
     }
   } catch(e) {
+    clearTimeout(safetyTimer);
     console.warn('Session check error:', e);
     hideSplash();
   }
 
   // Pantau perubahan auth state (logout dari tab lain, session expire, dll)
-  SB.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_OUT' && App.currentUser) {
-      App.currentUser = null; App.cart = []; App.notifikasi = [];
-      ['screen-buyer','screen-seller','screen-admin'].forEach(s =>
-        document.getElementById(s)?.classList.remove('active'));
-      document.getElementById('screen-auth')?.classList.add('active');
-      toast('Sesi Anda telah berakhir, silakan login kembali', 'info');
-    }
-  });
+  try {
+    SB.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' && App.currentUser) {
+        App.currentUser = null; App.cart = []; App.notifikasi = [];
+        ['screen-buyer','screen-seller','screen-admin'].forEach(s => {
+          const el = document.getElementById(s);
+          if (el) { el.classList.remove('active'); el.style.display = 'none'; }
+        });
+        const authEl = document.getElementById('screen-auth');
+        if (authEl) { authEl.classList.add('active'); authEl.style.display = 'flex'; }
+        authShowView?.('login');
+        toast('Sesi Anda telah berakhir, silakan login kembali', 'info');
+      }
+    });
+  } catch(e) { console.warn('onAuthStateChange error:', e); }
 }
 
 // ══ INIT ══
